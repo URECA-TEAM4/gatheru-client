@@ -20,7 +20,7 @@ const CustomOverlay1Style = styled.div`
 const MapTitle = styled.div`
   font-size: 24px;
   font-weight: bold;
-  margin: 10px;
+  margin: 25px;
 `
 
 const MapContainer = styled.div`
