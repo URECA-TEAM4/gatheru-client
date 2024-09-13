@@ -19,7 +19,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 
-const pages = ['모집글', '캘린더']
+const pages = ['모집글', '캘린더', '모각코 맵']
 
 export default function Navbar() {
   const navigate = useNavigate()
@@ -72,6 +72,8 @@ export default function Navbar() {
       navigate('/')
     } else if (page === '캘린더') {
       navigate('/calendar')
+    } else if (page === '모각코 맵') {
+      navigate('/map')
     }
     handleCloseNavMenu()
   }
