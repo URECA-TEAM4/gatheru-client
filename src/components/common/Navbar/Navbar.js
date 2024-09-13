@@ -150,7 +150,7 @@ export default function Navbar() {
                         orientation="vertical"
                         variant="middle"
                         flexItem
-                        className={styles.divider}
+                        sx={{ bgcolor: '#4f2f92', mx: '10px' }}
                       />
                     )}
                   </React.Fragment>
