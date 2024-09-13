@@ -5,7 +5,7 @@ import LoginPage from './components/views/LoginPage/LoginPage'
 import RegisterPage from './components/views/RegisterPage/RegisterPage'
 import CalendarPage from './components/views/CalendarPage/CalendarPage'
 import MyPage from './components/views/MyPage/MyPage'
-
+import { CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import theme from './components/styles/theme'
 
@@ -13,6 +13,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
+        <CssBaseline />
         <Navbar />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
