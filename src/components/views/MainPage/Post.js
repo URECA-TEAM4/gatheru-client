@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Box } from '@mui/material'
 import { secondary_color } from '../../constants/colors'
 import Card from '@mui/material/Card'
@@ -17,11 +17,10 @@ function Post(props) {
             {props.pastDeadline ? (
               <Box
                 sx={{
-                  height: 15,
                   borderRadius: 5,
                   bgcolor: '#EADDFF',
                   color: 'gray',
-                  padding: 1.2,
+                  padding: 1.5,
                   mr: 1,
                 }}
               >
@@ -30,11 +29,10 @@ function Post(props) {
             ) : (
               <Box
                 sx={{
-                  height: 15,
                   borderRadius: 5,
                   bgcolor: secondary_color,
                   color: 'white',
-                  padding: 1.2,
+                  padding: 1.5,
                   mr: 1,
                 }}
               >
