@@ -3,20 +3,24 @@ import { useNavigate } from 'react-router-dom'
 import styles from './Navbar.module.css'
 import DesktopLogo from '../../constants/DesktopLogo'
 import MobileLogo from '../../constants/MobileLogo'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import Menu from '@mui/material/Menu'
+import {
+  Divider,
+  MenuItem,
+  Button,
+  Container,
+  Menu,
+  Typography,
+  IconButton,
+  Toolbar,
+  Box,
+  AppBar,
+} from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-import Container from '@mui/material/Container'
-import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 
 const pages = ['모집글', '캘린더']
+
 export default function Navbar() {
   const navigate = useNavigate()
   const [isAuth, setIsAuth] = useState(false)
@@ -76,11 +80,10 @@ export default function Navbar() {
     <AppBar
       position="static"
       sx={{
-        height: '89px',
-        flexShrink: 0,
-        marginTop: '-7px',
+        height: '80px',
         background: 'rgba(234, 221, 255, 0.75)',
         boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.25)',
+        justifyContent: 'center',
       }}
     >
       <Container maxWidth="lg">
@@ -138,17 +141,17 @@ export default function Navbar() {
                   <React.Fragment key={page}>
                     <Button
                       onClick={() => handlePageClick(page)}
-                      className={styles.pageButton}
-                      sx={{
-                        my: 2,
-                        fontSize: '1.3rem',
-                        display: 'block',
-                      }}
+                      sx={{ fontSize: '1.2rem' }}
                     >
                       {page}
                     </Button>
                     {index < pages.length - 1 && (
-                      <div className={styles.divider} />
+                      <Divider
+                        orientation="vertical"
+                        variant="middle"
+                        flexItem
+                        sx={{ bgcolor: '#4f2f92', mx: '10px' }}
+                      />
                     )}
                   </React.Fragment>
                 ))}
@@ -158,7 +161,7 @@ export default function Navbar() {
               <Box sx={{ flexGrow: 0 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography
-                    variant="h6"
+                    variant="subtitle1"
                     sx={{
                       color: 'black',
                       marginRight: '10px', // 이름과 프로필 사진 사이의 간격 조정
@@ -195,15 +198,7 @@ export default function Navbar() {
                   <Menu
                     id="menu-appbar"
                     anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
                     keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
