@@ -209,8 +209,8 @@ export default function Navbar() {
                   >
                     <MenuItem
                       onClick={() => {
-                        handleClose(); // 메뉴 닫기
-                        navigate('/mypage'); // /mypage로 이동
+                        handleClose(); 
+                        navigate('/mypage'); 
                         }}
                       >
                         내가 작성한 글

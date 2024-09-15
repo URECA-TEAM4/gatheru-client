@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types'
 import {
   Button,
@@ -44,6 +45,7 @@ function a11yProps(index) {
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0)
   const [sorting, setSorting] = React.useState('최신순')
+  const navigate = useNavigate()
 
   const handleSortingChange = e => {
     setSorting(e.target.value)
@@ -68,7 +70,9 @@ export default function BasicTabs() {
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
         <GatherToggleButton />
-        <Button
+        <Button onClick={() => { 
+                        navigate('/newpost'); 
+                        }}
           sx={{
             color: 'white',
             backgroundColor: '#38406B',
