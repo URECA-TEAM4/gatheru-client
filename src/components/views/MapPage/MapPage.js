@@ -40,7 +40,7 @@ function MapPage() {
 
   return (
     <MapContainer>
-      <MapTitle>모각코 위치를 지도로 확인해보세요 ! 📍</MapTitle>
+      <MapTitle>모각코 위치를 지도로 확인해보세요! </MapTitle>
       <Map center={markerPosition} style={{ width: '80%', height: '800px' }}>
         <MapMarker
           position={markerPosition}
