@@ -1,22 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Box, Typography, Card, CardContent } from '@mui/material';
+import { Box, Typography, Card, CardContent } from '@mui/material';
+import GatherToggleButton from '../../common/ToggleButton/GatherToggleButton';
 
 function MyPage() {
-  const [activeButton, setActiveButton] = useState(null);
-
-  const handleClick = (buttonIndex) => {
-    setActiveButton(buttonIndex);
-  };
-
-  const buttonStyles = (isActive) => ({
-    backgroundColor: isActive ? '#E80080' : '#d3d3d3',
-    borderRadius: '50px', 
-    margin: '3px', 
-    padding: '5px 20px',
-    '&:hover': {
-      backgroundColor: isActive ? '#E80080' : '#E80080',
-    },
-  });
+  const [gatheringType, setGatheringType] = useState('모각코');
 
   const posts = [
     { title: '한번만 모여주세요 제발', content: '강남역에서 모각코 해볼 예정입니다.', extraInfo: '모임 장소: 강남역', date: '2024-09-20' },
@@ -24,24 +11,22 @@ function MyPage() {
     { title: '공모전 모집', content: '해커톤 같이 나갈 사람', extraInfo: '', date: '2024-09-25' },
   ];
 
+  const filteredPosts = posts.filter(post => {
+    if (gatheringType === '모각코') return post.title.includes('모각코');
+    if (gatheringType === '스터디') return post.title.includes('스터디');
+    if (gatheringType === '공모 및 대회') return post.title.includes('공모전');
+    return true;
+  });
+
   return (
     <div style={styles.container}>
       <h2> 내가 작성한 글 </h2>
       <Box>
-        {["모각코", "스터디", "공모 및 대회"].map((label, index) => (
-          <Button
-            key={index}
-            variant="contained"
-            onClick={() => handleClick(index)}
-            sx={buttonStyles(activeButton === index)}
-          >
-            {label}
-          </Button>
-        ))}
+        <GatherToggleButton gatheringType={gatheringType} setGatheringType={setGatheringType} />
       </Box>
-        
+
       <Box sx={{ marginTop: '30px' }}>
-        {posts.map((post, index) => (
+        {filteredPosts.map((post, index) => (
           <Card key={index} sx={{ marginBottom: '20px', borderRadius: '10px', boxShadow: 3 }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -55,7 +40,7 @@ function MyPage() {
                   {post.extraInfo}
                 </Typography>
               )}
-              {/* 모임 날짜 표시 */}
+
               <Typography variant="body2" color="text.secondary" sx={{ marginTop: '10px' }}>
                 날짜: {post.date}
               </Typography>

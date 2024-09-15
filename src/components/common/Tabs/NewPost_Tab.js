@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Tabs, Tab, Box, Typography } from '@mui/material';
 import 'react-tabs/style/react-tabs.css';
-import RegisterPage from '../../views/NewPostPage/NewPost'; // 기존 RegisterPage.js
-import RegisterPagemok from '../../views/NewPostPage/NewPost_mok'; // 기존 RegisterPage_mok.js
+import RegisterPage from '../../views/NewPostPage/NewPost'; 
+import RegisterPagemok from '../../views/NewPostPage/NewPost_mok';
 
 export default function RegisterTabs() {
   const [value, setValue] = useState(0);

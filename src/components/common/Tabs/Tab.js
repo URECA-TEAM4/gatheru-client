@@ -47,7 +47,7 @@ export default function BasicTabs() {
   const [sorting, setSorting] = React.useState('최신순')
   const navigate = useNavigate()
 
-  const handleSortingChange = e => {
+  const handleSortingChange = e => { //eslint-disable-line no-unused-vars
     setSorting(e.target.value)
   }
 
