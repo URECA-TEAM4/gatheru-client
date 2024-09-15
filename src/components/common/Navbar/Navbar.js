@@ -207,7 +207,14 @@ export default function Navbar() {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={handleClose}>내가 작성한 글</MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        handleClose(); // 메뉴 닫기
+                        navigate('/mypage'); // /mypage로 이동
+                        }}
+                      >
+                        내가 작성한 글
+                      </MenuItem>
                     <MenuItem onClick={logoutClick}>로그아웃</MenuItem>
                   </Menu>
                 </Box>
