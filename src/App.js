@@ -6,7 +6,7 @@ import RegisterPage from "./components/views/RegisterPage/RegisterPage";
 import CalendarPage from "./components/views/CalendarPage/CalendarPage";
 import MyPage from "./components/views/MyPage/MyPage";
 import { ThemeProvider } from '@mui/material/styles';
-import theme from './components/common/theme';
+import theme from './components/styles/theme';
 import RegisterTabs from "./components/common/Tabs/NewPost_Tab";
 
 function App() {
