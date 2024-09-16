@@ -8,6 +8,7 @@ import MyPage from './components/views/MyPage/MyPage'
 import { CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import theme from './components/styles/theme'
+import MapPage from './components/views/MapPage/MapPage'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/map" element={<MapPage />} />
           <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </Router>
