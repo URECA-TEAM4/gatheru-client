@@ -1,32 +1,40 @@
-.pageButton {
-  font-size: 1.2rem;
-}
+.divider {
+    height: 24px;
+    width: 3px;
+    background-color: #4F2F92;
+    margin: 30px 46px;
+  }
+  
+  .pageButton {
+    color: #4F2F92;
+    font-size: 1.5rem;
+  }
 
 .desktopLogo {
-  display: flex;
-  flex-shrink: 0;
-  margin-right: 38px;
-  transition: transform 0.3s ease;
-  &:hover {
-    transform: scale(1.1);
+    display: flex;
+    flex-shrink: 0;
+    margin-right: 38px;
+    transition: transform 0.3s ease;
+    &:hover {
+        transform: scale(1.2);
+    }
   }
-}
-
-.mobileLogo {
-  flex-shrink: 0;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-@media (max-width: 900px) {
-  .desktopLogo {
-    display: none !important;
-  }
-}
-
-@media (min-width: 901px) {
+  
   .mobileLogo {
-    display: none !important;
-  }
+    flex-shrink: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
+  
+  @media (max-width: 900px) {
+    .desktopLogo {
+      display: none !important;
+    }
+  }
+  
+  @media (min-width: 901px) {
+    .mobileLogo {
+      display: none !important;
+    }
+  }
