@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/material'
 import { secondary_color } from '../../constants/colors'
 import Card from '@mui/material/Card'
@@ -9,18 +9,25 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 
 function Post(props) {
+  const [pastDeadline, setPastDeadline] = useState(false)
+
+  useEffect(() => {
+    if (Date.now() > new Date(props.datetime)) setPastDeadline(true)
+  }, [])
+
   return (
     <Card sx={{ borderRadius: 5, mb: 3 }}>
       <CardActionArea>
         <CardContent>
           <Box sx={{ display: 'flex' }}>
-            {props.pastDeadline ? (
+            {pastDeadline ? (
               <Box
                 sx={{
                   borderRadius: 5,
                   bgcolor: '#EADDFF',
                   color: 'gray',
-                  padding: 1.5,
+                  height: '30px',
+                  padding: 1,
                   mr: 1,
                 }}
               >
@@ -32,7 +39,8 @@ function Post(props) {
                   borderRadius: 5,
                   bgcolor: secondary_color,
                   color: 'white',
-                  padding: 1.5,
+                  height: '30px',
+                  padding: 1,
                   mr: 1,
                 }}
               >
@@ -41,34 +49,37 @@ function Post(props) {
             )}
 
             <Typography gutterBottom variant="h6" component="div">
-              강남역에서 모각코 할 분 구합니다.
+              {props.title}
             </Typography>
           </Box>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            {props.content}
           </Typography>
 
           {props.postType == 'mogako' ? (
             <>
               <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
                 <LocationOnOutlinedIcon />{' '}
-                <Typography sx={{ ml: 1 }}>서울 강남역</Typography>
+                <Typography sx={{ ml: 1 }}>{props.location}</Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <CalendarMonthOutlinedIcon />{' '}
-                <Typography sx={{ ml: 1 }}>2024-09-30 14:00 - 15:00</Typography>
+                <Typography sx={{ ml: 1 }}>
+                  {new Date(props.datetime).toLocaleString('ko-KR', {
+                    timeZone: 'UTC',
+                  })}
+                </Typography>
               </Box>
             </>
           ) : (
             <>
-              <Typography sx={{ my: 1 }}>방식: 온라인</Typography>
-              <Typography>마감: 2024-09-12 15:00</Typography>
+              <Typography sx={{ my: 1 }}>방식: {props.method}</Typography>
+              <Typography>
+                마감:{' '}
+                {new Date(props.datetime).toLocaleString('ko-KR', {
+                  timeZone: 'UTC',
+                })}
+              </Typography>
             </>
           )}
         </CardContent>
