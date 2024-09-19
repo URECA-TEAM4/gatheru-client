@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Button,
@@ -12,7 +12,6 @@ import {
 } from '@mui/material'
 import GatherToggleButton from '../ToggleButton/GatherToggleButton'
 import PostList from '../../views/MainPage/PostList'
-import { Padding } from '@mui/icons-material'
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props
@@ -44,8 +43,9 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs() {
-  const [value, setValue] = React.useState(0)
-  const [sorting, setSorting] = React.useState('최신순')
+  const [value, setValue] = useState(0)
+  const [sorting, setSorting] = useState('최신순')
+  const [gatheringType, setGatheringType] = useState()
 
   const handleSortingChange = e => {
     setSorting(e.target.value)
@@ -96,17 +96,29 @@ export default function BasicTabs() {
       </Stack>
       {/* 전체 */}
       <CustomTabPanel value={value} index={0}>
-        <PostList meetingType="all" pastDeadline="all" />
+        <PostList
+          gatheringType={gatheringType}
+          pastDeadline="all"
+          sorting={sorting}
+        />
       </CustomTabPanel>
 
       {/* 모집중 */}
       <CustomTabPanel value={value} index={1}>
-        <PostList meetingType="all" pastDeadline={false} />
+        <PostList
+          gatheringType={gatheringType}
+          pastDeadline={false}
+          sorting={sorting}
+        />
       </CustomTabPanel>
 
       {/* 모집 완료 */}
       <CustomTabPanel value={value} index={2}>
-        <PostList meetingType="all" pastDeadline={true} />
+        <PostList
+          gatheringType={gatheringType}
+          pastDeadline={true}
+          sorting={sorting}
+        />
       </CustomTabPanel>
     </Box>
   )

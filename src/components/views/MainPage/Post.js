@@ -53,7 +53,9 @@ function Post(props) {
             </Typography>
           </Box>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {props.content}
+            {props.content.length > 200
+              ? `${props.content.substring(0, 200)}...`
+              : props.content}
           </Typography>
 
           {props.postType == 'mogako' ? (
