@@ -47,18 +47,19 @@ function PostList(props) {
 
   return (
     <>
-      {props.gatheringType}
       {posts.map(post => {
         return (
-          <Post
-            key={post.title}
-            postType={post.type}
-            title={post.title}
-            content={post.content}
-            location={post.location}
-            datetime={post.type == 'mogako' ? post.datetime : post.deadline}
-            method={post.type != 'mogako' ? post.method : ''}
-          />
+          props.gatheringType.includes(post.type) && (
+            <Post
+              key={post.title}
+              postType={post.type}
+              title={post.title}
+              content={post.content}
+              location={post.location}
+              datetime={post.type == 'mogako' ? post.datetime : post.deadline}
+              method={post.type != 'mogako' ? post.method : ''}
+            />
+          )
         )
       })}
     </>
