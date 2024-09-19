@@ -9,18 +9,52 @@ export default function NewPostPagemok() {
   const [location, setLocation] = useState('');
   const [position, setPosition] = useState({ lat: 37.5665, lng: 126.9780 });
   const [maxParticipants, setMaxParticipants] = useState(1);
-
-  const handleLocationChange = (e) => {
-    setLocation(e.target.value);
-  };
+  const [searchAddress, setSearchAddress] = useState('');
 
   const handleMapClick = (_, mouseEvent) => {
     const latlng = mouseEvent.latLng;
-    setPosition({
-      lat: latlng.getLat(),
-      lng: latlng.getLng(),
+    const lat = latlng.getLat();
+    const lng = latlng.getLng();
+    setPosition({ lat, lng });
+    fetchAddress(lat, lng);
+  };
+
+  const fetchAddress = async (lat, lng) => {
+    const kakao = window.kakao;
+    const geocoder = new kakao.maps.services.Geocoder();
+    const coord = new kakao.maps.LatLng(lat, lng);
+
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), (result, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const address = result[0].address.address_name;
+        const roadAddress = result[0].road_address?.address_name || '';
+        const fullAddress = roadAddress ? roadAddress : address;
+        setLocation(fullAddress);
+      } else {
+        setLocation('주소를 찾을 수 없습니다.');
+      }
     });
-    setLocation(`위도: ${latlng.getLat()}, 경도: ${latlng.getLng()}`);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchAddress(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const kakao = window.kakao;
+    const geocoder = new kakao.maps.services.Geocoder();
+
+    geocoder.addressSearch(searchAddress, (result, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const { x, y } = result[0];
+        const latLng = new kakao.maps.LatLng(y, x);
+        setPosition({ lat: y, lng: x });
+        fetchAddress(y, x);
+      } else {
+        setLocation('주소를 찾을 수 없습니다.');
+      }
+    });
   };
 
   const handleSubmit = (event) => {
@@ -41,12 +75,30 @@ export default function NewPostPagemok() {
       <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
         <TextField label="제목" value={title} onChange={(e) => setTitle(e.target.value)} required fullWidth />
         <TextField label="내용" value={description} onChange={(e) => setDescription(e.target.value)} required multiline rows={4} fullWidth />
-        <Box sx={{ display: 'flex', gap: '20px', mb: 3 }}>
+        <Box sx={{ display: 'flex', gap: '20px', mb: 0 }}>
           <TextField label="날짜" type="date" value={date} onChange={(e) => setDate(e.target.value)} required InputLabelProps={{ shrink: true }} sx={styles.smallInput} />
-          <TextField label="장소" value={location} onChange={handleLocationChange} required sx={styles.smallInput} />
+          <TextField label="장소" value={location} onChange={(e) => setLocation(e.target.value)} required sx={styles.smallInput} />
         </Box>
 
-        {/* Kakao 지도 컴포넌트 */}
+        <Box component="form" onSubmit={handleSearchSubmit} sx={styles.searchBox}>
+          <TextField
+            label="주소 검색 (도로명 주소)"
+            value={searchAddress}
+            onChange={handleSearchChange}
+            required
+            sx={styles.searchInput} 
+          />
+          <Button
+            type="button"
+            onClick={handleSearchSubmit}
+            variant="contained"
+            color="primary"
+            sx={styles.searchButton}
+          >
+            검색
+          </Button>
+        </Box>
+
         <Map
           center={position}
           style={{ width: '100%', height: '350px', marginBottom: '20px' }}
@@ -87,9 +139,30 @@ const styles = {
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '40px',
+    gap: '30px',
   },
   smallInput: {
     flex: 1,
+  },
+  searchBox: {
+    display: 'flex',
+    gap: '10px',
+    mb: 1, 
+  },
+  searchInput: {
+    width: '250px',
+    height: '30px',
+    fontSize: '14px',
+    padding: '5px',
+    marginRight: '1px',
+    borderRadius: '4px',
+    borderWidth: '1px',
+  },
+  searchButton: {
+    backgroundColor: '#fff',
+    color: '#E80080',
+    height: '30px',
+    '&:hover': { backgroundColor: '#d40070', color: '#fff' },
+    marginTop: '15px',
   },
 };
