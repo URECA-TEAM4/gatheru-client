@@ -13,11 +13,12 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   },
 }))
 
-function GatherToggleButton() {
+function GatherToggleButton({ sendDataToTab }) {
   const [gatheringType, setGatheringType] = useState(() => ['mogako'])
 
   const handleGatheringType = (event, newGatheringSelection) => {
     if (newGatheringSelection.length) {
+      sendDataToTab(newGatheringSelection)
       setGatheringType(newGatheringSelection)
     }
   }

@@ -45,7 +45,7 @@ function a11yProps(index) {
 export default function BasicTabs() {
   const [value, setValue] = useState(0)
   const [sorting, setSorting] = useState('최신순')
-  const [gatheringType, setGatheringType] = useState()
+  const [gatheringType, setGatheringType] = useState(() => ['mogako'])
 
   const handleSortingChange = e => {
     setSorting(e.target.value)
@@ -53,6 +53,10 @@ export default function BasicTabs() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
+  }
+
+  const handleGatheringType = data => {
+    setGatheringType(data)
   }
 
   return (
@@ -69,7 +73,7 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-        <GatherToggleButton />
+        <GatherToggleButton sendDataToTab={handleGatheringType} />
         <Button
           sx={{
             color: 'white',
