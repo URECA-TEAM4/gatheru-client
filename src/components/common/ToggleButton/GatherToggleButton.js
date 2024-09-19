@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { styled } from '@mui/material/styles'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup, {
@@ -14,7 +14,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 }))
 
 function GatherToggleButton() {
-  const [gatheringType, setGatheringType] = React.useState(() => ['mogako'])
+  const [gatheringType, setGatheringType] = useState(() => ['mogako'])
 
   const handleGatheringType = (event, newGatheringSelection) => {
     if (newGatheringSelection.length) {

@@ -4,7 +4,7 @@ import 'react-tabs/style/react-tabs.css';
 import RegisterPage from '../../views/NewPostPage/NewPost'; 
 import RegisterPagemok from '../../views/NewPostPage/NewPost_mok';
 
-export default function RegisterTabs() {
+export default function NewPostTab() {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
