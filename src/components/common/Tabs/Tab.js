@@ -1,15 +1,6 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import {
-  Button,
-  Tabs,
-  Tab,
-  Box,
-  MenuItem,
-  FormControl,
-  Select,
-  Stack,
-} from '@mui/material'
+import { Tabs, Tab, Box } from '@mui/material'
 import GatherToggleButton from '../ToggleButton/GatherToggleButton'
 
 function CustomTabPanel(props) {
@@ -42,15 +33,15 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs() {
-  const [value, setValue] = React.useState(0)
-  const [sorting, setSorting] = React.useState('최신순')
-
-  const handleSortingChange = e => {
-    setSorting(e.target.value)
-  }
+  const [value, setValue] = useState(0)
+  const [gatheringType, setGatheringType] = useState(() => ['mogako'])
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
+  }
+
+  const handleGatheringType = data => {
+    setGatheringType(data)
   }
 
   return (
@@ -67,33 +58,15 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-        <GatherToggleButton />
-        <Button
-          sx={{
-            color: 'white',
-            backgroundColor: '#38406B',
-            borderRadius: 3,
-          }}
-        >
-          글 쓰기
-        </Button>
+        <GatherToggleButton sendDataToTab={handleGatheringType} />
       </Box>
-      <Stack direction="row" justifyContent="end" sx={{ mt: 1 }}>
-        {' '}
-        <FormControl size="small">
-          <Select
-            id="sorting"
-            value={sorting}
-            onChange={handleChange}
-            sx={{ borderRadius: 3, fontSize: 15 }}
-          >
-            <MenuItem value="최신순">최신순</MenuItem>
-            <MenuItem value="등록순">등록순</MenuItem>
-          </Select>
-        </FormControl>
-      </Stack>
+      {/* 전체 */}
       <CustomTabPanel value={value} index={0}></CustomTabPanel>
+
+      {/* 모집중 */}
       <CustomTabPanel value={value} index={1}></CustomTabPanel>
+
+      {/* 모집 완료 */}
       <CustomTabPanel value={value} index={2}></CustomTabPanel>
     </Box>
   )
