@@ -47,6 +47,7 @@ export default function BasicTabs() {
   const [value, setValue] = useState(0)
   const [sorting, setSorting] = useState('최신순')
   const [gatheringType, setGatheringType] = useState()
+  const navigate = useNavigate()
 
   const handleSortingChange = e => { //eslint-disable-line no-unused-vars
     setSorting(e.target.value)
@@ -72,7 +73,7 @@ export default function BasicTabs() {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
         <GatherToggleButton />
         <Button onClick={() => { 
-                        useNavigate('/newpost'); 
+                        navigate('/newpost'); 
                         }}
           sx={{
             color: 'white',
