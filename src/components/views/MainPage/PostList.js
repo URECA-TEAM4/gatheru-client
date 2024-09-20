@@ -51,6 +51,7 @@ function PostList(props) {
         return (
           <Post
             key={post.title}
+            id={post._id}
             postType={post.type}
             title={post.title}
             content={post.content}

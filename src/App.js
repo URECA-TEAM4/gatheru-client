@@ -8,6 +8,7 @@ import MyPage from "./components/views/MyPage/MyPage";
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './components/styles/theme';
 import NewPostTab from "./components/common/Tabs/NewPost_Tab";
+import DetailPage from './components/views/DetailPage/DetailPage'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/detail/:type/:postId" element={<DetailPage />} />
       <Route path="/register" element={<RegisterPage/>} />
       <Route path="/calendar" element={<CalendarPage />} />
       <Route path="/mypage" element={<MyPage />} />

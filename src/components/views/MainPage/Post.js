@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import { Box } from '@mui/material'
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  CardActionArea,
+} from '@mui/material'
 import { secondary_color } from '../../constants/colors'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import Typography from '@mui/material/Typography'
-import CardActionArea from '@mui/material/CardActionArea'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
+import { useNavigate } from 'react-router-dom'
 
 function Post(props) {
+  const navigate = useNavigate()
   const [pastDeadline, setPastDeadline] = useState(false)
 
   useEffect(() => {
     if (Date.now() > new Date(props.datetime)) setPastDeadline(true)
   }, [])
   return (
-    <Card sx={{ borderRadius: 5, mb: 3 }}>
+    <Card
+      sx={{ borderRadius: 5, mb: 3 }}
+      onClick={() => {
+        navigate(`/detail/${props.postType}/${props.id}`)
+      }}
+    >
       <CardActionArea>
         <CardContent>
           <Box sx={{ display: 'flex' }}>
