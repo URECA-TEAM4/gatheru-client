@@ -9,6 +9,7 @@ import { CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import theme from './components/styles/theme'
 import MapPage from './components/views/MapPage/MapPage'
+import DetailPage from './components/views/DetailPage/DetailPage'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<MainPage />} />
+          <Route path="/detail/:type/:postId" element={<DetailPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/map" element={<MapPage />} />
