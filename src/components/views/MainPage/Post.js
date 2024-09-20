@@ -18,6 +18,7 @@ function Post(props) {
   useEffect(() => {
     if (Date.now() > new Date(props.datetime)) setPastDeadline(true)
   }, [])
+
   return (
     <Card
       sx={{ borderRadius: 5, mb: 3 }}

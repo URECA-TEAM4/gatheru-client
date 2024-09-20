@@ -1,16 +1,6 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types'
-import {
-  Button,
-  Tabs,
-  Tab,
-  Box,
-  MenuItem,
-  FormControl,
-  Select,
-  Stack,
-} from '@mui/material'
+import { Tabs, Tab, Box } from '@mui/material'
 import GatherToggleButton from '../ToggleButton/GatherToggleButton'
 import PostList from '../../views/MainPage/PostList'
 
@@ -45,16 +35,14 @@ function a11yProps(index) {
 
 export default function BasicTabs() {
   const [value, setValue] = useState(0)
-  const [sorting, setSorting] = useState('최신순')
-  const [gatheringType, setGatheringType] = useState()
-  const navigate = useNavigate()
-
-  const handleSortingChange = e => { //eslint-disable-line no-unused-vars
-    setSorting(e.target.value)
-  }
+  const [gatheringType, setGatheringType] = useState(() => ['mogako'])
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
+  }
+
+  const handleGatheringType = data => {
+    setGatheringType(data)
   }
 
   return (
@@ -71,59 +59,16 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-        <GatherToggleButton />
-        <Button onClick={() => { 
-                        navigate('/newpost'); 
-                        }}
-          sx={{
-            color: 'white',
-            backgroundColor: '#38406B',
-            borderRadius: 3,
-          }}
-        >
-          글 쓰기
-        </Button>
+        <GatherToggleButton sendDataToTab={handleGatheringType} />
       </Box>
-      <Stack direction="row" justifyContent="end" sx={{ mt: 1 }}>
-        {' '}
-        <FormControl size="small">
-          <Select
-            id="sorting"
-            value={sorting}
-            onChange={handleSortingChange}
-            sx={{ borderRadius: 3, fontSize: 15 }}
-          >
-            <MenuItem value="최신순">최신순</MenuItem>
-            <MenuItem value="등록순">등록순</MenuItem>
-          </Select>
-        </FormControl>
-      </Stack>
-
-      <CustomTabPanel value={value} index={0}>
-        <PostList
-          gatheringType={gatheringType}
-          pastDeadline="all"
-          sorting={sorting}
-        />
-      </CustomTabPanel>
+      {/* 전체 */}
+      <CustomTabPanel value={value} index={0}></CustomTabPanel>
 
       {/* 모집중 */}
-      <CustomTabPanel value={value} index={1}>
-        <PostList
-          gatheringType={gatheringType}
-          pastDeadline={false}
-          sorting={sorting}
-        />
-      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}></CustomTabPanel>
 
       {/* 모집 완료 */}
-      <CustomTabPanel value={value} index={2}>
-        <PostList
-          gatheringType={gatheringType}
-          pastDeadline={true}
-          sorting={sorting}
-        />
-      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}></CustomTabPanel>
     </Box>
   )
 }

@@ -6,12 +6,12 @@ function PostList(props) {
   const [posts, setPosts] = useState([])
   let endpoints = ['/api/mogakos/get', '/api/studyContests/get']
 
-  function pastDeadline(post) {
+  const pastDeadline = post => {
     let datetime = post.type == 'mogako' ? post.datetime : post.deadline
     return Date.now() > new Date(datetime)
   }
 
-  function beforeDeadline(post) {
+  const beforeDeadline = post => {
     let datetime = post.type == 'mogako' ? post.datetime : post.deadline
     return Date.now() < new Date(datetime)
   }
@@ -43,22 +43,24 @@ function PostList(props) {
       .catch(function (error) {
         console.log(error)
       })
-  }, [props.sorting])
+  }, [props.sorting, props.gatheringType])
 
   return (
     <>
       {posts.map(post => {
         return (
-          <Post
-            key={post.title}
-            id={post._id}
-            postType={post.type}
-            title={post.title}
-            content={post.content}
-            location={post.location}
-            datetime={post.type == 'mogako' ? post.datetime : post.deadline}
-            method={post.type != 'mogako' ? post.method : ''}
-          />
+          props.gatheringType.includes(post.type) && (
+            <Post
+              key={post.title}
+              id={post._id}
+              postType={post.type}
+              title={post.title}
+              content={post.content}
+              location={post.location}
+              datetime={post.type == 'mogako' ? post.datetime : post.deadline}
+              method={post.type != 'mogako' ? post.method : ''}
+            />
+          )
         )
       })}
     </>

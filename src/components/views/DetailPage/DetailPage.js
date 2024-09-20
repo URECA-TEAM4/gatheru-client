@@ -160,7 +160,7 @@ function DetailPage() {
           <Typography sx={{ my: 1 }}>방식: {post.method}</Typography>
           <Typography>
             마감:{' '}
-            {new Date(post.datetime).toLocaleString('ko-KR', {
+            {new Date(datetime).toLocaleString('ko-KR', {
               timeZone: 'UTC',
             })}
           </Typography>
