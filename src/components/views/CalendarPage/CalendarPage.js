@@ -8,8 +8,8 @@ import {
 } from '@mui/material'
 
 import Auth from '../../../hoc/auth'
-import GatherToggleButton from '../../common/ToggleButton/GatherToggleButton'
 import Calendar from './Calendar'
+import CalendarToggleButton from '../../common/ToggleButton/CalendarToggleButton'
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props
@@ -42,7 +42,7 @@ function a11yProps(index) {
 }
 function CalendarPage() {
   const [value, setValue] = useState(0)
-  const [gatheringType, setGatheringType] = useState(() => ['mogako'])
+  const [gatheringType, setGatheringType] = useState('mogako'); 
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -69,7 +69,7 @@ function CalendarPage() {
           </Box>
 
           <Box sx={{ mt: 2 }}>
-            <GatherToggleButton sendDataToTab={handleGatheringType} />
+            <CalendarToggleButton sendDataToTab={handleGatheringType} />
           </Box>
 
           {/* 전체 */}
