@@ -1,48 +1,101 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import Tab from '../../common/Tabs/Tab'
-import { Container } from '@mui/material'
-import { mute_navy_color } from '../../constants/colors'
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import {
+  Container,
+  Tabs,
+  Tab,
+  Box
+} from '@mui/material'
 
 import Auth from '../../../hoc/auth'
+import GatherToggleButton from '../../common/ToggleButton/GatherToggleButton'
+import Calendar from './Calendar'
 
-function CalendarPage() {
-  const [events, setEvents] = useState([])
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const response = await axios.get('/api/mogakos/get')
-      setEvents(response.data)
-    }
-    fetchEvents()
-  }, [])
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  )
+}
 
-  const handleEventClick = info => {
-    const eventId = info.event.id // 클릭한 게시글 ID
-    const eventType = info.event.extendedProps.type // 클릭한 게시글 type
-    window.location.href = `/detail/${eventType}/${eventId}`
+CustomTabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+}
+
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
   }
+}
+function CalendarPage() {
+  const [value, setValue] = useState(0)
+  const [gatheringType, setGatheringType] = useState(() => ['mogako'])
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+  }
+  const handleGatheringType = data => {
+    setGatheringType(data)
+  }
+
 
   return (
     <div>
       <Container maxWidth="lg" sx={{ mt: 3 }}>
-        <Tab />
-        <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          events={events.map(event => ({
-            id: event._id,
-            title: event.title,
-            date: event.datetime,
-            color: mute_navy_color,
-            extendedProps: { type: event.type }, // type을 extendedProps에 추가
-          }))}
-          eventClick={handleEventClick} // 이벤트 클릭 핸들러 설정
-          timeZone="UTC"
-        />
+        <Box sx={{ width: '100%' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+            >
+              <Tab label="전체" {...a11yProps(0)} />
+              <Tab label="모집중" {...a11yProps(1)} />
+              <Tab label="모집 완료" {...a11yProps(2)} />
+            </Tabs>
+          </Box>
+
+          <Box sx={{ mt: 2 }}>
+            <GatherToggleButton sendDataToTab={handleGatheringType} />
+          </Box>
+
+          {/* 전체 */}
+          <CustomTabPanel value={value} index={0}>
+            <Calendar
+              gatheringType={gatheringType}
+              pastDeadline="all"
+            />
+          </CustomTabPanel>
+
+          {/* 모집중 */}
+          <CustomTabPanel value={value} index={1}>
+            <Calendar
+              gatheringType={gatheringType}
+              pastDeadline={false}
+            />
+          </CustomTabPanel>
+
+          {/* 모집 완료 */}
+          <CustomTabPanel value={value} index={2}>
+            <Calendar
+              gatheringType={gatheringType}
+              pastDeadline={true}
+            />
+          </CustomTabPanel>          
+        </Box>
       </Container>
     </div>
   )
