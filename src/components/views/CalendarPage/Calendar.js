@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { mute_navy_color, primary_color, secondary_color } from '../../constants/colors'
+import {
+  mute_navy_color,
+  primary_color,
+  secondary_color,
+} from '../../constants/colors'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import styles from "./Calendar.module.css"
 
 export default function Calendar(props) {
   const [mogakos, setMogakos] = useState([])
@@ -26,7 +31,6 @@ export default function Calendar(props) {
       .all(endpoints.map(endpoint => axios.get(endpoint)))
 
       .then(function (response) {
-
         if (props.pastDeadline == 'all') {
           setMogakos(response[0].data)
           setStudyContests(response[1].data)
@@ -52,9 +56,9 @@ export default function Calendar(props) {
 
   return (
     <>
-    {props.gatheringType === 'mogako' && (
+      {props.gatheringType === 'mogako' && (
         <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           events={mogakos.map(event => ({
             id: event._id,
@@ -65,27 +69,30 @@ export default function Calendar(props) {
           }))}
           eventClick={handleEventClick} // 이벤트 클릭 핸들러 설정
           timeZone="UTC"
+          eventDidMount={info => {
+            info.el.classList.add(styles.clickable);
+          }}
         />
       )}
       {props.gatheringType === 'study' && (
         <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           events={studyContests.map(event => ({
             id: event._id,
             title: event.title,
             start: event.createdAt,
             end: event.deadline,
-            color: event.type === "study" ? secondary_color : primary_color,
+            color: event.type === 'study' ? secondary_color : primary_color,
             extendedProps: { type: event.type }, // type을 extendedProps에 추가
           }))}
           eventClick={handleEventClick} // 이벤트 클릭 핸들러 설정
           timeZone="UTC"
           eventContent={arg => {
-            return { html: `<div>${arg.event.title}</div>` }; // 시간 없이 제목만 표시
+            return { html: `<div class="${styles.clickable}">${arg.event.title}</div>` } // 시간 없이 제목만 표시
           }}
         />
       )}
-  </>
+    </>
   )
 }
