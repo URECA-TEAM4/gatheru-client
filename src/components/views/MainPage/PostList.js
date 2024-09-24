@@ -6,14 +6,18 @@ function PostList(props) {
   const [posts, setPosts] = useState([])
   let endpoints = ['/api/mogakos/get', '/api/studyContests/get']
 
-  const pastDeadline = post => {
+  const recruitingClosed = post => {
     let datetime = post.type == 'mogako' ? post.datetime : post.deadline
-    return Date.now() > new Date(datetime)
+    return (
+      Date.now() > new Date(datetime) || post.registeredNum == post.maximumNum
+    )
   }
 
-  const beforeDeadline = post => {
+  const recruiting = post => {
     let datetime = post.type == 'mogako' ? post.datetime : post.deadline
-    return Date.now() < new Date(datetime)
+    return (
+      Date.now() < new Date(datetime) && post.registeredNum < post.maximumNum
+    )
   }
 
   useEffect(() => {
@@ -34,9 +38,9 @@ function PostList(props) {
         if (props.pastDeadline == 'all') {
           setPosts(combinedPosts)
         } else if (props.pastDeadline) {
-          setPosts(combinedPosts.filter(pastDeadline))
+          setPosts(combinedPosts.filter(recruitingClosed))
         } else {
-          setPosts(combinedPosts.filter(beforeDeadline))
+          setPosts(combinedPosts.filter(recruiting))
         }
       })
 
@@ -57,6 +61,8 @@ function PostList(props) {
               title={post.title}
               content={post.content}
               location={post.location}
+              registeredNum={post.registeredNum}
+              maximumNum={post.maximumNum}
               datetime={post.type == 'mogako' ? post.datetime : post.deadline}
               method={post.type != 'mogako' ? post.method : ''}
             />
