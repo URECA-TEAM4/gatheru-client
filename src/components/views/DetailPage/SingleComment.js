@@ -7,6 +7,7 @@ import {
   mute_navy_color,
   secondary_color,
 } from '../../constants/colors'
+import axios from 'axios'
 // import Comment from './Comment'
 
 function SingleComment(props) {
@@ -19,21 +20,34 @@ function SingleComment(props) {
     setOpenReply(!openReply)
   }
 
-  const actions = [
-    <span onClick={onClickReplyOpen} key="comment-basic-reply-to">
-      Reply to
-    </span>,
-  ]
-
   useEffect(() => {
     if (user.userData && user.userData.isAuth !== undefined) {
       setUserName(user.userData.name)
     }
   }, [user.userData])
 
+  const onSubmit = e => {
+    e.preventDefault()
+
+    const variables = {
+      content: commentValue,
+      writer: user.userData._id,
+      postId: props.postId,
+      //   responseTo:
+    }
+
+    axios
+      .post('/api/comments/save', variables)
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+
   return (
     <div>
-      {/* <Comment actions={actions} /> */}
       <span
         onClick={onClickReplyOpen}
         key="comment-basic-reply-to"
@@ -71,7 +85,7 @@ function SingleComment(props) {
               borderColor: secondary_color,
               color: secondary_color,
             }}
-            // onClick={onSubmit}
+            onClick={onSubmit}
           >
             등록
           </Button>

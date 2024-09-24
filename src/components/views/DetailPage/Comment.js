@@ -43,7 +43,7 @@ function Comment(props) {
   return (
     <>
       {/* Comment Lists */}
-      <SingleComment />
+      <SingleComment postId={props.postId} />
 
       {/* Root Comment Form */}
       <Box sx={{ display: 'flex', alignItems: 'center', my: 3 }}>

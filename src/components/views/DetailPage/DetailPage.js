@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { Container, Box, Typography, Divider, Button } from '@mui/material'
 import { secondary_color } from '../../constants/colors'
-import Comment from './Comment'
 import UserIcon from '../../constants/userIcon'
 import Auth from '../../../hoc/auth'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
@@ -185,7 +184,7 @@ function DetailPage() {
 
       <Divider></Divider>
 
-      <Comment postId={post._id} />
+      {/* <Comment postId={post._id} /> */}
     </Container>
   )
 }
