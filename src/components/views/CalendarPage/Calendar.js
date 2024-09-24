@@ -23,15 +23,19 @@ export default function Calendar(props) {
       ? mute_navy_color
       : event => (event.type === 'study' ? secondary_color : primary_color)
 
-  const pastDeadline = post => {
-    let datetime = post.type == 'mogako' ? post.datetime : post.deadline
-    return Date.now() > new Date(datetime)
-  }
-
-  const beforeDeadline = post => {
-    let datetime = post.type == 'mogako' ? post.datetime : post.deadline
-    return Date.now() < new Date(datetime)
-  }
+      const recruitingClosed = post => {
+        let datetime = post.type == 'mogako' ? post.datetime : post.deadline
+        return (
+          Date.now() > new Date(datetime) || post.registeredNum == post.maximumNum
+        )
+      }
+    
+      const recruiting = post => {
+        let datetime = post.type == 'mogako' ? post.datetime : post.deadline
+        return (
+          Date.now() < new Date(datetime) && post.registeredNum < post.maximumNum
+        )
+      }
 
   useEffect(() => {
     axios
@@ -46,14 +50,14 @@ export default function Calendar(props) {
             contest: combinedPosts.filter(post => post.type === 'contest'),
           })
         } else if (props.pastDeadline) {
-          const filteredPosts = combinedPosts.filter(pastDeadline)
+          const filteredPosts = combinedPosts.filter(recruitingClosed)
           setPosts({
             mogako: filteredPosts.filter(post => post.type === 'mogako'),
             study: filteredPosts.filter(post => post.type === 'study'),
             contest: filteredPosts.filter(post => post.type === 'contest'),
           })
         } else {
-          const filteredPosts = combinedPosts.filter(beforeDeadline)
+          const filteredPosts = combinedPosts.filter(recruiting)
           setPosts({
             mogako: filteredPosts.filter(post => post.type === 'mogako'),
             study: filteredPosts.filter(post => post.type === 'study'),
