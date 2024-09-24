@@ -14,6 +14,8 @@ import {
 import Auth from '../../../hoc/auth'
 import GatherToggleButton from '../../common/ToggleButton/GatherToggleButton'
 import PostList from './PostList'
+import { useNavigate } from 'react-router-dom';
+
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props
@@ -48,7 +50,7 @@ function MainPage() {
   const [value, setValue] = useState(0)
   const [sorting, setSorting] = useState('최신순')
   const [gatheringType, setGatheringType] = useState(() => ['mogako'])
-
+  const navigate = useNavigate();
   const handleSortingChange = e => {
     setSorting(e.target.value)
   }
@@ -60,7 +62,10 @@ function MainPage() {
   const handleGatheringType = data => {
     setGatheringType(data)
   }
-
+  const handleNewPostClick = () => {
+    navigate('/newpost');
+  }
+  
   return (
     <div>
       <Container maxWidth="lg" sx={{ mt: 3 }}>
@@ -84,6 +89,7 @@ function MainPage() {
                 backgroundColor: '#38406B',
                 borderRadius: 3,
               }}
+              onClick={handleNewPostClick}
             >
               글 쓰기
             </Button>

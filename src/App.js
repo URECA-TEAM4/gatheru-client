@@ -10,7 +10,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import theme from './components/styles/theme'
 import MapPage from './components/views/MapPage/MapPage'
 import DetailPage from './components/views/DetailPage/DetailPage'
-
+import NewpostTab from './components/common/Tabs/NewPost_Tab'
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -25,6 +25,7 @@ function App() {
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/newpost" element={<NewpostTab />} />
         </Routes>
       </Router>
     </ThemeProvider>
