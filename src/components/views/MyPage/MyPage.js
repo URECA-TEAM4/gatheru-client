@@ -9,7 +9,7 @@ function MyPage() {
   const [myPosts, setMyPosts] = useState([]);
   const [value, setValue] = useState(0);
   const [sorting, setSorting] = useState('최신순');
-  const [gatheringType, setGatheringType] = useState(['mogako']);
+  const [gatheringType, setGatheringType] = useState([]);
   const navigate = useNavigate();
 
   // 서버에서 내가 작성한 글 목록을 가져오는 함수

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Select, MenuItem, InputLabel, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-export default function RegisterPage() {
+export default function NewPostPage() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [deadline, setDeadline] = useState('');
@@ -12,20 +13,28 @@ export default function RegisterPage() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const registrationData = {
       title,
-      description,
+      content: description, 
       deadline,
-      maxParticipants,
-      purpose,
-      meetingType,
+      maximumNum: maxParticipants,
+      type: purpose,
+      method: meetingType,
     };
 
-    console.log('등록 정보:', registrationData);
-    navigate('/'); // 등록 버튼 누르면 메인 페이지로
+    try {
+      // 서버로 POST 요청을 보냅니다.
+      const response = await axios.post('/api/studycontests/add', registrationData);
+      console.log('등록 성공:', response.data);
+
+      // 성공적으로 등록하면 메인 페이지로 이동합니다.
+      navigate('/');
+    } catch (error) {
+      console.error('등록 오류:', error);
+    }
   };
 
   return (
