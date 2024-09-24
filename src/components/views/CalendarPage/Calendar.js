@@ -88,8 +88,9 @@ export default function Calendar(props) {
           }))}
           eventClick={handleEventClick} // 이벤트 클릭 핸들러 설정
           timeZone="UTC"
-          eventContent={arg => {
-            return { html: `<div class="${styles.clickable}">${arg.event.title}</div>` } // 시간 없이 제목만 표시
+          eventDidMount={info => {
+            info.el.classList.add(styles.clickable); // 클릭 가능한 클래스 추가
+            info.el.innerHTML = `<div style="color: white;">${info.event.title}</div>`; // 제목 설정
           }}
         />
       )}
