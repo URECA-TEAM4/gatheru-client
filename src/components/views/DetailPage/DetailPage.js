@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import { Container, Box, Typography, Divider } from '@mui/material'
+import { Container, Box, Typography, Divider, Button } from '@mui/material'
 import { secondary_color } from '../../constants/colors'
 import Comment from './Comment'
 import UserIcon from '../../constants/userIcon'
@@ -104,9 +104,30 @@ function DetailPage() {
         </Box>
       )}
 
-      <Typography gutterBottom variant="h4" component="div" sx={{ my: 1 }}>
-        {post.title}
-      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          my: 1,
+        }}
+      >
+        {' '}
+        <Typography gutterBottom variant="h4" component="div" sx={{ my: 1 }}>
+          {post.title}
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{
+            borderRadius: 2,
+            backgroundColor: secondary_color,
+            fontWeight: 700,
+            ml: 2,
+          }}
+        >
+          신청하기
+        </Button>
+      </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
         {' '}
@@ -164,7 +185,7 @@ function DetailPage() {
 
       <Divider></Divider>
 
-      <Comment />
+      <Comment postId={post._id} />
     </Container>
   )
 }
