@@ -36,7 +36,10 @@ function CalendarToggleButton({ sendDataToTab }) {
         모각코
       </ToggleButton>
       <ToggleButton value="study" aria-label="study">
-        스터디 및 공모대회
+        스터디
+      </ToggleButton>
+      <ToggleButton value="contest" aria-label="contest">
+        공모 및 대회
       </ToggleButton>
     </StyledToggleButtonGroup>
   );

@@ -11,11 +11,18 @@ import interactionPlugin from '@fullcalendar/interaction'
 import styles from './Calendar.module.css'
 
 export default function Calendar(props) {
-  const [mogakos, setMogakos] = useState([])
-  const [studyContests, setStudyContests] = useState([])
-
   let endpoints = ['/api/mogakos/get', '/api/studyContests/get']
-  
+  const [posts, setPosts] = useState({
+    mogako: [],
+    study: [],
+    contest: [],
+  })
+  const events = posts[props.gatheringType] || [] // gatheringType에 따라 posts에서 이벤트 가져오기
+  const eventColor =
+    props.gatheringType === 'mogako'
+      ? mute_navy_color
+      : event => (event.type === 'study' ? secondary_color : primary_color)
+
   const pastDeadline = post => {
     let datetime = post.type == 'mogako' ? post.datetime : post.deadline
     return Date.now() > new Date(datetime)
@@ -31,15 +38,27 @@ export default function Calendar(props) {
       .all(endpoints.map(endpoint => axios.get(endpoint)))
 
       .then(function (response) {
+        let combinedPosts = response[0].data.concat(response[1].data)
         if (props.pastDeadline == 'all') {
-          setMogakos(response[0].data)
-          setStudyContests(response[1].data)
+          setPosts({
+            mogako: combinedPosts.filter(post => post.type === 'mogako'),
+            study: combinedPosts.filter(post => post.type === 'study'),
+            contest: combinedPosts.filter(post => post.type === 'contest'),
+          })
         } else if (props.pastDeadline) {
-          setMogakos(response[0].data.filter(pastDeadline))
-          setStudyContests(response[1].data.filter(pastDeadline))
+          const filteredPosts = combinedPosts.filter(pastDeadline)
+          setPosts({
+            mogako: filteredPosts.filter(post => post.type === 'mogako'),
+            study: filteredPosts.filter(post => post.type === 'study'),
+            contest: filteredPosts.filter(post => post.type === 'contest'),
+          })
         } else {
-          setMogakos(response[0].data.filter(beforeDeadline))
-          setStudyContests(response[1].data.filter(beforeDeadline))
+          const filteredPosts = combinedPosts.filter(beforeDeadline)
+          setPosts({
+            mogako: filteredPosts.filter(post => post.type === 'mogako'),
+            study: filteredPosts.filter(post => post.type === 'study'),
+            contest: filteredPosts.filter(post => post.type === 'contest'),
+          })
         }
       })
 
@@ -47,12 +66,6 @@ export default function Calendar(props) {
         console.log(error)
       })
   }, [])
-  const events = props.gatheringType === 'mogako' ? mogakos : studyContests
-
-  const eventColor =
-    props.gatheringType === 'mogako'
-      ? mute_navy_color
-      : event => (event.type === 'study' ? secondary_color : primary_color)
 
   const handleEventClick = info => {
     const eventId = info.event.id // 클릭한 게시글 ID
@@ -62,28 +75,69 @@ export default function Calendar(props) {
 
   return (
     <>
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={events.map(event => ({
-          id: event._id,
-          title: event.title,
-          date:
-            props.gatheringType === 'mogako' ? event.datetime : event.createdAt,
-          end: props.gatheringType === 'study' ? event.deadline : undefined,
-          color:
-            typeof eventColor === 'function' ? eventColor(event) : eventColor,
-          extendedProps: { type: event.type },
-        }))}
-        eventClick={handleEventClick}
-        timeZone="UTC"
-        eventDidMount={info => {
-          info.el.classList.add(styles.clickable)
-          if (props.gatheringType === 'study') {
-            info.el.innerHTML = `<div style="color: white;">${info.event.title}</div>`
-          }
-        }}
-      />
+        {props.gatheringType === 'mogako' && (
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          events={events.map(event => ({
+            id: event._id,
+            title: event.title,
+            date: event.datetime,
+            color: mute_navy_color,
+            extendedProps: { type: event.type }, // type을 extendedProps에 추가
+          }))}
+          eventClick={handleEventClick} // 이벤트 클릭 핸들러 설정
+          timeZone="UTC"
+          eventDidMount={info => {
+            info.el.classList.add(styles.clickable)
+          }}
+        />
+      )}
+
+      {props.gatheringType === 'study' && (
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          events={events.map(event => ({
+            id: event._id,
+            title: event.title,
+            start: event.createdAt,
+            end: event.deadline,
+            color: event.type === "study" ? secondary_color : primary_color,
+            extendedProps: { type: event.type }, // type을 extendedProps에 추가
+          }))}
+          eventClick={handleEventClick} // 이벤트 클릭 핸들러 설정
+          timeZone="UTC"
+          eventContent={arg => {
+            return { html: `<div>${arg.event.title}</div>` }; // 시간 없이 제목만 표시
+          }}
+          eventDidMount={info => {
+            info.el.classList.add(styles.clickable)
+          }}
+        />
+      )}   
+      {props.gatheringType === 'contest' && (
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          events={events.map(event => ({
+            id: event._id,
+            title: event.title,
+            start: event.createdAt,
+            end: event.deadline,
+            color: event.type === "study" ? secondary_color : primary_color,
+            extendedProps: { type: event.type }, // type을 extendedProps에 추가
+          }))}
+          eventClick={handleEventClick} // 이벤트 클릭 핸들러 설정
+          timeZone="UTC"
+          eventContent={arg => {
+            return { html: `<div>${arg.event.title}</div>` }; // 시간 없이 제목만 표시
+          }}
+          eventDidMount={info => {
+            info.el.classList.add(styles.clickable)
+          }}
+        />
+      )}   
     </>
   )
 }
