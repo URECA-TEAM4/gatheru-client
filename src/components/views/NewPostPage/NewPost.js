@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Select, MenuItem, InputLabel, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Auth from "../../../hoc/auth"
 
-export default function NewPostPage() {
+function NewPostPage() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [deadline, setDeadline] = useState('');
@@ -12,12 +14,15 @@ export default function NewPostPage() {
   const [meetingType, setMeetingType] = useState('');
 
   const navigate = useNavigate();
+  
+  const user = useSelector(state => state.user)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    
     const registrationData = {
       title,
+      writer: user.userData._id, // redux에 저장된 userData 값 가져오기
       content: description, 
       deadline,
       maximumNum: maxParticipants,
@@ -156,3 +161,5 @@ const styles = {
     gap: '20px',
   },
 };
+
+export default Auth(NewPostPage, true);
