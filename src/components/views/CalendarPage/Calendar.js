@@ -8,14 +8,14 @@ import {
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import styles from "./Calendar.module.css"
+import styles from './Calendar.module.css'
 
 export default function Calendar(props) {
   const [mogakos, setMogakos] = useState([])
   const [studyContests, setStudyContests] = useState([])
 
   let endpoints = ['/api/mogakos/get', '/api/studyContests/get']
-
+  
   const pastDeadline = post => {
     let datetime = post.type == 'mogako' ? post.datetime : post.deadline
     return Date.now() > new Date(datetime)
@@ -47,6 +47,12 @@ export default function Calendar(props) {
         console.log(error)
       })
   }, [])
+  const events = props.gatheringType === 'mogako' ? mogakos : studyContests
+
+  const eventColor =
+    props.gatheringType === 'mogako'
+      ? mute_navy_color
+      : event => (event.type === 'study' ? secondary_color : primary_color)
 
   const handleEventClick = info => {
     const eventId = info.event.id // 클릭한 게시글 ID
@@ -56,44 +62,28 @@ export default function Calendar(props) {
 
   return (
     <>
-      {props.gatheringType === 'mogako' && (
-        <FullCalendar
+      <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          events={mogakos.map(event => ({
-            id: event._id,
-            title: event.title,
-            date: event.datetime,
-            color: mute_navy_color,
-            extendedProps: { type: event.type }, // type을 extendedProps에 추가
-          }))}
-          eventClick={handleEventClick} // 이벤트 클릭 핸들러 설정
-          timeZone="UTC"
-          eventDidMount={info => {
-            info.el.classList.add(styles.clickable);
-          }}
-        />
-      )}
-      {props.gatheringType === 'study' && (
-        <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          events={studyContests.map(event => ({
-            id: event._id,
-            title: event.title,
-            start: event.createdAt,
-            end: event.deadline,
-            color: event.type === 'study' ? secondary_color : primary_color,
-            extendedProps: { type: event.type }, // type을 extendedProps에 추가
-          }))}
-          eventClick={handleEventClick} // 이벤트 클릭 핸들러 설정
-          timeZone="UTC"
-          eventDidMount={info => {
-            info.el.classList.add(styles.clickable); // 클릭 가능한 클래스 추가
-            info.el.innerHTML = `<div style="color: white;">${info.event.title}</div>`; // 제목 설정
-          }}
-        />
-      )}
+        initialView="dayGridMonth"
+        events={events.map(event => ({
+          id: event._id,
+          title: event.title,
+          date:
+            props.gatheringType === 'mogako' ? event.datetime : event.createdAt,
+          end: props.gatheringType === 'study' ? event.deadline : undefined,
+          color:
+            typeof eventColor === 'function' ? eventColor(event) : eventColor,
+          extendedProps: { type: event.type },
+        }))}
+        eventClick={handleEventClick}
+        timeZone="UTC"
+        eventDidMount={info => {
+          info.el.classList.add(styles.clickable)
+          if (props.gatheringType === 'study') {
+            info.el.innerHTML = `<div style="color: white;">${info.event.title}</div>`
+          }
+        }}
+      />
     </>
   )
 }
