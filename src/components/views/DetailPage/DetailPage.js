@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { Container, Box, Typography, Divider } from '@mui/material'
 import { secondary_color } from '../../constants/colors'
+import Comment from './Comment'
+import UserIcon from '../../constants/userIcon'
+import Auth from '../../../hoc/auth'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 
@@ -107,31 +110,7 @@ function DetailPage() {
 
       <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
         {' '}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="30"
-          height="30"
-          viewBox="0 0 30 30"
-          fill="none"
-        >
-          <g clipPath="url(#clip0_48_2114)">
-            <path
-              d="M21.375 11.25C21.375 12.7418 20.7429 14.1726 19.6176 15.2275C18.4924 16.2824 16.9663 16.875 15.375 16.875C13.7837 16.875 12.2576 16.2824 11.1324 15.2275C10.0071 14.1726 9.375 12.7418 9.375 11.25C9.375 9.75816 10.0071 8.32742 11.1324 7.27252C12.2576 6.21763 13.7837 5.625 15.375 5.625C16.9663 5.625 18.4924 6.21763 19.6176 7.27252C20.7429 8.32742 21.375 9.75816 21.375 11.25Z"
-              fill="#4F2F92"
-            />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M0 15C0 11.0218 1.58035 7.20644 4.3934 4.3934C7.20644 1.58035 11.0218 0 15 0C18.9782 0 22.7936 1.58035 25.6066 4.3934C28.4196 7.20644 30 11.0218 30 15C30 18.9782 28.4196 22.7936 25.6066 25.6066C22.7936 28.4196 18.9782 30 15 30C11.0218 30 7.20644 28.4196 4.3934 25.6066C1.58035 22.7936 0 18.9782 0 15ZM15 1.875C12.5283 1.87513 10.1069 2.57318 8.01451 3.8888C5.92207 5.20442 4.24366 7.08414 3.17243 9.31161C2.10121 11.5391 1.68072 14.0238 1.95937 16.4797C2.23802 18.9356 3.20447 21.2629 4.7475 23.1938C6.07875 21.0487 9.00938 18.75 15 18.75C20.9906 18.75 23.9194 21.0469 25.2525 23.1938C26.7955 21.2629 27.762 18.9356 28.0406 16.4797C28.3193 14.0238 27.8988 11.5391 26.8276 9.31161C25.7563 7.08414 24.0779 5.20442 21.9855 3.8888C19.8931 2.57318 17.4717 1.87513 15 1.875Z"
-              fill="#4F2F92"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0_48_2114">
-              <rect width="30" height="30" fill="white" />
-            </clipPath>
-          </defs>
-        </svg>
+        <UserIcon />
         <Typography fontSize={15} fontWeight="bold" sx={{ mx: 1 }}>
           {writer}{' '}
         </Typography>{' '}
@@ -149,8 +128,12 @@ function DetailPage() {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <CalendarMonthOutlinedIcon />{' '}
             <Typography sx={{ ml: 1 }}>
-              {new Date(post.datetime).toLocaleString('ko-KR', {
-                timeZone: 'UTC',
+              {new Date(post.datetime).toLocaleString([], {
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
               })}
             </Typography>
           </Box>
@@ -160,8 +143,12 @@ function DetailPage() {
           <Typography sx={{ my: 1 }}>방식: {post.method}</Typography>
           <Typography>
             마감:{' '}
-            {new Date(datetime).toLocaleString('ko-KR', {
-              timeZone: 'UTC',
+            {new Date(datetime).toLocaleString([], {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
             })}
           </Typography>
         </>
@@ -176,8 +163,10 @@ function DetailPage() {
       </Typography>
 
       <Divider></Divider>
+
+      <Comment />
     </Container>
   )
 }
 
-export default DetailPage
+export default Auth(DetailPage, true)
