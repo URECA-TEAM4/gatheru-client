@@ -103,8 +103,8 @@ function NewPostPage() {
             value={purpose}
             onChange={(e) => setPurpose(e.target.value)}
           >
-            <FormControlLabel value="스터디" control={<Radio />} label="스터디" />
-            <FormControlLabel value="공모 및 대회" control={<Radio />} label="공모 및 대회" />
+            <FormControlLabel value="study" control={<Radio />} label="스터디" />
+            <FormControlLabel value="contest" control={<Radio />} label="공모 및 대회" />
           </RadioGroup>
         </FormControl>
 

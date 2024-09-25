@@ -15,7 +15,6 @@ function PostList(props) {
     let datetime = post.type == 'mogako' ? post.datetime : post.deadline
     return Date.now() < new Date(datetime)
   }
-
   useEffect(() => {
     axios
       .all(endpoints.map(endpoint => axios.get(endpoint)))
