@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-import { Container, Box, Typography, Divider, Button } from '@mui/material'
+import { Container, Box, Typography, Divider } from '@mui/material'
 import UserIcon from '../../constants/userIcon'
 import Auth from '../../../hoc/auth'
 
@@ -99,7 +99,7 @@ function DetailPage() {
         </Typography>
 
         {post.type == 'mogako' && (
-          <JoinMogakoButton userIsWriter={userIsWriter} />
+          <JoinMogakoButton userIsWriter={userIsWriter} postId={postId} />
         )}
       </Box>
 
