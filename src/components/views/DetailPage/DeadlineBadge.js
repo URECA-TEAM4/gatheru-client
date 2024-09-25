@@ -5,7 +5,7 @@ import { secondary_color } from '../../constants/colors'
 function DeadlineBadge(props) {
   return (
     <>
-      {props.pastDeadline ? (
+      {props.postClosed ? (
         <Box
           sx={{
             borderRadius: 5,

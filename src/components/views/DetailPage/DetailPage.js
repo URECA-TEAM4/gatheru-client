@@ -25,10 +25,7 @@ function DetailPage() {
   const [group, setGroup] = useState('')
   const [registeredNum, setRegisteredNum] = useState(0)
   const [maximumNum, setMaximumNum] = useState(0)
-
-  const checkDeadline = async () => {
-    if (Date.now() > new Date(datetime)) setPastDeadline(true)
-  }
+  const [postClosed, setPostClosed] = useState(false)
 
   useEffect(() => {
     if (user.userData && user.userData.isAuth !== undefined) {
@@ -60,7 +57,7 @@ function DetailPage() {
           .catch(function (error) {
             console.log(error)
           })
-  }, [])
+  }, [registeredNum])
 
   useEffect(() => {
     axios
@@ -79,12 +76,17 @@ function DetailPage() {
   }, [post.writer])
 
   useEffect(() => {
-    checkDeadline()
+    if (Date.now() > new Date(datetime)) setPastDeadline(true)
   }, [datetime])
+
+  useEffect(() => {
+    if (pastDeadline || registeredNum == maximumNum) setPostClosed(true)
+    else setPostClosed(false)
+  }, [pastDeadline, registeredNum, maximumNum])
 
   return (
     <Container maxWidth="lg" sx={{ mt: 3 }}>
-      <DeadlineBadge pastDeadline={pastDeadline} />
+      <DeadlineBadge postClosed={postClosed} />
 
       <Box
         sx={{
@@ -98,7 +100,7 @@ function DetailPage() {
           {post.title}
         </Typography>
 
-        {post.type == 'mogako' && (
+        {!postClosed && post.type == 'mogako' && (
           <JoinMogakoButton userIsWriter={userIsWriter} postId={postId} />
         )}
       </Box>
@@ -125,7 +127,9 @@ function DetailPage() {
         content={post.content}
       />
 
-      {post.type != 'mogako' && <JoinStudyContestButton />}
+      {!postClosed && post.type != 'mogako' && (
+        <JoinStudyContestButton userIsWriter={userIsWriter} />
+      )}
 
       <Divider sx={{ my: 3 }}></Divider>
 
