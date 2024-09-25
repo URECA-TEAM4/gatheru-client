@@ -82,6 +82,23 @@ function DetailPage() {
     checkDeadline()
   }, [datetime])
 
+  // 업데이트 된 모집 현황 가져오기
+  const fetchRegisteredNum = async () => {
+    console.log(post._id)
+    try {
+      const response = await axios.get(`/api/mogakos/registeredNum/${postId}`); // postId를 URL 파라미터로 전달
+
+      setRegisteredNum(response.data.registeredNum)
+      console.log(registeredNum)
+    } catch (error) {
+      console.error('Error fetching registered number:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchRegisteredNum() // 컴포넌트가 마운트될 때 호출
+  }, [post._id])
+
   return (
     <Container maxWidth="lg" sx={{ mt: 3 }}>
       <DeadlineBadge pastDeadline={pastDeadline} />
@@ -99,7 +116,12 @@ function DetailPage() {
         </Typography>
 
         {post.type == 'mogako' && (
-          <JoinMogakoButton userIsWriter={userIsWriter} postId={postId} />
+          <JoinMogakoButton
+            userIsWriter={userIsWriter}
+            postId={postId}
+            registeredNum={registeredNum}
+            fetchRegisteredNum={fetchRegisteredNum}
+          />
         )}
       </Box>
 
@@ -123,6 +145,7 @@ function DetailPage() {
         registeredNum={registeredNum}
         maximumNum={maximumNum}
         content={post.content}
+        fetchRegisteredNum={fetchRegisteredNum}
       />
 
       {post.type != 'mogako' && <JoinStudyContestButton />}

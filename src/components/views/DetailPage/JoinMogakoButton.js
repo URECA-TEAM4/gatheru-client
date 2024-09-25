@@ -38,6 +38,7 @@ function JoinMogakoButton(props) {
     dispatch(unJoinMogakoPost(body)).then(res => {
       if (res.payload.success) {
         alert("신청이 취소되었습니다.")
+        props.fetchRegisteredNum(); // 신청 후 모집현황 업데이트
       } else {
         alert('신청에 취소에 실패하셨습니다.')
       }
