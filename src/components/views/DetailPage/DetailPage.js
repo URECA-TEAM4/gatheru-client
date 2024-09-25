@@ -25,10 +25,7 @@ function DetailPage() {
   const [group, setGroup] = useState('')
   const [registeredNum, setRegisteredNum] = useState(0)
   const [maximumNum, setMaximumNum] = useState(0)
-
-  const checkDeadline = async () => {
-    if (Date.now() > new Date(datetime)) setPastDeadline(true)
-  }
+  const [postClosed, setPostClosed] = useState(false)
 
   useEffect(() => {
     if (user.userData && user.userData.isAuth !== undefined) {
@@ -60,7 +57,7 @@ function DetailPage() {
           .catch(function (error) {
             console.log(error)
           })
-  }, [])
+  }, [registeredNum])
 
   useEffect(() => {
     axios
@@ -79,8 +76,13 @@ function DetailPage() {
   }, [post.writer])
 
   useEffect(() => {
-    checkDeadline()
+    if (Date.now() > new Date(datetime)) setPastDeadline(true)
   }, [datetime])
+
+  useEffect(() => {
+    if (pastDeadline || registeredNum == maximumNum) setPostClosed(true)
+    else setPostClosed(false)
+  }, [pastDeadline, registeredNum, maximumNum])
 
   // 업데이트 된 모집 현황 가져오기
   const fetchRegisteredNum = async () => {
@@ -101,7 +103,7 @@ function DetailPage() {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 3 }}>
-      <DeadlineBadge pastDeadline={pastDeadline} />
+      <DeadlineBadge postClosed={postClosed} />
 
       <Box
         sx={{
@@ -116,12 +118,7 @@ function DetailPage() {
         </Typography>
 
         {post.type == 'mogako' && (
-          <JoinMogakoButton
-            userIsWriter={userIsWriter}
-            postId={postId}
-            registeredNum={registeredNum}
-            fetchRegisteredNum={fetchRegisteredNum}
-          />
+          <JoinMogakoButton userIsWriter={userIsWriter} postId={postId} />
         )}
       </Box>
 
@@ -148,7 +145,9 @@ function DetailPage() {
         fetchRegisteredNum={fetchRegisteredNum}
       />
 
-      {post.type != 'mogako' && <JoinStudyContestButton />}
+      {!postClosed && post.type != 'mogako' && (
+        <JoinStudyContestButton userIsWriter={userIsWriter} />
+      )}
 
       <Divider sx={{ my: 3 }}></Divider>
 

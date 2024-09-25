@@ -15,50 +15,52 @@ function JoinStudyContestButton(props) {
 
   return (
     <>
-      <Accordion
-        sx={{
-          backgroundColor: '#FFF1F9',
-          color: secondary_color,
-          boxShadow: 'none',
-          '&::before': {
-            display: 'none',
-          },
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon sx={{ color: secondary_color }} />}
-          aria-controls="panel1-content"
-          id="panel1-header"
+      {!props.userIsWriter && (
+        <Accordion
+          sx={{
+            backgroundColor: '#FFF1F9',
+            color: secondary_color,
+            boxShadow: 'none',
+            '&::before': {
+              display: 'none',
+            },
+          }}
         >
-          <Typography>신청하기</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <TextField
-            fullWidth
-            autoFocus
-            multiline
-            id="outlined-textarea"
-            label="신청서 작성"
-            minRows={4}
-            color="secondary"
-          />
-          <Button
-            variant="contained"
-            sx={{
-              borderRadius: 2,
-              backgroundColor: secondary_color,
-              fontWeight: 700,
-              float: 'right',
-              my: 3,
-            }}
-            onClick={() => {
-              handleJoinStudyContest()
-            }}
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon sx={{ color: secondary_color }} />}
+            aria-controls="panel1-content"
+            id="panel1-header"
           >
-            완료
-          </Button>
-        </AccordionDetails>
-      </Accordion>
+            <Typography>신청하기</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <TextField
+              fullWidth
+              autoFocus
+              multiline
+              id="outlined-textarea"
+              label="신청서 작성"
+              minRows={4}
+              color="secondary"
+            />
+            <Button
+              variant="contained"
+              sx={{
+                borderRadius: 2,
+                backgroundColor: secondary_color,
+                fontWeight: 700,
+                float: 'right',
+                my: 3,
+              }}
+              onClick={() => {
+                handleJoinStudyContest()
+              }}
+            >
+              완료
+            </Button>
+          </AccordionDetails>
+        </Accordion>
+      )}
     </>
   )
 }
