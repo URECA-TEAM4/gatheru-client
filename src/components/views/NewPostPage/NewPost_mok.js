@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import axios from 'axios'; // axios import 추가
+import Auth from "../../../hoc/auth";
 
-export default function NewPostPagemok() {
+function NewPostPagemok() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
@@ -11,8 +15,11 @@ export default function NewPostPagemok() {
   const [maxParticipants, setMaxParticipants] = useState(1);
   const [searchAddress, setSearchAddress] = useState('');
   const [keyword, setKeyword] = useState('');
-  const [markers, setMarkers] = useState([]); // 마커 상태 추가
-  const [selectedMarker, setSelectedMarker] = useState(null); // 선택된 마커 상태 추가
+  const [markers, setMarkers] = useState([]);
+  const [selectedMarker, setSelectedMarker] = useState(null);
+
+  const navigate = useNavigate();
+  const user = useSelector(state => state.user);
 
   const handleMapClick = (_, mouseEvent) => {
     const latlng = mouseEvent.latLng;
@@ -55,7 +62,6 @@ export default function NewPostPagemok() {
     geocoder.addressSearch(searchAddress, (result, status) => {
       if (status === kakao.maps.services.Status.OK) {
         const { x, y } = result[0];
-        const latLng = new kakao.maps.LatLng(y, x);
         setPosition({ lat: y, lng: x });
         fetchAddress(y, x);
       } else {
@@ -75,9 +81,9 @@ export default function NewPostPagemok() {
           lng: item.x,
           title: item.place_name,
         }));
-        setMarkers(newMarkers); // 마커 상태 업데이트
-        setPosition({ lat: newMarkers[0].lat, lng: newMarkers[0].lng }); // 첫 번째 마커의 위치로 지도 중심 설정
-        fetchAddress(newMarkers[0].lat, newMarkers[0].lng); // 첫 번째 마커의 주소로 위치 설정
+        setMarkers(newMarkers);
+        setPosition({ lat: newMarkers[0].lat, lng: newMarkers[0].lng });
+        fetchAddress(newMarkers[0].lat, newMarkers[0].lng);
       } else {
         setLocation('키워드로 장소를 찾을 수 없습니다.');
       }
@@ -85,22 +91,40 @@ export default function NewPostPagemok() {
   };
 
   const handleMarkerClick = (marker) => {
-    setSelectedMarker(marker); // 클릭한 마커 정보 저장
+    setSelectedMarker(marker);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const registrationData = { title, description, date, location, maxParticipants };
-    console.log('등록 정보:', registrationData);
+    const registrationData = {
+      title,
+      writer: user.userData._id, // redux에서 userData 가져옴
+      content: description,
+      date,
+      location,
+      maximumNum: maxParticipants,
+      datetime: new Date(date), // 날짜 형식 변환
+      type: 'mogako',
+      joinedUser: [],
+      lat: position.lat,
+      lng: position.lng,
+    };
+
+    try {
+      // 서버로 POST 요청
+      const response = await axios.post('/api/mogakos/add', registrationData);
+      console.log('등록 성공:', response.data);
+
+      // 성공 시 메인 페이지로 이동
+      navigate('/');
+    } catch (error) {
+      console.error('등록 오류:', error);
+    }
   };
 
   return (
     <Box sx={styles.container}>
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{ textAlign: 'left', marginBottom: '20px', fontWeight: 'bold', fontSize: '24px' }}
-      >
+      <Typography variant="h4" gutterBottom sx={{ textAlign: 'left', marginBottom: '20px', fontWeight: 'bold', fontSize: '24px' }}>
         모집 글 작성 ( 모각코 )
       </Typography>
       <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
@@ -112,77 +136,29 @@ export default function NewPostPagemok() {
         </Box>
 
         <Box component="form" onSubmit={handleSearchSubmit} sx={styles.searchBox}>
-          <TextField
-            label="주소 검색 (도로명 주소)"
-            value={searchAddress}
-            onChange={handleSearchChange}
-            required
-            sx={styles.searchInput} 
-          />
-          <Button
-            type="button"
-            onClick={handleSearchSubmit}
-            variant="contained"
-            color="primary"
-            sx={styles.searchButton}
-          >
+          <TextField label="주소 검색 (도로명 주소)" value={searchAddress} onChange={handleSearchChange} required sx={styles.searchInput} />
+          <Button type="button" onClick={handleSearchSubmit} variant="contained" color="primary" sx={styles.searchButton}>
             검색
           </Button>
         </Box>
 
         <Box component="form" sx={styles.keywordBox}>
-          <TextField
-            label="장소 검색 (예: 수서역 카페)"
-            value={keyword}
-            onChange={handleKeywordChange}
-            required
-            sx={styles.searchInput} 
-          />
-          <Button
-            type="button"
-            onClick={handleKeywordSearch}
-            variant="contained"
-            color="primary"
-            sx={styles.searchButton}
-          >
+          <TextField label="장소 검색 (예: 수서역 카페)" value={keyword} onChange={handleKeywordChange} required sx={styles.searchInput} />
+          <Button type="button" onClick={handleKeywordSearch} variant="contained" color="primary" sx={styles.searchButton}>
             키워드 검색
           </Button>
         </Box>
 
-        <Map
-          center={position}
-          style={{ width: '100%', height: '350px', marginBottom: '20px' }}
-          level={3}
-          onClick={handleMapClick}
-        >
+        <Map center={position} style={{ width: '100%', height: '350px', marginBottom: '20px' }} level={3} onClick={handleMapClick}>
           {markers.map((marker, index) => (
-            // 선택된 마커가 없거나 현재 마커와 같을 때만 표시
             (selectedMarker === null || selectedMarker.title === marker.title) && (
-              <MapMarker
-                key={index}
-                position={{ lat: marker.lat, lng: marker.lng }}
-                title={marker.title}
-                onClick={() => handleMarkerClick(marker)} // 마커 클릭 시 처리
-              />
+              <MapMarker key={index} position={{ lat: marker.lat, lng: marker.lng }} title={marker.title} onClick={() => handleMarkerClick(marker)} />
             )
           ))}
         </Map>
 
         <TextField label="모집 인원 수" type="number" value={maxParticipants} onChange={(e) => setMaxParticipants(e.target.value)} required InputProps={{ inputProps: { min: 1 } }} sx={styles.smallInput} />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{
-            padding: '8px 20px',
-            fontSize: '14px',
-            backgroundColor: '#E80080',
-            color: '#fff',
-            display: 'block',
-            margin: '20px auto',
-            '&:hover': { backgroundColor: '#d40070' },
-          }}
-        >
+        <Button type="submit" variant="contained" color="primary" sx={styles.submitButton}>
           등록
         </Button>
       </Box>
@@ -207,7 +183,7 @@ const styles = {
   searchBox: {
     display: 'flex',
     gap: '10px',
-    mb: 1, 
+    mb: 1,
   },
   keywordBox: {
     display: 'flex',
@@ -230,4 +206,15 @@ const styles = {
     '&:hover': { backgroundColor: '#d40070', color: '#fff' },
     marginTop: '15px',
   },
+  submitButton: {
+    padding: '8px 20px',
+    fontSize: '14px',
+    backgroundColor: '#E80080',
+    color: '#fff',
+    display: 'block',
+    margin: '20px auto',
+    '&:hover': { backgroundColor: '#d40070' },
+  },
 };
+
+export default Auth(NewPostPagemok, true);

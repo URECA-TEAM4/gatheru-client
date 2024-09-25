@@ -9,15 +9,15 @@ function MyPage() {
   const [myPosts, setMyPosts] = useState([]);
   const [value, setValue] = useState(0);
   const [sorting, setSorting] = useState('최신순');
-  const [gatheringType, setGatheringType] = useState([]);
+  const [gatheringType, setGatheringType] = useState([]); 
   const navigate = useNavigate();
 
   // 서버에서 내가 작성한 글 목록을 가져오는 함수
   useEffect(() => {
-    axios.get("/api/posts/myposts")
+    axios.get("/api/posts/myposts") // 로그인된 사용자의 글을 가져옴
       .then(response => {
         console.log(response.data); // 서버에서 받은 데이터 확인
-        const filteredPosts = response.data.filter(post => gatheringType.includes(post.type));
+        const filteredPosts = response.data.filter(post => gatheringType.includes(post.type)); // 카테고리 필터링
         console.log(filteredPosts); // 필터링된 데이터 확인
         setMyPosts(filteredPosts); // 필터링된 데이터 설정
       })
