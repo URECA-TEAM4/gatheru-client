@@ -10,7 +10,7 @@ import {
 import axios from 'axios'
 import SingleComment from './SingleComment'
 
-function Comment(props) {
+function CommentSection(props) {
   const [userName, setUserName] = useState('')
   const [commentValue, setCommentValue] = useState('')
   const user = useSelector(state => state.user)
@@ -83,4 +83,4 @@ function Comment(props) {
   )
 }
 
-export default Comment
+export default CommentSection

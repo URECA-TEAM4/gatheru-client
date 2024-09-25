@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 import { Container, Box, Typography, Divider, Button } from '@mui/material'
-import { secondary_color } from '../../constants/colors'
 import UserIcon from '../../constants/userIcon'
 import Auth from '../../../hoc/auth'
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
-import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
+
+import DeadlineBadge from './DeadlineBadge'
+import JoinMogakoButton from './JoinMogakoButton'
+import JoinStudyContestButton from './JoinStudyContestButton'
+import ContentSection from './ContentSection'
+import CommentSection from './CommentSection'
 
 function DetailPage() {
   const { type, postId } = useParams()
+  const user = useSelector(state => state.user)
+  const [userIsWriter, setUserIsWriter] = useState(false)
+
   const [post, setPost] = useState({})
   const [datetime, setDateTime] = useState()
   const [pastDeadline, setPastDeadline] = useState(false)
@@ -22,6 +29,12 @@ function DetailPage() {
   const checkDeadline = async () => {
     if (Date.now() > new Date(datetime)) setPastDeadline(true)
   }
+
+  useEffect(() => {
+    if (user.userData && user.userData.isAuth !== undefined) {
+      if (user.userData.name == writer) setUserIsWriter(true)
+    }
+  }, [user.userData, writer])
 
   useEffect(() => {
     type == 'mogako'
@@ -71,37 +84,7 @@ function DetailPage() {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 3 }}>
-      {pastDeadline ? (
-        <Box
-          sx={{
-            borderRadius: 5,
-            bgcolor: '#EADDFF',
-            color: 'gray',
-            fontWeight: 'bold',
-            height: '30px',
-            width: 'fit-content',
-            py: 0.5,
-            px: 1.3,
-          }}
-        >
-          모집 마감
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            borderRadius: 5,
-            bgcolor: secondary_color,
-            color: 'white',
-            fontWeight: 'bold',
-            height: '30px',
-            width: 'fit-content',
-            py: 0.5,
-            px: 1.3,
-          }}
-        >
-          모집중
-        </Box>
-      )}
+      <DeadlineBadge pastDeadline={pastDeadline} />
 
       <Box
         sx={{
@@ -111,21 +94,13 @@ function DetailPage() {
           my: 1,
         }}
       >
-        {' '}
         <Typography gutterBottom variant="h4" component="div" sx={{ my: 1 }}>
           {post.title}
         </Typography>
-        <Button
-          variant="contained"
-          sx={{
-            borderRadius: 2,
-            backgroundColor: secondary_color,
-            fontWeight: 700,
-            ml: 2,
-          }}
-        >
-          신청하기
-        </Button>
+
+        {post.type == 'mogako' && (
+          <JoinMogakoButton userIsWriter={userIsWriter} />
+        )}
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
@@ -139,52 +114,22 @@ function DetailPage() {
         </Typography>
       </Box>
 
-      {post.type == 'mogako' ? (
-        <>
-          <Box sx={{ display: 'flex', alignItems: 'center', mt: 3, mb: 1 }}>
-            <LocationOnOutlinedIcon />{' '}
-            <Typography sx={{ ml: 1 }}>{post.location}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <CalendarMonthOutlinedIcon />{' '}
-            <Typography sx={{ ml: 1 }}>
-              {new Date(post.datetime).toLocaleString([], {
-                year: 'numeric',
-                month: 'numeric',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </Typography>
-          </Box>
-        </>
-      ) : (
-        <>
-          <Typography sx={{ my: 1 }}>방식: {post.method}</Typography>
-          <Typography>
-            마감:{' '}
-            {new Date(datetime).toLocaleString([], {
-              year: 'numeric',
-              month: 'numeric',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </Typography>
-        </>
-      )}
+      <ContentSection
+        type={post.type}
+        location={post.location}
+        datetime={post.datetime}
+        method={post.method}
+        studyContestDateTime={datetime}
+        registeredNum={registeredNum}
+        maximumNum={maximumNum}
+        content={post.content}
+      />
 
-      <Typography sx={{ my: 1 }}>
-        모집현황: {registeredNum} / {maximumNum}
-      </Typography>
-
-      <Typography variant="body1" sx={{ my: 3, lineHeight: 2 }}>
-        {post.content}
-      </Typography>
+      {post.type != 'mogako' && <JoinStudyContestButton />}
 
       <Divider></Divider>
 
-      {/* <Comment postId={post._id} /> */}
+      <CommentSection postId={post._id} />
     </Container>
   )
 }
