@@ -127,7 +127,7 @@ function DetailPage() {
 
       {post.type != 'mogako' && <JoinStudyContestButton />}
 
-      <Divider></Divider>
+      <Divider sx={{ my: 3 }}></Divider>
 
       <CommentSection postId={post._id} />
     </Container>

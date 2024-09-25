@@ -1,71 +1,62 @@
 import React from 'react'
-import { Typography } from '@mui/material'
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
-import MuiAccordion from '@mui/material/Accordion'
-import MuiAccordionSummary from '@mui/material/AccordionSummary'
-import MuiAccordionDetails from '@mui/material/AccordionDetails'
-import { styled } from '@mui/material/styles'
+import {
+  TextField,
+  Button,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { secondary_color } from '../../constants/colors'
 
-const Accordion = styled(props => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  '&:not(:last-child)': {
-    borderBottom: 0,
-  },
-  '&::before': {
-    display: 'none',
-  },
-}))
-
-const AccordionSummary = styled(props => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor: 'rgba(0, 0, 0, .03)',
-  flexDirection: 'row-reverse',
-  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-    transform: 'rotate(90deg)',
-  },
-  '& .MuiAccordionSummary-content': {
-    marginLeft: theme.spacing(1),
-  },
-  ...theme.applyStyles('dark', {
-    backgroundColor: 'rgba(255, 255, 255, .05)',
-  }),
-}))
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: '1px solid rgba(0, 0, 0, .125)',
-}))
-
 function JoinStudyContestButton(props) {
-  const [expanded, setExpanded] = React.useState('panel1')
-
-  const handleChange = panel => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false)
-  }
+  const handleJoinStudyContest = () => {}
 
   return (
     <>
       <Accordion
-        expanded={expanded === 'panel1'}
-        onChange={handleChange('panel1')}
+        sx={{
+          backgroundColor: '#FFF1F9',
+          color: secondary_color,
+          boxShadow: 'none',
+          '&::before': {
+            display: 'none',
+          },
+        }}
       >
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon sx={{ color: secondary_color }} />}
+          aria-controls="panel1-content"
+          id="panel1-header"
+        >
           <Typography>신청하기</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <TextField
+            fullWidth
+            autoFocus
+            multiline
+            id="outlined-textarea"
+            label="신청서 작성"
+            minRows={4}
+            color="secondary"
+          />
+          <Button
+            variant="contained"
+            sx={{
+              borderRadius: 2,
+              backgroundColor: secondary_color,
+              fontWeight: 700,
+              float: 'right',
+              my: 3,
+            }}
+            onClick={() => {
+              handleJoinStudyContest()
+            }}
+          >
+            완료
+          </Button>
         </AccordionDetails>
       </Accordion>
     </>
