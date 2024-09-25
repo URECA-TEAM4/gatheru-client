@@ -2,11 +2,30 @@ import React, { useState } from 'react'
 import { Button } from '@mui/material'
 import { Done } from '@mui/icons-material'
 import { secondary_color } from '../../constants/colors'
+import { useDispatch } from 'react-redux'
+import { joinMogakoPost } from '../../_actions/post_action'
+import { useSelector } from 'react-redux'
 
 function JoinMogakoButton(props) {
   const [applied, setApplied] = useState(false)
 
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
+
   const handleJoinMogako = () => {
+    const body = {
+      userId: user.userData._id,
+      postId: props.postId,
+    }
+
+    dispatch(joinMogakoPost(body)).then(res => {
+      if (res.payload.success) {
+        alert("신청이 완료 되었습니다.")
+      } else {
+        alert('신청에 실패하셨습니다.')
+      }
+    })
+
     setApplied(true)
   }
 
