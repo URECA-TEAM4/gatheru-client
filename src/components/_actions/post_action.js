@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { JOIN_USER } from './types'
+import { JOIN_USER, UNJOIN_USER } from './types'
 
 export function addMogakoPost(dataToSubmit) {
   const request = axios
@@ -58,6 +58,28 @@ export function joinMogakoPost(dataToSubmit) {
     })
   return {
     type: JOIN_USER,
+    payload: request,
+  }
+}
+
+export function unJoinMogakoPost(dataToSubmit) {
+  const request = axios
+    .post('/api/mogakos/unJoin', dataToSubmit)
+    .then(response => response.data)
+    .catch(err => {
+      if (err.response) {
+        // 서버가 응답을 반환한 경우
+        console.error('Error response:', err.response.data)
+      } else if (err.request) {
+        // 요청이 만들어졌지만 응답을 받지 못한 경우
+        console.error('Error request:', err.request)
+      } else {
+        // 요청을 설정하는 중에 발생한 문제
+        console.error('Error message:', err.message)
+      }
+    })
+  return {
+    type: UNJOIN_USER,
     payload: request,
   }
 }

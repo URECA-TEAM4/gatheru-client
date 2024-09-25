@@ -3,7 +3,7 @@ import { Button } from '@mui/material'
 import { Done } from '@mui/icons-material'
 import { secondary_color } from '../../constants/colors'
 import { useDispatch } from 'react-redux'
-import { joinMogakoPost } from '../../_actions/post_action'
+import { joinMogakoPost, unJoinMogakoPost } from '../../_actions/post_action'
 import { useSelector } from 'react-redux'
 
 function JoinMogakoButton(props) {
@@ -27,6 +27,23 @@ function JoinMogakoButton(props) {
     })
 
     setApplied(true)
+  }
+
+  const handleUnJoinMogako = () => {
+    const body = {
+      userId: user.userData._id,
+      postId: props.postId,
+    }
+
+    dispatch(unJoinMogakoPost(body)).then(res => {
+      if (res.payload.success) {
+        alert("신청이 취소되었습니다.")
+      } else {
+        alert('신청에 취소에 실패하셨습니다.')
+      }
+    })
+
+    setApplied(false)
   }
 
   return (
@@ -57,7 +74,7 @@ function JoinMogakoButton(props) {
           }}
           endIcon={<Done />}
           onClick={() => {
-            setApplied(false)
+            handleUnJoinMogako()
           }}
         >
           신청완료
