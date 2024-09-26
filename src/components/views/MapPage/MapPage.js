@@ -52,12 +52,12 @@ function MapPage() {
     const date = new Date(datetime)
     const days = ['일', '월', '화', '수', '목', '금', '토']
     const day = days[date.getDay()]
-    const month = date.getMonth() + 1 // 월은 0부터 시작하므로 1을 더해줍니다.
+    const month = date.getMonth() + 1 // 월은 0부터 시작하므로 1을 더해준다.
     const dayOfMonth = date.getDate()
     const hours = date.getHours().toString().padStart(2, '0') // 2자리로 맞추기
     const minutes = date.getMinutes().toString().padStart(2, '0') // 2자리로 맞추기
 
-    return `${month}/${dayOfMonth}(${day}) ${hours}:${minutes}`
+    return `${month}/${dayOfMonth}(${day}) ${hours}:${minutes}` // 10/10(목) 17:30
   }
   return (
     <MapContainer>
