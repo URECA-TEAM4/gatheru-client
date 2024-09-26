@@ -37,10 +37,10 @@ function JoinMogakoButton(props) {
           receiver: props.writer,
           postId: props.postId,
           postTitle: props.title,
-          message: `${user.userData.name}님이 게시물에 신청하셨습니다`,
+          message: `${user.userData.name}님이 게시물에 신청하였습니다`,
         })
       } else {
-        alert('신청에 실패하셨습니다.')
+        alert('신청에 실패하였습니다.')
       }
     })
 
