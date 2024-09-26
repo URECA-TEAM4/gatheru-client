@@ -12,7 +12,7 @@ export default function NewPostTab() {
   };
 
   return (
-    <Box sx={{ width: '800px', margin: '0 auto', padding: '20px' }}>
+    <Box sx={{ width: '800px', margin: '0 auto', padding: '60px' }}>
       <Typography variant="h4" gutterBottom>
         등록 페이지
       </Typography>
