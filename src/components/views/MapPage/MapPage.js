@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react' // useState와 useEffect 추가
 import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk'
 import { mute_navy_color } from '../../constants/colors'
 import styled from 'styled-components'
@@ -33,6 +33,17 @@ const MapContainer = styled.div`
 `
 
 function MapPage() {
+  const [markers, setMarkers] = useState([]) // 마커 상태 추가
+
+  useEffect(() => {
+    const fetchMarkers = async () => {
+      const response = await fetch('/api/mogakos/get')
+      const data = await response.json()
+      setMarkers(data)
+    }
+    fetchMarkers()
+  }, [])
+
   const markerPosition = {
     lat: 37.5563012,
     lng: 126.9372557,
@@ -42,14 +53,28 @@ function MapPage() {
     <MapContainer>
       <MapTitle>모각코 위치를 지도로 확인해보세요! </MapTitle>
       <Map center={markerPosition} style={{ width: '80%', height: '800px' }}>
-        <MapMarker
-          position={markerPosition}
-          onClick={() => alert('해당 게시글로 이동!')}
-          anchor="bottom"
-        />
-        <CustomOverlayMap position={markerPosition} yAnchor={1}>
-          <CustomOverlay1Style>9/28(토) 7:00</CustomOverlay1Style>
-        </CustomOverlayMap>
+        {markers.map(
+          (
+            marker,
+            index, // 마커 표시
+          ) => (
+            <MapMarker
+              key={index}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              onClick={() => alert('해당 게시글로 이동!')}
+              anchor="bottom"
+            />
+          ),
+        )}
+        {markers.map((marker, index) => (
+          <CustomOverlayMap
+            key={index}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            yAnchor={1}
+          >
+            <CustomOverlay1Style>{marker.datetime}</CustomOverlay1Style>
+          </CustomOverlayMap>
+        ))}
       </Map>
     </MapContainer>
   )
