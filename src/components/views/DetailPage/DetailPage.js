@@ -7,9 +7,9 @@ import UserIcon from '../../constants/userIcon'
 import Auth from '../../../hoc/auth'
 
 import DeadlineBadge from './DeadlineBadge'
+import ContentSection from './ContentSection'
 import JoinMogakoButton from './JoinMogakoButton'
 import JoinStudyContestButton from './JoinStudyContestButton'
-import ContentSection from './ContentSection'
 import CommentSection from './CommentSection'
 
 function DetailPage() {
@@ -86,12 +86,10 @@ function DetailPage() {
 
   // 업데이트 된 모집 현황 가져오기
   const fetchRegisteredNum = async () => {
-    console.log(post._id)
     try {
-      const response = await axios.get(`/api/mogakos/registeredNum/${postId}`); // postId를 URL 파라미터로 전달
+      const response = await axios.get(`/api/mogakos/registeredNum/${postId}`) // postId를 URL 파라미터로 전달
 
       setRegisteredNum(response.data.registeredNum)
-      console.log(registeredNum)
     } catch (error) {
       console.error('Error fetching registered number:', error)
     }
@@ -117,8 +115,13 @@ function DetailPage() {
           {post.title}
         </Typography>
 
-        {post.type == 'mogako' && (
-          <JoinMogakoButton userIsWriter={userIsWriter} postId={postId} />
+        {!postClosed && post.type == 'mogako' && (
+          <JoinMogakoButton
+            userIsWriter={userIsWriter}
+            postId={post._id} // postId를 사용
+            registeredNum={registeredNum}
+            fetchRegisteredNum={fetchRegisteredNum} // fetchRegisteredNum 함수 전달
+          />
         )}
       </Box>
 
@@ -139,10 +142,10 @@ function DetailPage() {
         datetime={post.datetime}
         method={post.method}
         studyContestDateTime={datetime}
+        fetchRegisteredNum={fetchRegisteredNum}
         registeredNum={registeredNum}
         maximumNum={maximumNum}
         content={post.content}
-        fetchRegisteredNum={fetchRegisteredNum}
       />
 
       {!postClosed && post.type != 'mogako' && (
