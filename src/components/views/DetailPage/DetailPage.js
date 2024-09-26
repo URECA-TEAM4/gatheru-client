@@ -87,13 +87,16 @@ function DetailPage() {
   // 업데이트 된 모집 현황 가져오기
   const fetchRegisteredNum = async () => {
     try {
-      const response = await axios.get(`/api/mogakos/registeredNum/${postId}`) // postId를 URL 파라미터로 전달
-
-      setRegisteredNum(response.data.registeredNum)
+      const endpoint = post.type === 'mogako' 
+        ? `/api/mogakos/registeredNum/${postId}` // post.type이 'mogako'일 때
+        : `/api/studyContests/registeredNum/${postId}`; // 그 외의 경우
+  
+      const response = await axios.get(endpoint); // 동적으로 URL 설정
+      setRegisteredNum(response.data.registeredNum);
     } catch (error) {
-      console.error('Error fetching registered number:', error)
+      console.error('Error fetching registered number:', error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchRegisteredNum() // 컴포넌트가 마운트될 때 호출
@@ -118,9 +121,9 @@ function DetailPage() {
         {!postClosed && post.type == 'mogako' && (
           <JoinMogakoButton
             userIsWriter={userIsWriter}
-            postId={post._id} // postId를 사용
+            postId={post._id}
             registeredNum={registeredNum}
-            fetchRegisteredNum={fetchRegisteredNum} // fetchRegisteredNum 함수 전달
+            fetchRegisteredNum={fetchRegisteredNum}
           />
         )}
       </Box>
@@ -149,7 +152,12 @@ function DetailPage() {
       />
 
       {!postClosed && post.type != 'mogako' && (
-        <JoinStudyContestButton userIsWriter={userIsWriter} />
+        <JoinStudyContestButton
+          userIsWriter={userIsWriter}
+          postId={post._id}
+          registeredNum={registeredNum}
+          fetchRegisteredNum={fetchRegisteredNum}
+        />
       )}
 
       <Divider sx={{ my: 3 }}></Divider>

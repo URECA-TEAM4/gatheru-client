@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '@mui/material'
 import { Done } from '@mui/icons-material'
 import { secondary_color } from '../../constants/colors'
-import { useDispatch } from 'react-redux'
 import { joinMogakoPost, unJoinMogakoPost } from '../../_actions/post_action'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 function JoinMogakoButton(props) {
   const [applied, setApplied] = useState(() => {
