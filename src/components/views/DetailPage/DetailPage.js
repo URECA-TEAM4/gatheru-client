@@ -88,9 +88,9 @@ function DetailPage() {
   const fetchRegisteredNum = async () => {
     try {
       const endpoint =
-        post.type === 'mogako'
-          ? `/api/mogakos/registeredNum/${postId}` // post.type이 'mogako'일 때
-          : `/api/studyContests/registeredNum/${postId}` // 그 외의 경우
+        type == 'mogako'
+          ? `/api/mogakos/registeredNum/${postId}`
+          : `/api/studyContests/registeredNum/${postId}`
 
       const response = await axios.get(endpoint) // 동적으로 URL 설정
       setRegisteredNum(response.data.registeredNum)
