@@ -22,8 +22,6 @@ function Post(props) {
 
     if (isPastDeadline || isFull) {
       setPostClosed(true); // 마감일이 지났거나 등록 인원이 꽉 찼으면 모집 마감 상태로 설정
-    } else {
-      setPostClosed(false); // 그렇지 않으면 모집중 상태로 설정
     }
   }, [props.datetime, props.registeredNum, props.maximumNum]);
 

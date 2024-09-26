@@ -11,8 +11,10 @@ import {
   FormLabel,
   Select,
   MenuItem,
-  Grid,
+  Box, 
+  Typography,
 } from '@mui/material'
+import Grid from '@mui/material/Grid2'; // Grid2 import 추가
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Auth from '../../../hoc/auth'
@@ -65,7 +67,9 @@ function NewPostPage() {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
-      <h2>모집 글 작성 (스터디 / 공모 및 대회)</h2>
+      <Box mb={2}>
+        <Typography variant="h4" gutterBottom sx={{ textAlign: 'left', marginBottom: '20px', fontWeight: 'bold', fontSize: '24px' }}>모집 글 작성 (스터디 / 공모 및 대회)</Typography>
+      </Box>
       <form onSubmit={handleSubmit} style={styles.form}>
         <TextField
           label="제목"
@@ -91,7 +95,7 @@ function NewPostPage() {
 
         <Grid container spacing={2} sx={{ mb: 3 }}>
           <Grid item xs={6}>
-            {/* <TextField
+            <TextField
               label="모집 마감일"
               type="date"
               fullWidth
@@ -113,7 +117,7 @@ function NewPostPage() {
             </LocalizationProvider>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid xs={6}>
             <TextField
               label="모집 인원 수"
               type="number"
@@ -163,14 +167,17 @@ function NewPostPage() {
         <Button
           type="submit"
           variant="contained"
-          fullWidth
+          fullWidth={false}
           sx={{
-            padding: '10px 20px',
-            backgroundColor: '#38406B',
-            '&:hover': {
-              backgroundColor: '#283593',
-            },
+            padding: '8px 20px',
+            fontsize: '14px',
+            backgroundColor: '#E80080',
             color: 'white',
+            display: 'block',
+            margin: '20px auto',
+            '&:hover': {
+              backgroundColor: '#E80080',
+            },          
           }}
         >
           등록
