@@ -7,9 +7,9 @@ import UserIcon from '../../constants/userIcon'
 import Auth from '../../../hoc/auth'
 
 import DeadlineBadge from './DeadlineBadge'
+import ContentSection from './ContentSection'
 import JoinMogakoButton from './JoinMogakoButton'
 import JoinStudyContestButton from './JoinStudyContestButton'
-import ContentSection from './ContentSection'
 import CommentSection from './CommentSection'
 
 function DetailPage() {
@@ -84,6 +84,25 @@ function DetailPage() {
     else setPostClosed(false)
   }, [pastDeadline, registeredNum, maximumNum])
 
+  // 업데이트 된 모집 현황 가져오기
+  const fetchRegisteredNum = async () => {
+    try {
+      const endpoint =
+        type == 'mogako'
+          ? `/api/mogakos/registeredNum/${postId}`
+          : `/api/studyContests/registeredNum/${postId}`
+
+      const response = await axios.get(endpoint) // 동적으로 URL 설정
+      setRegisteredNum(response.data.registeredNum)
+    } catch (error) {
+      console.error('Error fetching registered number:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchRegisteredNum() // 컴포넌트가 마운트될 때 호출
+  }, [post._id])
+
   return (
     <Container maxWidth="lg" sx={{ mt: 3 }}>
       <DeadlineBadge postClosed={postClosed} />
@@ -106,6 +125,8 @@ function DetailPage() {
             postId={postId}
             writer={post.writer}
             title={post.title}
+            registeredNum={registeredNum}
+            fetchRegisteredNum={fetchRegisteredNum}
           />
         )}
       </Box>
@@ -127,18 +148,24 @@ function DetailPage() {
         datetime={post.datetime}
         method={post.method}
         studyContestDateTime={datetime}
+        fetchRegisteredNum={fetchRegisteredNum}
         registeredNum={registeredNum}
         maximumNum={maximumNum}
         content={post.content}
       />
 
-      {!postClosed && post.type != 'mogako' && (
-        <JoinStudyContestButton userIsWriter={userIsWriter} />
+      {!postClosed && post.type !== 'mogako' && (
+        <JoinStudyContestButton
+          userIsWriter={userIsWriter}
+          postId={post._id}
+          registeredNum={registeredNum}
+          fetchRegisteredNum={fetchRegisteredNum}
+        />
       )}
 
       <Divider sx={{ my: 3 }}></Divider>
 
-      <CommentSection postId={post._id} />
+      {/* <CommentSection postId={post._id} /> */}
     </Container>
   )
 }
