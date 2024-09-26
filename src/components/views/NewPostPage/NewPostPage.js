@@ -95,7 +95,7 @@ function NewPostPage() {
 
         <Grid container spacing={2} sx={{ mb: 3 }}>
           <Grid item xs={6}>
-            <TextField
+            {/* <TextField
               label="모집 마감일"
               type="date"
               fullWidth
@@ -105,7 +105,7 @@ function NewPostPage() {
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
               required
-            /> */}
+            />  */}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateTimePicker']}>
                 <DateTimePicker
