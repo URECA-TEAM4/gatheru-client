@@ -3,6 +3,7 @@ import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk'
 import { mute_navy_color } from '../../constants/colors'
 import styled from 'styled-components'
 import Auth from '../../../hoc/auth'
+import { useNavigate } from 'react-router-dom'
 
 const CustomOverlay1Style = styled.div`
   padding: 5px 10px;
@@ -33,6 +34,7 @@ const MapContainer = styled.div`
 `
 
 function MapPage() {
+  const navigate = useNavigate()
   const [markers, setMarkers] = useState([]) // 마커 상태 추가
 
   useEffect(() => {
@@ -71,7 +73,9 @@ function MapPage() {
             <MapMarker
               key={index}
               position={{ lat: marker.lat, lng: marker.lng }}
-              onClick={() => alert('해당 게시글로 이동!')}
+              onClick={() => {
+                navigate(`/detail/${marker.type}/${marker._id}`)
+              }}
               anchor="bottom"
             />
           ),
