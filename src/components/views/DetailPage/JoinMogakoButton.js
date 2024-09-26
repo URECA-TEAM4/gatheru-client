@@ -4,22 +4,22 @@ import { Done } from '@mui/icons-material'
 import { secondary_color } from '../../constants/colors'
 import { joinMogakoPost, unJoinMogakoPost } from '../../_actions/post_action'
 import { useDispatch, useSelector } from 'react-redux'
+import { notify } from '../../_actions/notification_action'
 
 function JoinMogakoButton(props) {
   const [applied, setApplied] = useState(() => {
     // 로컬스토리지에서 초기값 가져오기
-    const storedApplied = localStorage.getItem(`applied_${props.postId}`);
-    return storedApplied === 'true'; // 'true' 문자열을 boolean으로 변환
-  });
+    const storedApplied = localStorage.getItem(`applied_${props.postId}`)
+    return storedApplied === 'true' // 'true' 문자열을 boolean으로 변환
+  })
 
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
 
   useEffect(() => {
     // applied 상태가 변경될 때마다 로컬스토리지에 저장
-    localStorage.setItem(`applied_${props.postId}`, applied);
-  }, [applied, props.postId]);
-
+    localStorage.setItem(`applied_${props.postId}`, applied)
+  }, [applied, props.postId])
 
   const handleJoinMogako = () => {
     const body = {
@@ -29,11 +29,18 @@ function JoinMogakoButton(props) {
 
     dispatch(joinMogakoPost(body)).then(res => {
       if (res.payload.success) {
-        alert("신청이 완료 되었습니다.")
-        props.fetchRegisteredNum(); // 신청 후 모집현황 업데이트
-        setApplied(true); // 신청 후 상태 업데이트
+        alert('신청이 완료 되었습니다.')
+        props.fetchRegisteredNum() // 신청 후 모집현황 업데이트
+        setApplied(true) // 신청 후 상태 업데이트
+        notify({
+          sender: user.userData.name,
+          receiver: props.writer,
+          postId: props.postId,
+          postTitle: props.title,
+          message: `${user.userData.name}님이 게시물에 신청하였습니다`,
+        })
       } else {
-        alert('신청에 실패하셨습니다.')
+        alert('신청에 실패하였습니다.')
       }
     })
 
@@ -48,9 +55,16 @@ function JoinMogakoButton(props) {
 
     dispatch(unJoinMogakoPost(body)).then(res => {
       if (res.payload.success) {
-        alert("신청이 취소되었습니다.")
-        props.fetchRegisteredNum(); // 신청 취소 후 모집현황 업데이트
-        setApplied(false); // 신청 취소 후 상태 업데이트
+        alert('신청이 취소되었습니다.')
+        props.fetchRegisteredNum() // 신청 취소 후 모집현황 업데이트
+        setApplied(false) // 신청 취소 후 상태 업데이트
+        notify({
+          sender: user.userData.name,
+          receiver: props.writer,
+          postId: props.postId,
+          postTitle: props.title,
+          message: '게시물 신청자 명단이 변경되었습니다',
+        })
       } else {
         alert('신청에 취소에 실패하셨습니다.')
       }

@@ -122,7 +122,9 @@ function DetailPage() {
         {!postClosed && post.type == 'mogako' && (
           <JoinMogakoButton
             userIsWriter={userIsWriter}
-            postId={post._id}
+            postId={postId}
+            writer={post.writer}
+            title={post.title}
             registeredNum={registeredNum}
             fetchRegisteredNum={fetchRegisteredNum}
           />
@@ -155,7 +157,9 @@ function DetailPage() {
       {!postClosed && post.type !== 'mogako' && (
         <JoinStudyContestButton
           userIsWriter={userIsWriter}
-          postId={post._id}
+          postId={postId}
+          writer={post.writer}
+          title={post.title}
           registeredNum={registeredNum}
           fetchRegisteredNum={fetchRegisteredNum}
         />

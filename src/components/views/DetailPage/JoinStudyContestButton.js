@@ -11,6 +11,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { secondary_color } from '../../constants/colors'
 import { useDispatch, useSelector } from 'react-redux'
 import { joinStudyPost, unJoinStudyPost } from '../../_actions/post_action'
+import { notify } from '../../_actions/notification_action'
 
 function JoinStudyContestButton(props) {
   const [comment, setComment] = useState('')
@@ -44,6 +45,13 @@ function JoinStudyContestButton(props) {
         alert('신청이 완료 되었습니다.')
         props.fetchRegisteredNum() // 신청 후 모집현황 업데이트
         setApplied(true) // 신청 후 상태 업데이트
+        notify({
+          sender: user.userData.name,
+          receiver: props.writer,
+          postId: props.postId,
+          postTitle: props.title,
+          message: `${user.userData.name}님이 게시물에 신청하셨습니다`,
+        })
       } else {
         alert('신청에 실패하셨습니다.')
       }
@@ -63,6 +71,13 @@ function JoinStudyContestButton(props) {
         alert('신청이 취소되었습니다.')
         props.fetchRegisteredNum() // 신청 취소 후 모집현황 업데이트
         setApplied(false) // 신청 취소 후 상태 업데이트
+        notify({
+          sender: user.userData.name,
+          receiver: props.writer,
+          postId: props.postId,
+          postTitle: props.title,
+          message: '게시물 신청자 명단이 변경되었습니다',
+        })
       } else {
         alert('신청에 취소에 실패하셨습니다.')
       }

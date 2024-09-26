@@ -16,8 +16,10 @@ import {
   AppBar,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import AccountCircle from '@mui/icons-material/AccountCircle'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
+import Notification from './Notification'
 
 const pages = ['모집글', '캘린더', '모각코 맵']
 
@@ -25,6 +27,7 @@ export default function Navbar() {
   const navigate = useNavigate()
   const [isAuth, setIsAuth] = useState(false)
   const user = useSelector(state => state.user)
+
   useEffect(() => {
     if (user.userData && user.userData.isAuth !== undefined) {
       setIsAuth(user.userData.isAuth)
@@ -34,25 +37,11 @@ export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null)
 
-  const handleOpenNavMenu = event => {
-    setAnchorElNav(event.currentTarget)
-  }
-
-  const handleMenu = event => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
-  const handleLogoClick = () => {
-    navigate('/')
-  }
+  const handleOpenNavMenu = e => setAnchorElNav(e.currentTarget)
+  const handleMenu = e => setAnchorEl(e.currentTarget)
+  const handleCloseNavMenu = () => setAnchorElNav(null)
+  const handleClose = () => setAnchorEl(null)
+  const handleLogoClick = () => navigate('/')
 
   const logoutClick = () => {
     setAnchorEl(null)
@@ -171,42 +160,35 @@ export default function Navbar() {
                   >
                     {user.userData.name} 님
                   </Typography>
-                  <svg
+                  <IconButton
+                    aria-label="account of current user"
+                    aria-controls="primary-search-account-menu"
+                    aria-haspopup="true"
+                    color="primary"
                     onClick={handleMenu}
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="30"
-                    height="30"
-                    viewBox="0 0 30 30"
-                    fill="none"
                   >
-                    <g clipPath="url(#clip0_48_2114)">
-                      <path
-                        d="M21.375 11.25C21.375 12.7418 20.7429 14.1726 19.6176 15.2275C18.4924 16.2824 16.9663 16.875 15.375 16.875C13.7837 16.875 12.2576 16.2824 11.1324 15.2275C10.0071 14.1726 9.375 12.7418 9.375 11.25C9.375 9.75816 10.0071 8.32742 11.1324 7.27252C12.2576 6.21763 13.7837 5.625 15.375 5.625C16.9663 5.625 18.4924 6.21763 19.6176 7.27252C20.7429 8.32742 21.375 9.75816 21.375 11.25Z"
-                        fill="#4F2F92"
-                      />
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M0 15C0 11.0218 1.58035 7.20644 4.3934 4.3934C7.20644 1.58035 11.0218 0 15 0C18.9782 0 22.7936 1.58035 25.6066 4.3934C28.4196 7.20644 30 11.0218 30 15C30 18.9782 28.4196 22.7936 25.6066 25.6066C22.7936 28.4196 18.9782 30 15 30C11.0218 30 7.20644 28.4196 4.3934 25.6066C1.58035 22.7936 0 18.9782 0 15ZM15 1.875C12.5283 1.87513 10.1069 2.57318 8.01451 3.8888C5.92207 5.20442 4.24366 7.08414 3.17243 9.31161C2.10121 11.5391 1.68072 14.0238 1.95937 16.4797C2.23802 18.9356 3.20447 21.2629 4.7475 23.1938C6.07875 21.0487 9.00938 18.75 15 18.75C20.9906 18.75 23.9194 21.0469 25.2525 23.1938C26.7955 21.2629 27.762 18.9356 28.0406 16.4797C28.3193 14.0238 27.8988 11.5391 26.8276 9.31161C25.7563 7.08414 24.0779 5.20442 21.9855 3.8888C19.8931 2.57318 17.4717 1.87513 15 1.875Z"
-                        fill="#4F2F92"
-                      />
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_48_2114">
-                        <rect width="30" height="30" fill="white" />
-                      </clipPath>
-                    </defs>
-                  </svg>
+                    <AccountCircle sx={{ fontSize: 30 }} />
+                  </IconButton>
                   <Menu
                     id="menu-appbar"
                     anchorEl={anchorEl}
                     keepMounted
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
                   >
                     <MenuItem onClick={handleClose}>내가 작성한 글</MenuItem>
                     <MenuItem onClick={logoutClick}>로그아웃</MenuItem>
                   </Menu>
+
+                  <Notification userId={user.userData._id} />
                 </Box>
               </Box>
             </>
