@@ -151,7 +151,7 @@ function DetailPage() {
         content={post.content}
       />
 
-      {!postClosed && post.type != 'mogako' && (
+      {!postClosed && post.type !== 'mogako' && (
         <JoinStudyContestButton
           userIsWriter={userIsWriter}
           postId={post._id}
