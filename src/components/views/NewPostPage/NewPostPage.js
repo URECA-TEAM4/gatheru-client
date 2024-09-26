@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Select, MenuItem, InputLabel } from '@mui/material';
+import { TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Select, MenuItem, InputLabel, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Auth from "../../../hoc/auth"
+import { Typography } from '@mui/material';
 
-function NewPost() {
+function NewPostPage() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [deadline, setDeadline] = useState('');
@@ -32,7 +33,7 @@ function NewPost() {
 
     try {
       // 서버로 POST 요청을 보냅니다.
-      const response = await axios.post('/api/studycontests/add', registrationData);
+      const response = await axios.post('/api/studyContests/add', registrationData);
       console.log('등록 성공:', response.data);
 
       // 성공적으로 등록하면 메인 페이지로 이동합니다.
@@ -43,8 +44,10 @@ function NewPost() {
   };
 
   return (
-    <div>
-      <h2>모집 글 작성 ( 스터디 / 공모 및 대회 )</h2>
+    <div style={styles.container}>
+      <Typography variant="h7" component="h2">
+      모집 글 작성 ( 스터디 / 공모 및 대회 )
+      </Typography>
       <form onSubmit={handleSubmit} style={styles.form}>
         
         <TextField
@@ -162,4 +165,4 @@ const styles = {
   },
 };
 
-export default Auth(NewPost, true);
+export default Auth(NewPostPage, true);
