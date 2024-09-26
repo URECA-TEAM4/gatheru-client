@@ -6,14 +6,18 @@ function PostList(props) {
   const [posts, setPosts] = useState([])
   let endpoints = ['/api/mogakos/get', '/api/studyContests/get']
 
-  const pastDeadline = post => {
+  const postClosed = post => {
     let datetime = post.type == 'mogako' ? post.datetime : post.deadline
-    return Date.now() > new Date(datetime)
+    return (
+      Date.now() > new Date(datetime) || post.registeredNum == post.maximumNum
+    )
   }
 
-  const beforeDeadline = post => {
+  const postOpen = post => {
     let datetime = post.type == 'mogako' ? post.datetime : post.deadline
-    return Date.now() < new Date(datetime)
+    return (
+      Date.now() < new Date(datetime) && post.registeredNum < post.maximumNum
+    )
   }
   useEffect(() => {
     axios
@@ -30,12 +34,12 @@ function PostList(props) {
             (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
           )
 
-        if (props.pastDeadline == 'all') {
+        if (props.postClosed == 'all') {
           setPosts(combinedPosts)
-        } else if (props.pastDeadline) {
-          setPosts(combinedPosts.filter(pastDeadline))
+        } else if (props.postClosed) {
+          setPosts(combinedPosts.filter(postClosed))
         } else {
-          setPosts(combinedPosts.filter(beforeDeadline))
+          setPosts(combinedPosts.filter(postOpen))
         }
       })
 
@@ -56,6 +60,10 @@ function PostList(props) {
               title={post.title}
               content={post.content}
               location={post.location}
+              registeredNum={post.registeredNum}
+              maximumNum={post.maximumNum}
+              registeredNum={post.registeredNum}
+              maximumNum={post.maximumNum}
               datetime={post.type == 'mogako' ? post.datetime : post.deadline}
               method={post.type != 'mogako' ? post.method : ''}
             />
