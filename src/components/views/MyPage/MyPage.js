@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Tabs, Tab, Button, Stack, FormControl, Select, MenuItem } from '@mui/material';
+import { Box, Container, Button, Stack, FormControl, Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import GatherToggleButton from '../../common/ToggleButton/GatherToggleButton'; // 경로는 적절히 수정하세요
@@ -7,7 +7,6 @@ import Post from '../MainPage/Post'; // Post 컴포넌트 임포트 추가
 
 function MyPage() {
   const [myPosts, setMyPosts] = useState([]);
-  const [value, setValue] = useState(0);
   const [sorting, setSorting] = useState('최신순');
   const [gatheringType, setGatheringType] = useState(['mogako']); 
   const navigate = useNavigate();
@@ -30,10 +29,6 @@ function MyPage() {
     setSorting(e.target.value);
   };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   const handleNewPostClick = () => {
     navigate('/newpost');
   };
@@ -53,14 +48,6 @@ function MyPage() {
     <Container maxWidth="lg" sx={{ mt: 3 }}>
       <Box sx={{ width: '100%' }}>
         <h2> 내가 작성한 글 </h2>
-
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="전체" />
-            <Tab label="모집중" />
-            <Tab label="모집 완료" />
-          </Tabs>
-        </Box>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
           <GatherToggleButton sendDataToTab={handleGatheringType} />
