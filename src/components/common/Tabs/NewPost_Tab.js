@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tabs, Tab, Box, Typography } from '@mui/material';
 import 'react-tabs/style/react-tabs.css';
-import NewPostPage from '../../views/NewPostPage/NewPost'; 
+import NewPostPage from '../../views/NewPostPage/NewPostPage'; 
 import NewPostPagemok from '../../views/NewPostPage/NewPost_mok';
 
 export default function NewPostTab() {
