@@ -73,20 +73,28 @@ function MyPage() {
           </FormControl>
         </Stack>
 
-        <Box sx={{my:2}}>
-          {sortedPosts.map(post => (
-            <Post
-              key={post._id}
-              id={post._id}
-              postType={post.type}
-              title={post.title}
-              content={post.content}
-              location={post.location}
-              datetime={post.type === 'mogako' ? post.datetime : post.deadline}
-              method={post.type !== 'mogako' ? post.method : ''}
-            />
-          ))}
-        </Box>
+          <Box sx={{my:2}}>
+            {sortedPosts.map(post => {
+              // 모집 마감 여부를 판단하는 로직 (예시: 현재 날짜와 비교하여 모집이 마감되었는지 확인)
+              const isClosed = post.type === 'mogako' 
+                ? new Date(post.datetime) < new Date() 
+                : new Date(post.deadline) < new Date();
+                
+              return (
+                <Post
+                  key={post._id}
+                  id={post._id}
+                  postType={post.type}
+                  title={post.title}
+                  content={post.content}
+                  location={post.location}
+                  datetime={post.type === 'mogako' ? post.datetime : post.deadline}
+                  method={post.type !== 'mogako' ? post.method : ''}
+                  closed={isClosed} // 모집 마감 여부를 전달
+                />
+              );
+            })}
+          </Box>
       </Box>
     </Container>
   );

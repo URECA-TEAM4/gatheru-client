@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Select, MenuItem, InputLabel, Grid } from '@mui/material';
+import { 
+  TextField, 
+  Container, 
+  Button, 
+  Radio, 
+  RadioGroup, 
+  FormControlLabel, 
+  FormControl, 
+  FormLabel, 
+  Select, 
+  MenuItem, 
+  Grid 
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Auth from "../../../hoc/auth"
-import { Typography } from '@mui/material';
+import Auth from "../../../hoc/auth";
 
 function NewPostPage() {
   const [title, setTitle] = useState('');
@@ -15,16 +26,15 @@ function NewPostPage() {
   const [meetingType, setMeetingType] = useState('');
 
   const navigate = useNavigate();
-  
-  const user = useSelector(state => state.user)
+  const user = useSelector(state => state.user);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     const registrationData = {
       title,
-      writer: user.userData._id, // redux에 저장된 userData 값 가져오기
-      content: description, 
+      writer: user.userData._id,
+      content: description,
       deadline,
       maximumNum: maxParticipants,
       type: purpose,
@@ -32,11 +42,8 @@ function NewPostPage() {
     };
 
     try {
-      // 서버로 POST 요청을 보냅니다.
-      const response = await axios.post('/api/studyContests/add', registrationData);
+      const response = await axios.post('/api/studycontests/add', registrationData);
       console.log('등록 성공:', response.data);
-
-      // 성공적으로 등록하면 메인 페이지로 이동합니다.
       navigate('/');
     } catch (error) {
       console.error('등록 오류:', error);
@@ -44,10 +51,8 @@ function NewPostPage() {
   };
 
   return (
-    <div style={styles.container}>
-      <Typography variant="h7" component="h2">
-      모집 글 작성 ( 스터디 / 공모 및 대회 )
-      </Typography>
+    <Container maxWidth="md" sx={{ mt: 4 }}>
+      <h2>모집 글 작성 (스터디 / 공모 및 대회)</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
         
         <TextField
@@ -73,7 +78,7 @@ function NewPostPage() {
         />
 
         <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <TextField
               label="모집 마감일"
               type="date"
@@ -105,6 +110,7 @@ function NewPostPage() {
           <RadioGroup
             value={purpose}
             onChange={(e) => setPurpose(e.target.value)}
+            row
           >
             <FormControlLabel value="study" control={<Radio />} label="스터디" />
             <FormControlLabel value="contest" control={<Radio />} label="공모 및 대회" />
@@ -112,12 +118,9 @@ function NewPostPage() {
         </FormControl>
 
         <FormControl fullWidth sx={{ mb: 3 }}>
-          <InputLabel id="meeting-type-label">모임 방식</InputLabel>
+          <FormLabel>모임 방식</FormLabel>
           <Select
-            labelId="meeting-type-label"
-            id="meeting-type"
             value={meetingType}
-            label="모임 방식"
             onChange={(e) => setMeetingType(e.target.value)}
             required
           >
@@ -131,33 +134,24 @@ function NewPostPage() {
         <Button
           type="submit"
           variant="contained"
-          
-          fullWidth={false}
+          fullWidth
           sx={{
-            padding: '8px 20px', 
-            fontSize: '14px',     
-            backgroundColor: '#E80080', 
-            color: 'white',       
-            display: 'block',   
-            margin: '20px auto',  
-            '&:hover': {        
-            backgroundColor: '#E80080',
-            }
+            padding: '10px 20px',
+            backgroundColor: '#38406B',
+            '&:hover': {
+              backgroundColor: '#283593',
+            },
+            color: 'white',
           }}
         >
           등록
         </Button>
       </form>
-    </div>
+    </Container>
   );
 }
 
 const styles = {
-  container: {
-    maxWidth: '800px',
-    margin: '0 auto',
-    padding: '20px',
-  },
   form: {
     display: 'flex',
     flexDirection: 'column',

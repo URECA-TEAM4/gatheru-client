@@ -1,32 +1,37 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Card,
   CardContent,
   Typography,
   CardActionArea,
-} from '@mui/material'
-import { secondary_color } from '../../constants/colors'
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
-import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
-import { useNavigate } from 'react-router-dom'
+} from '@mui/material';
+import { secondary_color } from '../../constants/colors';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import { useNavigate } from 'react-router-dom';
 
 function Post(props) {
-  const navigate = useNavigate()
-  const [pastDeadline, setPastDeadline] = useState(false)
-  const [postClosed, setPostClosed] = useState(false)
+  const navigate = useNavigate();
+  const [postClosed, setPostClosed] = useState(false);
 
+  // 게시물 상태(모집 마감 여부)를 설정하는 로직
   useEffect(() => {
-    if (Date.now() > new Date(props.datetime)) setPastDeadline(true)
-    if (pastDeadline || props.registeredNum == props.maximumNum)
-      setPostClosed(true)
-  }, [pastDeadline])
+    const isPastDeadline = Date.now() > new Date(props.datetime); // 마감일이 지났는지 확인
+    const isFull = props.registeredNum >= props.maximumNum; // 등록 인원이 최대 인원과 같은지 확인
+
+    if (isPastDeadline || isFull) {
+      setPostClosed(true); // 마감일이 지났거나 등록 인원이 꽉 찼으면 모집 마감 상태로 설정
+    } else {
+      setPostClosed(false); // 그렇지 않으면 모집중 상태로 설정
+    }
+  }, [props.datetime, props.registeredNum, props.maximumNum]);
 
   return (
     <Card
       sx={{ borderRadius: 5, mb: 3 }}
       onClick={() => {
-        navigate(`/detail/${props.postType}/${props.id}`)
+        navigate(`/detail/${props.postType}/${props.id}`);
       }}
     >
       <CardActionArea>
@@ -70,7 +75,7 @@ function Post(props) {
               : props.content}
           </Typography>
 
-          {props.postType == 'mogako' ? (
+          {props.postType === 'mogako' ? (
             <>
               <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
                 <LocationOnOutlinedIcon />{' '}
@@ -99,7 +104,7 @@ function Post(props) {
         </CardContent>
       </CardActionArea>
     </Card>
-  )
+  );
 }
 
-export default Post
+export default Post;
