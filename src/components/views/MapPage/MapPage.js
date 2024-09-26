@@ -48,7 +48,17 @@ function MapPage() {
     lat: 37.5563012,
     lng: 126.9372557,
   }
+  const formatDate = datetime => {
+    const date = new Date(datetime)
+    const days = ['일', '월', '화', '수', '목', '금', '토']
+    const day = days[date.getDay()]
+    const month = date.getMonth() + 1 // 월은 0부터 시작하므로 1을 더해줍니다.
+    const dayOfMonth = date.getDate()
+    const hours = date.getHours().toString().padStart(2, '0') // 2자리로 맞추기
+    const minutes = date.getMinutes().toString().padStart(2, '0') // 2자리로 맞추기
 
+    return `${month}/${dayOfMonth}(${day}) ${hours}:${minutes}`
+  }
   return (
     <MapContainer>
       <MapTitle>모각코 위치를 지도로 확인해보세요! </MapTitle>
@@ -72,7 +82,9 @@ function MapPage() {
             position={{ lat: marker.lat, lng: marker.lng }}
             yAnchor={1}
           >
-            <CustomOverlay1Style>{marker.datetime}</CustomOverlay1Style>
+            <CustomOverlay1Style>
+              {formatDate(marker.datetime)}
+            </CustomOverlay1Style>
           </CustomOverlayMap>
         ))}
       </Map>
