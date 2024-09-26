@@ -87,16 +87,17 @@ function DetailPage() {
   // 업데이트 된 모집 현황 가져오기
   const fetchRegisteredNum = async () => {
     try {
-      const endpoint = post.type === 'mogako' 
-        ? `/api/mogakos/registeredNum/${postId}` // post.type이 'mogako'일 때
-        : `/api/studyContests/registeredNum/${postId}`; // 그 외의 경우
-  
-      const response = await axios.get(endpoint); // 동적으로 URL 설정
-      setRegisteredNum(response.data.registeredNum);
+      const endpoint =
+        post.type === 'mogako'
+          ? `/api/mogakos/registeredNum/${postId}` // post.type이 'mogako'일 때
+          : `/api/studyContests/registeredNum/${postId}` // 그 외의 경우
+
+      const response = await axios.get(endpoint) // 동적으로 URL 설정
+      setRegisteredNum(response.data.registeredNum)
     } catch (error) {
-      console.error('Error fetching registered number:', error);
+      console.error('Error fetching registered number:', error)
     }
-  };
+  }
 
   useEffect(() => {
     fetchRegisteredNum() // 컴포넌트가 마운트될 때 호출
@@ -162,7 +163,7 @@ function DetailPage() {
 
       <Divider sx={{ my: 3 }}></Divider>
 
-      <CommentSection postId={post._id} />
+      {/* <CommentSection postId={post._id} /> */}
     </Container>
   )
 }
