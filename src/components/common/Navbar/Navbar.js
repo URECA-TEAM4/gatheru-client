@@ -175,6 +175,14 @@ export default function Navbar() {
                     keepMounted
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
                   >
                     <MenuItem onClick={handleClose}>내가 작성한 글</MenuItem>
                     <MenuItem onClick={logoutClick}>로그아웃</MenuItem>

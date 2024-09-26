@@ -44,7 +44,11 @@ function Notification(props) {
     axios
       .get(`/api/notifications/get`)
       .then(function (response) {
-        setNotifications(response.data.filter(myNotification))
+        setNotifications(
+          response.data
+            .filter(myNotification)
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+        )
       })
       .catch(function (error) {
         console.log(error)
@@ -77,12 +81,13 @@ function Notification(props) {
       >
         <List sx={{ width: '350px' }}>
           {notifications.map(notification => {
+            let createdAt = new Date(notification.createdAt)
             return (
               <ListItem disablePadding key={notification._id}>
                 <ListItemButton>
                   <ListItemText
                     primary={notification.postTitle}
-                    secondary="게시물에 신청자가 추가되었습니다"
+                    secondary={`게시물에 신청자가 추가되었습니다 - ${createdAt.toLocaleDateString()}`}
                   />
                 </ListItemButton>
               </ListItem>

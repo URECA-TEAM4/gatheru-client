@@ -101,7 +101,12 @@ function DetailPage() {
         </Typography>
 
         {!postClosed && post.type == 'mogako' && (
-          <JoinMogakoButton userIsWriter={userIsWriter} postId={postId} />
+          <JoinMogakoButton
+            userIsWriter={userIsWriter}
+            postId={postId}
+            writer={post.writer}
+            title={post.title}
+          />
         )}
       </Box>
 
