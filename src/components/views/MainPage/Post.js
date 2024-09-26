@@ -13,15 +13,14 @@ import { useNavigate } from 'react-router-dom'
 
 function Post(props) {
   const navigate = useNavigate()
-  const [recruitingClosed, setRecruitingClosed] = useState(false)
+  const [pastDeadline, setPastDeadline] = useState(false)
+  const [postClosed, setPostClosed] = useState(false)
 
   useEffect(() => {
-    if (
-      Date.now() > new Date(props.datetime) ||
-      props.registeredNum == props.maximumNum
-    )
-      setRecruitingClosed(true)
-  }, [])
+    if (Date.now() > new Date(props.datetime)) setPastDeadline(true)
+    if (pastDeadline || props.registeredNum == props.maximumNum)
+      setPostClosed(true)
+  }, [pastDeadline])
 
   return (
     <Card
@@ -33,7 +32,7 @@ function Post(props) {
       <CardActionArea>
         <CardContent>
           <Box sx={{ display: 'flex' }}>
-            {recruitingClosed ? (
+            {postClosed ? (
               <Box
                 sx={{
                   borderRadius: 5,

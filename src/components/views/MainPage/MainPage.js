@@ -106,7 +106,7 @@ function MainPage() {
           <CustomTabPanel value={value} index={0}>
             <PostList
               gatheringType={gatheringType}
-              pastDeadline="all"
+              postClosed="all"
               sorting={sorting}
             />
           </CustomTabPanel>
@@ -115,7 +115,7 @@ function MainPage() {
           <CustomTabPanel value={value} index={1}>
             <PostList
               gatheringType={gatheringType}
-              pastDeadline={false}
+              postClosed={false}
               sorting={sorting}
             />
           </CustomTabPanel>
@@ -124,7 +124,7 @@ function MainPage() {
           <CustomTabPanel value={value} index={2}>
             <PostList
               gatheringType={gatheringType}
-              pastDeadline={true}
+              postClosed={true}
               sorting={sorting}
             />
           </CustomTabPanel>
