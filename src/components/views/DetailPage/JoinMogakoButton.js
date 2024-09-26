@@ -3,8 +3,8 @@ import { Button } from '@mui/material'
 import { Done } from '@mui/icons-material'
 import { secondary_color } from '../../constants/colors'
 import { joinMogakoPost, unJoinMogakoPost } from '../../_actions/post_action'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
+import { notify } from '../../_actions/notification_action'
 
 function JoinMogakoButton(props) {
   const [applied, setApplied] = useState(() => {
@@ -37,7 +37,7 @@ function JoinMogakoButton(props) {
           receiver: props.writer,
           postId: props.postId,
           postTitle: props.title,
-          message: '게시물에 신청자가 추가되었습니다',
+          message: `${user.userData.name}님이 게시물에 신청하셨습니다`,
         })
       } else {
         alert('신청에 실패하셨습니다.')
@@ -63,7 +63,7 @@ function JoinMogakoButton(props) {
           receiver: props.writer,
           postId: props.postId,
           postTitle: props.title,
-          message: '게시물 신청이 취소되었습니다',
+          message: '게시물 신청자 명단이 변경되었습니다',
         })
       } else {
         alert('신청에 취소에 실패하셨습니다.')
@@ -71,13 +71,6 @@ function JoinMogakoButton(props) {
     })
 
     setApplied(false)
-  }
-
-  const notify = dataToSubmit => {
-    axios
-      .post('/api/notifications/add', dataToSubmit)
-      .then(response => console.log(response.data))
-      .catch(err => console.log(err))
   }
 
   return (

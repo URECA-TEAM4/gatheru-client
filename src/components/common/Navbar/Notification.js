@@ -87,7 +87,7 @@ function Notification(props) {
                 <ListItemButton>
                   <ListItemText
                     primary={notification.postTitle}
-                    secondary={`게시물에 신청자가 추가되었습니다 - ${createdAt.toLocaleDateString()}`}
+                    secondary={`${notification.message} - ${createdAt.toLocaleDateString()}`}
                   />
                 </ListItemButton>
               </ListItem>
