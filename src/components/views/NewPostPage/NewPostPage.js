@@ -75,7 +75,9 @@ function NewPostPage() {
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <Box mb={2}>
-        <Typography variant="h4" gutterBottom sx={{ textAlign: 'left', marginBottom: '20px', fontWeight: 'bold', fontSize: '24px' }}>모집 글 작성 (스터디 / 공모 및 대회)</Typography>
+        <Typography component="div" variant="h4" gutterBottom sx={{ textAlign: 'left', marginBottom: '20px', fontWeight: 'bold', fontSize: '24px' }}>
+          모집 글 작성 (스터디 / 공모 및 대회)
+          </Typography>
       </Box>
       <form onSubmit={handleSubmit} style={styles.form}>
         <TextField
@@ -101,7 +103,7 @@ function NewPostPage() {
         />
 
         <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid item xs={6}>
+          <Grid xs={6}> {/*Received `true` for a non-boolean attribute `item` 오류 수정을 위해 item 제거해주세요.*/}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateTimePicker']}>
                 <DateTimePicker
@@ -114,13 +116,13 @@ function NewPostPage() {
               </DemoContainer>
             </LocalizationProvider>
             {deadlineError && (
-              <Typography variant="caption" color="error">
+              <Typography component="div" variant="caption" color="error">
                 마감일을 선택해주세요.
               </Typography>
             )}
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid xs={6}>
             <TextField
               label="모집 인원 수"
               type="number"
