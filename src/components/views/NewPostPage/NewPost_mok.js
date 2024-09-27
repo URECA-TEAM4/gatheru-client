@@ -12,6 +12,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
+import MokMap from './mokMap' // mokMap 컴포넌트 임포트
+
 function NewPostPagemok() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -243,6 +245,9 @@ function NewPostPagemok() {
               ),
           )}
         </Map>
+
+        <MokMap />
+
 
         <TextField
           label="모집 인원 수"
