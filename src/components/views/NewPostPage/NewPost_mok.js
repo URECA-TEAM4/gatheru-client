@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextField, Button, Box, Typography } from '@mui/material'
+import { TextField, Button, Box, Container } from '@mui/material'
 import { Map, MapMarker } from 'react-kakao-maps-sdk'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -26,10 +26,10 @@ function NewPostPagemok() {
 
   const navigate = useNavigate()
   const user = useSelector(state => state.user)
-  
-  const handleDateChange = (newValue) => {
-    setdate(newValue); // DateTimePicker에서 선택된 값을 상태에 저장
-  };
+
+  const handleDateChange = newValue => {
+    setdate(newValue) // DateTimePicker에서 선택된 값을 상태에 저장
+  }
 
   const handleMapClick = (_, mouseEvent) => {
     const latlng = mouseEvent.latLng
@@ -132,19 +132,7 @@ function NewPostPagemok() {
   }
 
   return (
-    <Box sx={styles.container}>
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{
-          textAlign: 'left',
-          marginBottom: '20px',
-          fontWeight: 'bold',
-          fontSize: '24px',
-        }}
-      >
-        모집 글 작성 ( 모각코 )
-      </Typography>
+    <Container maxWidth="md" sx={{ mt: 4 }}>
       <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
         <TextField
           label="제목"
@@ -166,7 +154,11 @@ function NewPostPagemok() {
           {/* <TextField label="날짜" type="date" value={date} onChange={(e) => setDate(e.target.value)} required InputLabelProps={{ shrink: true }} sx={styles.smallInput} /> */}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateTimePicker']}>
-              <DateTimePicker label="날짜, 시간 지정" value={date} onChange={handleDateChange} />
+              <DateTimePicker
+                label="날짜, 시간 지정"
+                value={date}
+                onChange={handleDateChange}
+              />
             </DemoContainer>
           </LocalizationProvider>
           <TextField
@@ -258,16 +250,11 @@ function NewPostPagemok() {
           등록
         </Button>
       </Box>
-    </Box>
+    </Container>
   )
 }
 
 const styles = {
-  container: {
-    maxWidth: '800px',
-    margin: '0 auto',
-    padding: '30px',
-  },
   form: {
     display: 'flex',
     flexDirection: 'column',

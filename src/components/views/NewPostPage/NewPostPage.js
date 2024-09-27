@@ -11,15 +11,13 @@ import {
   FormLabel,
   Select,
   MenuItem,
-  Box,
   Typography,
 } from '@mui/material'
-import Grid from '@mui/material/Grid2'; // Grid2 import 추가
+import Grid from '@mui/material/Grid2' // Grid2 import 추가
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Auth from '../../../hoc/auth'
 
-import dayjs from 'dayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -30,24 +28,25 @@ function NewPostPage() {
   const [description, setDescription] = useState('')
   const [deadline, setDeadline] = useState(null) // 기본값을 null로 설정
   const [maxParticipants, setMaxParticipants] = useState(1)
-  const [purpose, setPurpose] = useState('') 
+  const [purpose, setPurpose] = useState('')
   const [meetingType, setMeetingType] = useState('')
   const [deadlineError, setDeadlineError] = useState(false) // 마감일 에러 상태 추가
 
   const navigate = useNavigate()
   const user = useSelector(state => state.user)
 
-  const handleDeadlineChange = (newValue) => {
-    setDeadline(newValue); // DateTimePicker에서 선택된 값을 상태에 저장
-    setDeadlineError(false); // 값이 선택되면 에러 해제
-  };
+  const handleDeadlineChange = newValue => {
+    setDeadline(newValue) // DateTimePicker에서 선택된 값을 상태에 저장
+    setDeadlineError(false) // 값이 선택되면 에러 해제
+  }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault()
 
-    if (!deadline) {  // 마감일이 선택되지 않은 경우
-      setDeadlineError(true);  // 에러 상태 설정
-      return;
+    if (!deadline) {
+      // 마감일이 선택되지 않은 경우
+      setDeadlineError(true) // 에러 상태 설정
+      return
     }
 
     const registrationData = {
@@ -74,12 +73,7 @@ function NewPostPage() {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Box mb={2}>
-        <Typography component="div" variant="h4" gutterBottom sx={{ textAlign: 'left', marginBottom: '20px', fontWeight: 'bold', fontSize: '24px' }}>
-          모집 글 작성 (스터디 / 공모 및 대회)
-          </Typography>
-      </Box>
-      <form onSubmit={handleSubmit} style={styles.form}>
+      <form onSubmit={handleSubmit}>
         <TextField
           label="제목"
           variant="outlined"
@@ -94,7 +88,7 @@ function NewPostPage() {
           label="내용"
           variant="outlined"
           multiline
-          rows={4}
+          minRows={5}
           fullWidth
           value={description}
           onChange={e => setDescription(e.target.value)}
@@ -103,7 +97,8 @@ function NewPostPage() {
         />
 
         <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid xs={6}> {/*Received `true` for a non-boolean attribute `item` 오류 수정을 위해 item 제거해주세요.*/}
+          <Grid xs={6}>
+            {/*Received `true` for a non-boolean attribute `item` 오류 수정을 위해 item 제거해주세요.*/}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateTimePicker']}>
                 <DateTimePicker
@@ -182,7 +177,7 @@ function NewPostPage() {
             margin: '20px auto',
             '&:hover': {
               backgroundColor: '#E80080',
-            },          
+            },
           }}
         >
           등록
@@ -190,14 +185,6 @@ function NewPostPage() {
       </form>
     </Container>
   )
-}
-
-const styles = {
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
 }
 
 export default Auth(NewPostPage, true)
