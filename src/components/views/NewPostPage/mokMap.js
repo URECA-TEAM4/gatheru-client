@@ -69,7 +69,8 @@ export default function mokMap() {
   const handleMarkerClick = marker => {
     setSelectedMarker(marker)
     console.log(marker)
-    setPosition({ lat: marker.lat, lng: marker.lng })
+    fetchAddress(marker.lat, marker.lng)
+    // setPosition({ lat: marker.lat, lng: marker.lng })
   }
   return (
     <>

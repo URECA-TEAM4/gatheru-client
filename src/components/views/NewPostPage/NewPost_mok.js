@@ -12,23 +12,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
-import MokMap from './mokMap' // mokMap 컴포넌트 임포트
+import SavedSearchIcon from '@mui/icons-material/SavedSearch'
 
 function NewPostPagemok() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [date, setdate] = useState(dayjs(''))
-  const [location, setLocation] = useState('')
-  const [position, setPosition] = useState({ lat: 37.5665, lng: 126.978 })
   const [maxParticipants, setMaxParticipants] = useState(1)
-  const [keyword, setKeyword] = useState('')
-  const [markers, setMarkers] = useState([])
-  const [selectedMarker, setSelectedMarker] = useState(null)
-  const center = {
-    // 지도의 중심좌표
-    lat: 37.5665,
-    lng: 126.978,
-  }
+
   const navigate = useNavigate()
   const user = useSelector(state => state.user)
 
@@ -36,11 +27,25 @@ function NewPostPagemok() {
     setdate(newValue) // DateTimePicker에서 선택된 값을 상태에 저장
   }
 
+  // 지도js
+  const center = {
+    // 지도의 중심좌표
+    lat: 37.5665,
+    lng: 126.978,
+  }
+  const [position, setPosition] = useState({ lat: 37.5665, lng: 126.978 })
+  const [location, setLocation] = useState('') // 장소
+  const [keyword, setKeyword] = useState('') // 키워드
+  const [markers, setMarkers] = useState([])
+  const [selectedMarker, setSelectedMarker] = useState(null)
+
   const handleMapClick = (_, mouseEvent) => {
     const latlng = mouseEvent.latLng
     const lat = latlng.getLat()
     const lng = latlng.getLng()
+    // 위도, 경도 데이터
     setPosition({ lat, lng })
+    // 도로명 주소 가져오기
     fetchAddress(lat, lng)
   }
 
@@ -60,7 +65,6 @@ function NewPostPagemok() {
       }
     })
   }
-
 
   const handleKeywordChange = e => {
     setKeyword(e.target.value)
@@ -85,11 +89,12 @@ function NewPostPagemok() {
       }
     })
   }
-
   const handleMarkerClick = marker => {
     setSelectedMarker(marker)
+    fetchAddress(marker.lat, marker.lng)
   }
 
+  // 입력값 데이터 전송
   const handleSubmit = async event => {
     event.preventDefault()
     const registrationData = {
@@ -100,7 +105,6 @@ function NewPostPagemok() {
       maximumNum: maxParticipants,
       datetime: date.toISOString(), // dayjs를 사용하여 ISO 형식으로 변환
       type: 'mogako',
-      // joinedUser: [],
       lat: position.lat,
       lng: position.lng,
     }
@@ -168,6 +172,15 @@ function NewPostPagemok() {
           />
         </Box>
 
+        {/* 장소 및 지도  */}
+        <TextField
+          label="장소"
+          value={location}
+          onChange={e => setLocation(e.target.value)}
+          required
+          sx={styles.smallInput}
+        />
+
         <Box component="form" sx={styles.keywordBox}>
           <TextField
             label="장소 검색 (예: 수서역 카페)"
@@ -183,23 +196,22 @@ function NewPostPagemok() {
             color="primary"
             sx={styles.searchButton}
           >
-            키워드 검색
+            <SavedSearchIcon />
           </Button>
         </Box>
 
         <Map // 지도를 표시할 Container
-        id="map"
-        center={center}
-        style={{
-          width: '100%',
-          height: '350px',
-        }}
-        level={3} // 지도의 확대 레벨
-        onClick={handleMapClick}
-      >
-        
-        <MapMarker position={position} />
-        {markers.map(
+          id="map"
+          center={position}
+          style={{
+            width: '100%',
+            height: '350px',
+          }}
+          level={3} // 지도의 확대 레벨
+          onClick={handleMapClick}
+        >
+          <MapMarker position={position ?? center} />
+          {markers.map(
             (marker, index) =>
               (selectedMarker === null ||
                 selectedMarker.title === marker.title) && (
@@ -212,9 +224,6 @@ function NewPostPagemok() {
               ),
           )}
         </Map>
-
-        <MokMap />
-
 
         <TextField
           label="모집 인원 수"
