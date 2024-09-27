@@ -54,7 +54,7 @@ function PostList(props) {
         return (
           props.gatheringType.includes(post.type) && (
             <Post
-              key={post.title}
+              key={post._id}
               id={post._id}
               postType={post.type}
               title={post.title}

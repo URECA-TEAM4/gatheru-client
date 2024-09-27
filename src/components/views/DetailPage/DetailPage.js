@@ -10,6 +10,7 @@ import DeadlineBadge from './DeadlineBadge'
 import ContentSection from './ContentSection'
 import JoinMogakoButton from './JoinMogakoButton'
 import JoinStudyContestButton from './JoinStudyContestButton'
+import JoinedUserListSection from './JoinedUserListSection'
 import CommentSection from './CommentSection'
 
 function DetailPage() {
@@ -123,10 +124,18 @@ function DetailPage() {
           <JoinMogakoButton
             userIsWriter={userIsWriter}
             postId={postId}
+            postType={post.type}
             writer={post.writer}
             title={post.title}
             registeredNum={registeredNum}
             fetchRegisteredNum={fetchRegisteredNum}
+          />
+        )}
+
+        {userIsWriter && (
+          <JoinedUserListSection
+            postType={post.type}
+            joinedUser={post.joinedUser}
           />
         )}
       </Box>
@@ -158,6 +167,7 @@ function DetailPage() {
         <JoinStudyContestButton
           userIsWriter={userIsWriter}
           postId={postId}
+          postType={post.type}
           writer={post.writer}
           title={post.title}
           registeredNum={registeredNum}

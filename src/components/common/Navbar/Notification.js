@@ -10,8 +10,10 @@ import {
   Popover,
 } from '@mui/material'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 function Notification(props) {
+  const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null)
   const handleClose = () => setAnchorEl(null)
   const handleNotification = e => {
@@ -82,9 +84,16 @@ function Notification(props) {
         <List sx={{ width: '350px' }}>
           {notifications.map(notification => {
             let createdAt = new Date(notification.createdAt)
+
             return (
               <ListItem disablePadding key={notification._id}>
-                <ListItemButton>
+                <ListItemButton
+                  onClick={() => {
+                    navigate(
+                      `/detail/${notification.postType}/${notification.postId}`,
+                    )
+                  }}
+                >
                   <ListItemText
                     primary={notification.postTitle}
                     secondary={`${notification.message} - ${createdAt.toLocaleDateString()}`}
