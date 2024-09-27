@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { TextField, Button, Box, Container } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { Map, MapMarker } from 'react-kakao-maps-sdk'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -7,6 +8,7 @@ import axios from 'axios'
 import Auth from '../../../hoc/auth'
 
 import dayjs from 'dayjs'
+import { secondary_color } from '../../constants/colors'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -17,7 +19,7 @@ import SavedSearchIcon from '@mui/icons-material/SavedSearch'
 function NewPostPagemok() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [date, setdate] = useState(dayjs(''))
+  const [date, setdate] = useState(dayjs())
   const [maxParticipants, setMaxParticipants] = useState(1)
 
   const navigate = useNavigate()
@@ -105,10 +107,6 @@ function NewPostPagemok() {
       maximumNum: maxParticipants,
       datetime: date.toISOString(), // dayjs를 사용하여 ISO 형식으로 변환
       type: 'mogako',
-<<<<<<< HEAD
-      joinedUser: [],
-=======
->>>>>>> develop
       lat: position.lat,
       lng: position.lng,
     }
@@ -127,35 +125,60 @@ function NewPostPagemok() {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
+      <Box component="form" onSubmit={handleSubmit}>
         <TextField
           label="제목"
           value={title}
           onChange={e => setTitle(e.target.value)}
           required
           fullWidth
+          sx={{ mb: 3 }}
         />
+
         <TextField
           label="내용"
           value={description}
           onChange={e => setDescription(e.target.value)}
           required
           multiline
-          rows={4}
+          minRows={5}
           fullWidth
+          sx={{ mb: 3 }}
         />
-        <Box sx={{ display: 'flex', gap: '20px', mb: 0 }}>
-          {/* <TextField label="날짜" type="date" value={date} onChange={(e) => setDate(e.target.value)} required InputLabelProps={{ shrink: true }} sx={styles.smallInput} /> */}
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DateTimePicker']}>
-              <DateTimePicker
-                label="날짜, 시간 지정"
-                value={date}
-                onChange={handleDateChange}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-        </Box>
+
+        <Grid container spacing={2}>
+          <Grid size={6}>
+            <Box sx={{ mb: 3 }}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DateTimePicker']}>
+                  <DateTimePicker
+                    label="날짜, 시간 지정"
+                    value={date}
+                    onChange={handleDateChange}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                        error: false,
+                      },
+                    }}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+            </Box>
+          </Grid>
+          <Grid size={6}>
+            <TextField
+              label="모집 인원 수"
+              type="number"
+              value={maxParticipants}
+              onChange={e => setMaxParticipants(e.target.value)}
+              required
+              fullWidth
+              InputProps={{ inputProps: { min: 1 } }}
+              sx={{ mb: 3, mt: 1 }}
+            />
+          </Grid>
+        </Grid>
 
         {/* 장소 및 지도  */}
         <TextField
@@ -163,29 +186,34 @@ function NewPostPagemok() {
           value={location}
           onChange={e => setLocation(e.target.value)}
           required
-          sx={styles.smallInput}
+          fullWidth
+          sx={{ mb: 2 }}
         />
 
-        <Box component="form" sx={styles.keywordBox}>
+        <Box
+          component="form"
+          sx={{ display: 'flex', alignItems: 'center', mb: 2 }}
+        >
           <TextField
             label="장소 검색 (예: 수서역 카페)"
             value={keyword}
             onChange={handleKeywordChange}
-            required
-            sx={styles.searchInput}
+            size="small"
+            variant="standard"
+            helperText="아직 장소를 못 정하셨나요? 키워드를 입력하여 장소를 검색해보세요!"
           />
           <Button
             type="button"
             onClick={handleKeywordSearch}
             variant="contained"
-            color="primary"
-            sx={styles.searchButton}
+            color="white"
+            sx={{ ml: 3 }}
           >
-            <SavedSearchIcon />
+            <SavedSearchIcon color="secondary" />
           </Button>
         </Box>
 
-        <Map // 지도를 표시할 Container
+        <Map
           id="map"
           center={position}
           style={{
@@ -210,72 +238,22 @@ function NewPostPagemok() {
           )}
         </Map>
 
-        <TextField
-          label="모집 인원 수"
-          type="number"
-          value={maxParticipants}
-          onChange={e => setMaxParticipants(e.target.value)}
-          required
-          InputProps={{ inputProps: { min: 1 } }}
-          sx={styles.smallInput}
-        />
         <Button
           type="submit"
           variant="contained"
-          color="primary"
-          sx={styles.submitButton}
+          sx={{
+            borderRadius: 2,
+            backgroundColor: secondary_color,
+            fontWeight: 700,
+            display: 'block',
+            margin: '20px auto',
+          }}
         >
           등록
         </Button>
       </Box>
     </Container>
   )
-}
-
-const styles = {
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '30px',
-  },
-  smallInput: {
-    flex: 1,
-  },
-  searchBox: {
-    display: 'flex',
-    gap: '10px',
-    mb: 1,
-  },
-  keywordBox: {
-    display: 'flex',
-    gap: '10px',
-    mb: 1,
-  },
-  searchInput: {
-    width: '250px',
-    height: '30px',
-    fontSize: '14px',
-    padding: '5px',
-    marginRight: '1px',
-    borderRadius: '4px',
-    borderWidth: '1px',
-  },
-  searchButton: {
-    backgroundColor: '#fff',
-    color: '#E80080',
-    height: '30px',
-    '&:hover': { backgroundColor: '#d40070', color: '#fff' },
-    marginTop: '15px',
-  },
-  submitButton: {
-    padding: '8px 20px',
-    fontSize: '14px',
-    backgroundColor: '#E80080',
-    color: '#fff',
-    display: 'block',
-    margin: '20px auto',
-    '&:hover': { backgroundColor: '#d40070' },
-  },
 }
 
 export default Auth(NewPostPagemok, true)

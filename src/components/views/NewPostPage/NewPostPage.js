@@ -12,11 +12,14 @@ import {
   Select,
   MenuItem,
   Typography,
+  Box,
 } from '@mui/material'
-import Grid from '@mui/material/Grid2' // Grid2 import 추가
+import Grid from '@mui/material/Grid2'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Auth from '../../../hoc/auth'
+import dayjs from 'dayjs'
+import { secondary_color } from '../../constants/colors'
 
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -26,7 +29,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 function NewPostPage() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [deadline, setDeadline] = useState(dayjs(''))
+  const [deadline, setDeadline] = useState(dayjs())
   const [maxParticipants, setMaxParticipants] = useState(1)
   const [purpose, setPurpose] = useState('')
   const [meetingType, setMeetingType] = useState('')
@@ -78,7 +81,6 @@ function NewPostPage() {
 
         <TextField
           label="내용"
-          variant="outlined"
           multiline
           minRows={5}
           fullWidth
@@ -88,34 +90,36 @@ function NewPostPage() {
           sx={{ mb: 3 }}
         />
 
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid xs={6}>
-            {/*Received `true` for a non-boolean attribute `item` 오류 수정을 위해 item 제거해주세요.*/}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['DateTimePicker']}>
-                <DateTimePicker
-                  label="모집 마감일"
-                  value={deadline}
-                  onChange={handleDeadlineChange}
-                />
-              </DemoContainer>
-            </LocalizationProvider>
-            {deadlineError && (
-              <Typography component="div" variant="caption" color="error">
-                마감일을 선택해주세요.
-              </Typography>
-            )}
+        <Grid container spacing={2}>
+          <Grid size={6}>
+            <Box sx={{ mb: 3 }}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DateTimePicker']}>
+                  <DateTimePicker
+                    label="모집 마감일"
+                    value={deadline}
+                    onChange={handleDeadlineChange}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                        error: false,
+                      },
+                    }}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+            </Box>
           </Grid>
-
-          <Grid xs={6}>
+          <Grid size={6}>
             <TextField
               label="모집 인원 수"
               type="number"
-              fullWidth
               inputProps={{ min: 1 }}
               value={maxParticipants}
               onChange={e => setMaxParticipants(e.target.value)}
               required
+              fullWidth
+              sx={{ mb: 3, mt: 1 }}
             />
           </Grid>
         </Grid>
@@ -129,18 +133,19 @@ function NewPostPage() {
           >
             <FormControlLabel
               value="study"
-              control={<Radio />}
+              control={<Radio required={true} />}
               label="스터디"
             />
             <FormControlLabel
               value="contest"
-              control={<Radio />}
+              control={<Radio required={true} />}
               label="공모 및 대회"
             />
           </RadioGroup>
         </FormControl>
+        <br />
 
-        <FormControl fullWidth sx={{ mb: 3 }}>
+        <FormControl sx={{ width: '200px', mb: 3 }}>
           <FormLabel>모임 방식</FormLabel>
           <Select
             value={meetingType}
@@ -153,21 +158,17 @@ function NewPostPage() {
             <MenuItem value="미정">미정</MenuItem>
           </Select>
         </FormControl>
+        <br />
 
         <Button
           type="submit"
           variant="contained"
-          fullWidth={false}
           sx={{
-            padding: '8px 20px',
-            fontsize: '14px',
-            backgroundColor: '#E80080',
-            color: 'white',
+            borderRadius: 2,
+            backgroundColor: secondary_color,
+            fontWeight: 700,
             display: 'block',
             margin: '20px auto',
-            '&:hover': {
-              backgroundColor: '#E80080',
-            },
           }}
         >
           등록
