@@ -91,7 +91,6 @@ export default function Calendar(props) {
             extendedProps: { type: event.type }, // type을 extendedProps에 추가
           }))}
           eventClick={handleEventClick} // 이벤트 클릭 핸들러 설정
-          timeZone="UTC"
           eventDidMount={info => {
             info.el.classList.add(styles.clickable)
           }}
@@ -111,7 +110,6 @@ export default function Calendar(props) {
             extendedProps: { type: event.type }, // type을 extendedProps에 추가
           }))}
           eventClick={handleEventClick} // 이벤트 클릭 핸들러 설정
-          timeZone="UTC"
           eventContent={arg => {
             return { html: `<div>${arg.event.title}</div>` }; // 시간 없이 제목만 표시
           }}

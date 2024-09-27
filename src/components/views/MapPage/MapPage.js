@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react' // useState와 useEffect 추가
 import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk'
 import { mute_navy_color } from '../../constants/colors'
 import styled from 'styled-components'
 import Auth from '../../../hoc/auth'
+import { useNavigate } from 'react-router-dom'
 
 const CustomOverlay1Style = styled.div`
   padding: 5px 10px;
@@ -33,23 +34,63 @@ const MapContainer = styled.div`
 `
 
 function MapPage() {
+  const navigate = useNavigate()
+  const [markers, setMarkers] = useState([]) // 마커 상태 추가
+
+  useEffect(() => {
+    const fetchMarkers = async () => {
+      const response = await fetch('/api/mogakos/get')
+      const data = await response.json()
+      setMarkers(data)
+    }
+    fetchMarkers()
+  }, [])
+
   const markerPosition = {
     lat: 37.5563012,
     lng: 126.9372557,
   }
+  const formatDate = datetime => {
+    const date = new Date(datetime)
+    const days = ['일', '월', '화', '수', '목', '금', '토']
+    const day = days[date.getDay()]
+    const month = date.getMonth() + 1 // 월은 0부터 시작하므로 1을 더해준다.
+    const dayOfMonth = date.getDate()
+    const hours = date.getHours().toString().padStart(2, '0') // 2자리로 맞추기
+    const minutes = date.getMinutes().toString().padStart(2, '0') // 2자리로 맞추기
 
+    return `${month}/${dayOfMonth}(${day}) ${hours}:${minutes}` // 10/10(목) 17:30
+  }
   return (
     <MapContainer>
       <MapTitle>모각코 위치를 지도로 확인해보세요! </MapTitle>
       <Map center={markerPosition} style={{ width: '80%', height: '800px' }}>
-        <MapMarker
-          position={markerPosition}
-          onClick={() => alert('해당 게시글로 이동!')}
-          anchor="bottom"
-        />
-        <CustomOverlayMap position={markerPosition} yAnchor={1}>
-          <CustomOverlay1Style>9/28(토) 7:00</CustomOverlay1Style>
-        </CustomOverlayMap>
+        {markers.map(
+          (
+            marker,
+            index, // 마커 표시
+          ) => (
+            <MapMarker
+              key={index}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              onClick={() => {
+                navigate(`/detail/${marker.type}/${marker._id}`)
+              }}
+              anchor="bottom"
+            />
+          ),
+        )}
+        {markers.map((marker, index) => (
+          <CustomOverlayMap
+            key={index}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            yAnchor={1}
+          >
+            <CustomOverlay1Style>
+              {formatDate(marker.datetime)}
+            </CustomOverlay1Style>
+          </CustomOverlayMap>
+        ))}
       </Map>
     </MapContainer>
   )
