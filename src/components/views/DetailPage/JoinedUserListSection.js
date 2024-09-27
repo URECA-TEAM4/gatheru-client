@@ -13,15 +13,24 @@ import axios from 'axios'
 
 function JoinedUserListSection(props) {
   const [open, setOpen] = useState(false)
-  const [list, setList] = useState([])
+  const [joinedUsers, setJoinedUsers] = useState(props.joinedUser)
+  const [names, setNames] = useState([])
 
   const toggleDrawer = newOpen => () => setOpen(newOpen)
 
-  //   useEffect(() => {
-  //     axios.get('api/users')
-  //     .then()
-  //   }, [])
-  //   console.log(props.joinedUser)
+  useEffect(() => {
+    setNames([])
+
+    Promise.all(
+      joinedUsers.map(userId =>
+        axios.get(`/api/users/${userId}`).then(res => res.data.name),
+      ),
+    )
+      .then(userNames => {
+        setNames(userNames)
+      })
+      .catch(err => console.log(err))
+  }, [joinedUsers])
 
   const DrawerList = (
     <Box
@@ -37,9 +46,9 @@ function JoinedUserListSection(props) {
         신청자 목록
       </Typography>
       <List>
-        {['강서진', '김다연', '안주섭'].map(text => (
-          <ListItem key={text} disablePadding>
-            <ListItemText primary={text} />
+        {names.map(name => (
+          <ListItem key={name} disablePadding>
+            <ListItemText primary={name} />
           </ListItem>
         ))}
       </List>
