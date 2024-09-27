@@ -26,28 +26,20 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 function NewPostPage() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [deadline, setDeadline] = useState(null) // 기본값을 null로 설정
+  const [deadline, setDeadline] = useState(dayjs(''))
   const [maxParticipants, setMaxParticipants] = useState(1)
   const [purpose, setPurpose] = useState('')
   const [meetingType, setMeetingType] = useState('')
-  const [deadlineError, setDeadlineError] = useState(false) // 마감일 에러 상태 추가
 
   const navigate = useNavigate()
   const user = useSelector(state => state.user)
 
   const handleDeadlineChange = newValue => {
     setDeadline(newValue) // DateTimePicker에서 선택된 값을 상태에 저장
-    setDeadlineError(false) // 값이 선택되면 에러 해제
   }
 
   const handleSubmit = async event => {
     event.preventDefault()
-
-    if (!deadline) {
-      // 마감일이 선택되지 않은 경우
-      setDeadlineError(true) // 에러 상태 설정
-      return
-    }
 
     const registrationData = {
       title,
@@ -61,7 +53,7 @@ function NewPostPage() {
 
     try {
       const response = await axios.post(
-        '/api/studycontests/add',
+        '/api/studyContests/add',
         registrationData,
       )
       console.log('등록 성공:', response.data)
@@ -102,11 +94,9 @@ function NewPostPage() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateTimePicker']}>
                 <DateTimePicker
-                  label="모집 마감일 *"
+                  label="모집 마감일"
                   value={deadline}
                   onChange={handleDeadlineChange}
-                  required
-                  error={deadlineError} // 에러 상태에 따라 빨간색 테두리 표시
                 />
               </DemoContainer>
             </LocalizationProvider>
