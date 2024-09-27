@@ -132,7 +132,12 @@ function DetailPage() {
           />
         )}
 
-        {userIsWriter && <JoinedUserListSection joinedUser={post.joinedUser} />}
+        {userIsWriter && (
+          <JoinedUserListSection
+            postType={post.type}
+            joinedUser={post.joinedUser}
+          />
+        )}
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>

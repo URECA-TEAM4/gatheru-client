@@ -14,24 +14,38 @@ import axios from 'axios'
 function JoinedUserListSection(props) {
   const [open, setOpen] = useState(false)
   const [joinedUsers, setJoinedUsers] = useState(props.joinedUser)
-  const [names, setNames] = useState([])
+  const [mogakoList, setMogakoList] = useState([])
+  const [studyContestList, setStudyContestList] = useState([])
   const [emptyMessage, setEmptyMessage] = useState('')
 
   const toggleDrawer = newOpen => () => setOpen(newOpen)
 
   useEffect(() => {
     if (joinedUsers.length > 0) {
-      setNames([])
+      setMogakoList([])
+      setStudyContestList([])
 
-      Promise.all(
-        joinedUsers.map(userId =>
-          axios.get(`/api/users/${userId}`).then(res => res.data.name),
-        ),
-      )
-        .then(userNames => {
-          setNames(userNames)
-        })
-        .catch(err => console.log(err))
+      props.postType == 'mogako'
+        ? Promise.all(
+            joinedUsers.map(userId =>
+              axios.get(`/api/users/${userId}`).then(res => res.data.name),
+            ),
+          )
+            .then(userNames => {
+              setMogakoList(userNames)
+            })
+            .catch(err => console.log(err))
+        : Promise.all(
+            joinedUsers.map(users =>
+              axios
+                .get(`/api/users/${users.userId}`)
+                .then(res => ({ name: res.data.name, comment: users.comment })),
+            ),
+          )
+            .then(users => {
+              setStudyContestList(users)
+            })
+            .catch(err => console.log(err))
     } else if (joinedUsers.length == 0) {
       setEmptyMessage('신청자가 아직 없습니다')
     }
@@ -39,7 +53,6 @@ function JoinedUserListSection(props) {
 
   return (
     <>
-      {' '}
       <Button
         onClick={toggleDrawer(true)}
         variant="contained"
@@ -65,11 +78,21 @@ function JoinedUserListSection(props) {
             신청자 목록
           </Typography>
           <List>
-            {names.map(name => (
-              <ListItem key={name} disablePadding>
-                <ListItemText primary={name} />
-              </ListItem>
-            ))}
+            {props.postType == 'mogako'
+              ? mogakoList.map(name => (
+                  <ListItem key={name} disablePadding>
+                    <ListItemText primary={name} />
+                  </ListItem>
+                ))
+              : studyContestList.map(user => (
+                  <ListItem key={user.name} disablePadding>
+                    <ListItemText
+                      primary={user.name}
+                      secondary={user.comment}
+                    />
+                  </ListItem>
+                ))}
+
             {emptyMessage}
           </List>
         </Box>
