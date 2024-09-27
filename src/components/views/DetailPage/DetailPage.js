@@ -10,6 +10,7 @@ import DeadlineBadge from './DeadlineBadge'
 import ContentSection from './ContentSection'
 import JoinMogakoButton from './JoinMogakoButton'
 import JoinStudyContestButton from './JoinStudyContestButton'
+import JoinedUserListSection from './JoinedUserListSection'
 import CommentSection from './CommentSection'
 
 function DetailPage() {
@@ -129,6 +130,8 @@ function DetailPage() {
             fetchRegisteredNum={fetchRegisteredNum}
           />
         )}
+
+        {userIsWriter && <JoinedUserListSection joinedUser={post.joinedUser} />}
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
