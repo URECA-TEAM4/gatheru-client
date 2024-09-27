@@ -124,6 +124,7 @@ function DetailPage() {
           <JoinMogakoButton
             userIsWriter={userIsWriter}
             postId={postId}
+            postType={post.type}
             writer={post.writer}
             title={post.title}
             registeredNum={registeredNum}
@@ -161,6 +162,7 @@ function DetailPage() {
         <JoinStudyContestButton
           userIsWriter={userIsWriter}
           postId={postId}
+          postType={post.type}
           writer={post.writer}
           title={post.title}
           registeredNum={registeredNum}

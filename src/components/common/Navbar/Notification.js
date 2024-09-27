@@ -84,11 +84,14 @@ function Notification(props) {
         <List sx={{ width: '350px' }}>
           {notifications.map(notification => {
             let createdAt = new Date(notification.createdAt)
+
             return (
               <ListItem disablePadding key={notification._id}>
                 <ListItemButton
                   onClick={() => {
-                    navigate(`/detail/${props.postType}/${props.id}`)
+                    navigate(
+                      `/detail/${notification.postType}/${notification.postId}`,
+                    )
                   }}
                 >
                   <ListItemText

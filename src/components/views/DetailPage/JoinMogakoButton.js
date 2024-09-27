@@ -36,6 +36,7 @@ function JoinMogakoButton(props) {
           sender: user.userData.name,
           receiver: props.writer,
           postId: props.postId,
+          postType: props.postType,
           postTitle: props.title,
           message: `${user.userData.name}님이 게시물에 신청하였습니다`,
         })
@@ -62,6 +63,7 @@ function JoinMogakoButton(props) {
           sender: user.userData.name,
           receiver: props.writer,
           postId: props.postId,
+          postType: props.postType,
           postTitle: props.title,
           message: '게시물 신청자 명단이 변경되었습니다',
         })
