@@ -19,7 +19,6 @@ function PostList(props) {
       Date.now() < new Date(datetime) && post.registeredNum < post.maximumNum
     )
   }
-
   useEffect(() => {
     axios
       .all(endpoints.map(endpoint => axios.get(endpoint)))

@@ -184,7 +184,14 @@ export default function Navbar() {
                       horizontal: 'right',
                     }}
                   >
-                    <MenuItem onClick={handleClose}>내가 작성한 글</MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        handleClose(); 
+                        navigate('/mypage'); 
+                        }}
+                      >
+                        내가 작성한 글
+                      </MenuItem>
                     <MenuItem onClick={logoutClick}>로그아웃</MenuItem>
                   </Menu>
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Tabs, Tab, Box } from '@mui/material'
 import GatherToggleButton from '../ToggleButton/GatherToggleButton'
+import PostList from '../../views/MainPage/PostList'
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props
