@@ -26,10 +26,10 @@ function NewPostPagemok() {
 
   const navigate = useNavigate()
   const user = useSelector(state => state.user)
-
-  const handleDateChange = newValue => {
-    setdate(newValue) // DateTimePicker에서 선택된 값을 상태에 저장
-  }
+  
+  const handleDateChange = (newValue) => {
+    setdate(newValue); // DateTimePicker에서 선택된 값을 상태에 저장
+  };
 
   const handleMapClick = (_, mouseEvent) => {
     const latlng = mouseEvent.latLng
@@ -114,7 +114,7 @@ function NewPostPagemok() {
       maximumNum: maxParticipants,
       datetime: date.toISOString(), // dayjs를 사용하여 ISO 형식으로 변환
       type: 'mogako',
-      // joinedUser: [],
+      joinedUser: [],
       lat: position.lat,
       lng: position.lng,
     }
@@ -166,11 +166,7 @@ function NewPostPagemok() {
           {/* <TextField label="날짜" type="date" value={date} onChange={(e) => setDate(e.target.value)} required InputLabelProps={{ shrink: true }} sx={styles.smallInput} /> */}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateTimePicker']}>
-              <DateTimePicker
-                label="날짜, 시간 지정"
-                value={date}
-                onChange={handleDateChange}
-              />
+              <DateTimePicker label="날짜, 시간 지정" value={date} onChange={handleDateChange} />
             </DemoContainer>
           </LocalizationProvider>
           <TextField
