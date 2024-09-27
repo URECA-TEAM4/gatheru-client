@@ -21,11 +21,14 @@ function NewPostPagemok() {
   const [location, setLocation] = useState('')
   const [position, setPosition] = useState({ lat: 37.5665, lng: 126.978 })
   const [maxParticipants, setMaxParticipants] = useState(1)
-  const [searchAddress, setSearchAddress] = useState('')
   const [keyword, setKeyword] = useState('')
   const [markers, setMarkers] = useState([])
   const [selectedMarker, setSelectedMarker] = useState(null)
-
+  const center = {
+    // 지도의 중심좌표
+    lat: 37.5665,
+    lng: 126.978,
+  }
   const navigate = useNavigate()
   const user = useSelector(state => state.user)
 
@@ -58,28 +61,9 @@ function NewPostPagemok() {
     })
   }
 
-  const handleSearchChange = e => {
-    setSearchAddress(e.target.value)
-  }
 
   const handleKeywordChange = e => {
     setKeyword(e.target.value)
-  }
-
-  const handleSearchSubmit = e => {
-    e.preventDefault()
-    const kakao = window.kakao
-    const geocoder = new kakao.maps.services.Geocoder()
-
-    geocoder.addressSearch(searchAddress, (result, status) => {
-      if (status === kakao.maps.services.Status.OK) {
-        const { x, y } = result[0]
-        setPosition({ lat: y, lng: x })
-        fetchAddress(y, x)
-      } else {
-        setLocation('주소를 찾을 수 없습니다.')
-      }
-    })
   }
 
   const handleKeywordSearch = () => {
@@ -184,29 +168,6 @@ function NewPostPagemok() {
           />
         </Box>
 
-        <Box
-          component="form"
-          onSubmit={handleSearchSubmit}
-          sx={styles.searchBox}
-        >
-          <TextField
-            label="주소 검색 (도로명 주소)"
-            value={searchAddress}
-            onChange={handleSearchChange}
-            required
-            sx={styles.searchInput}
-          />
-          <Button
-            type="button"
-            onClick={handleSearchSubmit}
-            variant="contained"
-            color="primary"
-            sx={styles.searchButton}
-          >
-            검색
-          </Button>
-        </Box>
-
         <Box component="form" sx={styles.keywordBox}>
           <TextField
             label="장소 검색 (예: 수서역 카페)"
@@ -226,13 +187,19 @@ function NewPostPagemok() {
           </Button>
         </Box>
 
-        <Map
-          center={position}
-          style={{ width: '100%', height: '350px', marginBottom: '20px' }}
-          level={3}
-          onClick={handleMapClick}
-        >
-          {markers.map(
+        <Map // 지도를 표시할 Container
+        id="map"
+        center={center}
+        style={{
+          width: '100%',
+          height: '350px',
+        }}
+        level={3} // 지도의 확대 레벨
+        onClick={handleMapClick}
+      >
+        
+        <MapMarker position={position} />
+        {markers.map(
             (marker, index) =>
               (selectedMarker === null ||
                 selectedMarker.title === marker.title) && (

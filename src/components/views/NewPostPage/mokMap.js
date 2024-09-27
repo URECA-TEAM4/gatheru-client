@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
 import { Map, MapMarker } from 'react-kakao-maps-sdk'
-import { TextField } from '@mui/material'
+import { TextField, Button, Box, Typography } from '@mui/material'
+import SavedSearchIcon from '@mui/icons-material/SavedSearch'
 
 export default function mokMap() {
   const center = {
     // 지도의 중심좌표
-    lat: 33.450701,
-    lng: 126.570667,
+    lat: 37.5665,
+    lng: 126.978,
   }
-  const [position, setPosition] = useState()
-  const [location, setLocation] = useState('') // 장소 
+  const [position, setPosition] = useState({ lat: 37.5665, lng: 126.978 })
+  const [location, setLocation] = useState('') // 장소
+  const [keyword, setKeyword] = useState('') // 키워드
+  const [markers, setMarkers] = useState([])
+  const [selectedMarker, setSelectedMarker] = useState(null)
 
-  
+
   const handleMapClick = (_, mouseEvent) => {
     const latlng = mouseEvent.latLng
     const lat = latlng.getLat()
@@ -39,6 +43,34 @@ export default function mokMap() {
     })
   }
 
+  const handleKeywordChange = e => {
+    setKeyword(e.target.value)
+  }
+  
+  const handleKeywordSearch = () => {
+    const kakao = window.kakao
+    const ps = new kakao.maps.services.Places()
+
+    ps.keywordSearch(keyword, (data, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const newMarkers = data.map(item => ({
+          lat: item.y,
+          lng: item.x,
+          title: item.place_name,
+        }))
+        setMarkers(newMarkers)
+        setPosition({ lat: newMarkers[0].lat, lng: newMarkers[0].lng })
+        fetchAddress(newMarkers[0].lat, newMarkers[0].lng)
+      } else {
+        setLocation('키워드로 장소를 찾을 수 없습니다.')
+      }
+    })
+  }
+  const handleMarkerClick = marker => {
+    setSelectedMarker(marker)
+    console.log(marker)
+    setPosition({ lat: marker.lat, lng: marker.lng })
+  }
   return (
     <>
       <TextField
@@ -49,26 +81,50 @@ export default function mokMap() {
         sx={styles.smallInput}
       />
 
+      <Box component="form" sx={styles.keywordBox}>
+        <TextField
+          label="장소 검색 (예: 수서역 카페)"
+          value={keyword}
+          onChange={handleKeywordChange}
+          required
+          sx={styles.searchInput}
+        />
+        <Button
+          type="button"
+          onClick={handleKeywordSearch}
+          variant="contained"
+          color="primary"
+          sx={styles.searchButton}
+        >
+          <SavedSearchIcon />
+        </Button>
+      </Box>
+
       <Map // 지도를 표시할 Container
         id="map"
-        center={center}
+        center={position}
         style={{
           width: '100%',
           height: '350px',
         }}
         level={3} // 지도의 확대 레벨
         onClick={handleMapClick}
-
       >
+        
         <MapMarker position={position ?? center} />
+        {markers.map(
+            (marker, index) =>
+              (selectedMarker === null ||
+                selectedMarker.title === marker.title) && (
+                <MapMarker
+                  key={index}
+                  position={{ lat: marker.lat, lng: marker.lng }}
+                  title={marker.title}
+                  onClick={() => handleMarkerClick(marker)}
+                />
+              ),
+          )}
       </Map>
-      <p>
-        <em>지도를 클릭해주세요!</em>
-      </p>
-      <div id="clickLatlng">
-        {position &&
-          `클릭한 위치의 위도는 ${position.lat} 이고, 경도는 ${position.lng} 장소는 ${position.title} 입니다`}
-      </div>
     </>
   )
 }
