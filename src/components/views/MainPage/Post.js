@@ -82,8 +82,12 @@ function Post(props) {
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <CalendarMonthOutlinedIcon />{' '}
                 <Typography sx={{ ml: 1 }}>
-                  {new Date(props.datetime).toLocaleString('ko-KR', {
-                    timeZone: 'UTC',
+                  {new Date(props.datetime).toLocaleString([], {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
                   })}
                 </Typography>
               </Box>
@@ -93,8 +97,12 @@ function Post(props) {
               <Typography sx={{ my: 1 }}>방식: {props.method}</Typography>
               <Typography>
                 마감:{' '}
-                {new Date(props.datetime).toLocaleString('ko-KR', {
-                  timeZone: 'UTC',
+                {new Date(props.datetime).toLocaleString([], {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
                 })}
               </Typography>
             </>
