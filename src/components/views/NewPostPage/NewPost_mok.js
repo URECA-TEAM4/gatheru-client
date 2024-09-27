@@ -163,13 +163,6 @@ function NewPostPagemok() {
               />
             </DemoContainer>
           </LocalizationProvider>
-          <TextField
-            label="장소"
-            value={location}
-            onChange={e => setLocation(e.target.value)}
-            required
-            sx={styles.smallInput}
-          />
         </Box>
 
         {/* 장소 및 지도  */}
