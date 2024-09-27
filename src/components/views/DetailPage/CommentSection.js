@@ -8,11 +8,11 @@ import {
   secondary_color,
 } from '../../constants/colors'
 import axios from 'axios'
-import SingleComment from './SingleComment'
 
 function CommentSection(props) {
   const [userName, setUserName] = useState('')
   const [commentValue, setCommentValue] = useState('')
+  const [postComments, setPostComments] = useState([])
   const user = useSelector(state => state.user)
 
   useEffect(() => {
@@ -21,19 +21,25 @@ function CommentSection(props) {
     }
   }, [user.userData])
 
-  const onSubmit = e => {
-    e.preventDefault()
+  useEffect(() => {
+    axios
+      .get(`/api/comments/${props.postId}`)
+      .then(res => setPostComments(res.data))
+      .catch(err => console.log(err))
+  }, [])
 
-    const variables = {
+  const onSubmit = e => {
+    const commentData = {
       content: commentValue,
-      writer: user.userData._id,
+      writerId: user.userData._id,
+      writer: user.userData.name,
       postId: props.postId,
     }
 
     axios
-      .post('/api/comments/save', variables)
+      .post('/api/comments/save', commentData)
       .then(response => {
-        console.log(response.data)
+        if (response.status === 200) window.location.reload()
       })
       .catch(function (error) {
         console.log(error)
@@ -43,7 +49,7 @@ function CommentSection(props) {
   return (
     <>
       {/* Comment Lists */}
-      <SingleComment postId={props.postId} />
+      {/* <SingleComment postId={props.postId} /> */}
 
       {/* Root Comment Form */}
       <Box sx={{ display: 'flex', alignItems: 'center', my: 3 }}>
@@ -79,6 +85,38 @@ function CommentSection(props) {
           등록
         </Button>
       </Box>
+
+      {/* Displaying existing comments for current post */}
+      {postComments.map(comment => {
+        return (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              my: 3,
+              width: '100%',
+            }}
+            key={comment._id}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <UserIcon />
+              <Typography sx={{ mx: 1, fontSize: 13, fontWeight: 'bold' }}>
+                {comment.writer}
+              </Typography>
+              <Typography sx={{ mx: 1, fontSize: 15 }}>
+                {comment.content}
+              </Typography>
+            </Box>
+
+            <Typography
+              sx={{ mx: 1, fontSize: 12, color: 'gray', textAlign: 'right' }}
+            >
+              {new Date(comment.createdAt).toLocaleString()}
+            </Typography>
+          </Box>
+        )
+      })}
     </>
   )
 }

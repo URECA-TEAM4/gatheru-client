@@ -177,7 +177,7 @@ function DetailPage() {
 
       <Divider sx={{ my: 3 }}></Divider>
 
-      {/* <CommentSection postId={post._id} /> */}
+      <CommentSection postId={postId} />
     </Container>
   )
 }
