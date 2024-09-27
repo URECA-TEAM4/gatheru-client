@@ -30,7 +30,7 @@ function NewPostPage() {
   const [description, setDescription] = useState('')
   const [deadline, setDeadline] = useState(null) // 기본값을 null로 설정
   const [maxParticipants, setMaxParticipants] = useState(1)
-  const [purpose, setPurpose] = useState('')
+  const [purpose, setPurpose] = useState('') 
   const [meetingType, setMeetingType] = useState('')
   const [deadlineError, setDeadlineError] = useState(false) // 마감일 에러 상태 추가
 
