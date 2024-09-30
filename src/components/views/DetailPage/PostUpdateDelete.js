@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from '@mui/material'
 import { secondary_color } from '../../constants/colors'
-import { UpdateMogakoPost, DeleteMogakoPost } from '../../_actions/post_action'
+import { updateMogakoPost, deletePost } from '../../_actions/post_action'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
@@ -10,13 +10,28 @@ function PostUpdateDelete(props) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isEditing, setIsEditing] = useState(false);
+  const [myLists, setMyLists] = useState([])
+
+//   useEffect(() => {
+//       axios.get('/api/posts/myposts')
+//       .then(response => {
+//         console.log(response.data);
+//         if (response.data) {
+//           setMyLists(response.data);
+//         }
+//       })
+//       .catch(err => {
+//         console.error('Error fetching posts:', err);
+//       });
+//   })
 
   const onClickUpdate = () => {
     const body = {
         postId: props.postId,
+        postType: props.type
     }
 
-    dispatch(UpdateMogakoPost(body)).then(res => {
+    dispatch(updateMogakoPost(body)).then(res => {
       if (res.payload.success) {
         setIsEditing(false);
       } else {
@@ -27,9 +42,10 @@ function PostUpdateDelete(props) {
   const onClickDelete = () => {
     const body = {
         postId: props.postId,
+        postType: props.type
     }
 
-    dispatch(DeleteMogakoPost(body)).then(res => {
+    dispatch(deletePost(body)).then(res => {
       if (res.payload.success) {
           alert('글 삭제에 성공했습니다.')
           navigate('/mypage')

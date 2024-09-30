@@ -168,14 +168,14 @@ function DetailPage() {
             <PostUpdateDelete
               postId={postId}
               type={post.type}
-              location={post.location}
-              datetime={post.datetime}
-              method={post.method}
-              studyContestDateTime={datetime}
-              fetchRegisteredNum={fetchRegisteredNum}
-              registeredNum={registeredNum}
-              maximumNum={maximumNum}
-              content={post.content}
+              // location={post.location}
+              // datetime={post.datetime}
+              // method={post.method}
+              // studyContestDateTime={datetime}
+              // fetchRegisteredNum={fetchRegisteredNum}
+              // registeredNum={registeredNum}
+              // maximumNum={maximumNum}
+              // content={post.content}
             />
           )}
         </Box>

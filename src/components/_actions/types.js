@@ -6,3 +6,6 @@ export const JOIN_MOGAKO_USER = "join_mogako_user";
 export const UNJOIN_MOGAKO_USER = "unjoin_mogako_user";
 export const JOIN_STUDY_USER = "join_study_user";
 export const UNJOIN_STUDY_USER = "unjoin_study_user";
+
+export const DELETE = 'delete';
+export const UPDATE = 'update';

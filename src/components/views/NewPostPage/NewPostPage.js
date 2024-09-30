@@ -11,7 +11,6 @@ import {
   FormLabel,
   Select,
   MenuItem,
-  Typography,
   Box,
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
@@ -59,7 +58,7 @@ function NewPostPage() {
         '/api/studyContests/add',
         registrationData,
       )
-      console.log('등록 성공:', response.data)
+      response.data
       navigate('/')
     } catch (error) {
       console.error('등록 오류:', error)
