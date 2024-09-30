@@ -22,10 +22,10 @@ function PostUpdateDelete(props) {
     }
     dispatch(deletePost(body)).then(res => {
       if (res.payload.success) {
-        alert('글 삭제에 성공했습니다.')
+        alert('게시물이 삭제되었습니다.')
         navigate('/mypage')
       } else {
-        alert('글 삭제에 실패했습니다.')
+        alert('게시물 삭제에 실패했습니다.')
       }
     })
   }
@@ -37,10 +37,11 @@ function PostUpdateDelete(props) {
         variant="contained"
         sx={{
           borderRadius: 2,
+          marginRight: 1,
+          fontWeight: 700,
+          minWidth: '60px',
           backgroundColor: 'white',
           color: primary_color,
-          fontWeight: 700,
-          marginRight: 0.5,
           border: `1px solid ${primary_color}`,
         }}
       >
@@ -51,9 +52,11 @@ function PostUpdateDelete(props) {
         variant="contained"
         sx={{
           borderRadius: 2,
-          backgroundColor: 'white',
-          color: primary_color,
           fontWeight: 700,
+          minWidth: '60px',
+          backgroundColor: 'white',
+          color: 'red',
+          border: `1px solid red`,
         }}
       >
         삭제

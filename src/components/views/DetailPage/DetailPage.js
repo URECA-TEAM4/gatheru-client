@@ -19,8 +19,8 @@ function DetailPage() {
   const user = useSelector(state => state.user)
   const [userIsWriter, setUserIsWriter] = useState(false)
 
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
   const [post, setPost] = useState({})
   const [datetime, setDateTime] = useState()
   const [location, setLocation] = useState()
@@ -31,8 +31,8 @@ function DetailPage() {
   const [registeredNum, setRegisteredNum] = useState(0)
   const [maximumNum, setMaximumNum] = useState(0)
   const [postClosed, setPostClosed] = useState(false)
-  const [purpose, setPurpose] = useState("")
-  const [method, setMethod] = useState("")
+  const [purpose, setPurpose] = useState('')
+  const [method, setMethod] = useState('')
 
   useEffect(() => {
     if (user.userData && user.userData.isAuth !== undefined) {
@@ -117,7 +117,7 @@ function DetailPage() {
     fetchRegisteredNum() // 컴포넌트가 마운트될 때 호출
   }, [post._id])
 
-  const handleUpdateSuccess = (updatedData) => {
+  const handleUpdateSuccess = updatedData => {
     setTitle(updatedData.title)
     setContent(updatedData.content)
     setDateTime(updatedData.datetime)
@@ -185,7 +185,7 @@ function DetailPage() {
             유레카 {generation}기 {group}
           </Typography>
         </Box>
-        <Box>
+        <Box sx={{ mt: '-15px' }}>
           {userIsWriter && (
             <PostUpdateDelete
               postId={postId}

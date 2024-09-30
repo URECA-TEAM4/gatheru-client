@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  TextField,
-  Modal,
-  Button,
-  Box,
-} from '@mui/material'
+import { TextField, Modal, Button, Box } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
@@ -34,11 +29,11 @@ function MogakModal({ open, handleClose, onUpdateSuccess }) {
       try {
         const response = await axios.get(`/api/mogakos/${postId}`)
         // 가져온 데이터를 수정 가능한 상태로 설정
-        setEditedTitle(response.data.title) 
-        setEditedContent(response.data.content) 
-        setEditedDatetime(dayjs(response.data.datetime)); // 문자열을 Dayjs로 변환
-        setEditedMaximumNum(response.data.maximumNum) 
-        setEditedLocation(response.data.location) 
+        setEditedTitle(response.data.title)
+        setEditedContent(response.data.content)
+        setEditedDatetime(dayjs(response.data.datetime)) // 문자열을 Dayjs로 변환
+        setEditedMaximumNum(response.data.maximumNum)
+        setEditedLocation(response.data.location)
       } catch (error) {
         console.log(error)
       }
@@ -55,18 +50,18 @@ function MogakModal({ open, handleClose, onUpdateSuccess }) {
       content: editedContent,
       datetime: editedDatetime.toISOString(), // 날짜를 ISO 형식으로 변환하여 서버에 전송
       maximumNum: editedMaximumNum,
-      location: editedLocation
+      location: editedLocation,
     }
     dispatch(updatePost(body)).then(res => {
       if (res.payload.success) {
         // 상위 컴포넌트로 업데이트된 내용 전달
         onUpdateSuccess({
-            title: editedTitle,
-            content: editedContent,
-            datetime: editedDatetime,
-            maximumNum: editedMaximumNum,
-            location: editedLocation
-          })
+          title: editedTitle,
+          content: editedContent,
+          datetime: editedDatetime,
+          maximumNum: editedMaximumNum,
+          location: editedLocation,
+        })
         handleClose()
       } else {
         alert('글 수정에 실패했습니다.')
@@ -81,8 +76,8 @@ function MogakModal({ open, handleClose, onUpdateSuccess }) {
     transform: 'translate(-50%, -50%)',
     width: 800,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
+    borderRadius: 2,
     p: 4,
   }
 
@@ -149,12 +144,11 @@ function MogakModal({ open, handleClose, onUpdateSuccess }) {
           </Grid>
         </Grid>
 
-
         {/* 장소 및 지도  */}
         <TextField
           label="장소"
           value={editedLocation}
-          onChange={e => setEditedLocation(e.target.value)} 
+          onChange={e => setEditedLocation(e.target.value)}
           required
           fullWidth
           sx={{ mb: 2 }}

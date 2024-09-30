@@ -42,12 +42,12 @@ function StudyContestModal({ open, handleClose, onUpdateSuccess }) {
       try {
         const response = await axios.get(`/api/studyContests/${postId}`)
         // 가져온 데이터를 수정 가능한 상태로 설정
-        setEditedTitle(response.data.title) 
-        setEditedContent(response.data.content) 
-        setEditedDeadline(dayjs(response.data.deadline)); // 문자열을 Dayjs로 변환
-        setEditedMaximumNum(response.data.maximumNum) 
-        setEditedType(response.data.type) 
-        setEditedMethod(response.data.method) 
+        setEditedTitle(response.data.title)
+        setEditedContent(response.data.content)
+        setEditedDeadline(dayjs(response.data.deadline)) // 문자열을 Dayjs로 변환
+        setEditedMaximumNum(response.data.maximumNum)
+        setEditedType(response.data.type)
+        setEditedMethod(response.data.method)
       } catch (error) {
         console.log(error)
       }
@@ -71,13 +71,13 @@ function StudyContestModal({ open, handleClose, onUpdateSuccess }) {
       if (res.payload.success) {
         // 상위 컴포넌트로 업데이트된 내용 전달
         onUpdateSuccess({
-            title: editedTitle,
-            content: editedContent,
-            datetime: editedDeadline,
-            maximumNum: editedMaximumNum,
-            type: editedType,
-            method: editedMethod
-          })
+          title: editedTitle,
+          content: editedContent,
+          datetime: editedDeadline,
+          maximumNum: editedMaximumNum,
+          type: editedType,
+          method: editedMethod,
+        })
         handleClose()
       } else {
         alert('글 수정에 실패했습니다.')
@@ -92,8 +92,8 @@ function StudyContestModal({ open, handleClose, onUpdateSuccess }) {
     transform: 'translate(-50%, -50%)',
     width: 800,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
+    borderRadius: 2,
     p: 4,
   }
 
@@ -161,45 +161,44 @@ function StudyContestModal({ open, handleClose, onUpdateSuccess }) {
         </Grid>
 
         <Grid container spacing={2}>
-        <Grid size={6}>
-        <FormControl component="fieldset" sx={{ mb: 5 }}>
-          <FormLabel component="legend">모임 목적</FormLabel>
-          <RadioGroup
-            value={editedType}
-            onChange={e => setEditedType(e.target.value)}
-            row
-          >
-            <FormControlLabel
-              value="study"
-              control={<Radio required={true} />}
-              label="스터디"
-            />
-            <FormControlLabel
-              value="contest"
-              control={<Radio required={true} />}
-              label="공모 및 대회"
-            />
-          </RadioGroup>
-        </FormControl>
-        </Grid>
+          <Grid size={6}>
+            <FormControl component="fieldset" sx={{ mb: 5 }}>
+              <FormLabel component="legend">모임 목적</FormLabel>
+              <RadioGroup
+                value={editedType}
+                onChange={e => setEditedType(e.target.value)}
+                row
+              >
+                <FormControlLabel
+                  value="study"
+                  control={<Radio required={true} />}
+                  label="스터디"
+                />
+                <FormControlLabel
+                  value="contest"
+                  control={<Radio required={true} />}
+                  label="공모 및 대회"
+                />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
 
-        <Grid size={6}>
-        <FormControl sx={{ width: '360px', mb: 3 }}>
-          <FormLabel>모임 방식</FormLabel>
-          <Select
-            value={editedMethod}
-            onChange={e => setEditedMethod(e.target.value)}
-            required
-          >
-            <MenuItem value="온라인">온라인</MenuItem>
-            <MenuItem value="오프라인">오프라인</MenuItem>
-            <MenuItem value="온/오프 병행">온/오프 병행</MenuItem>
-            <MenuItem value="미정">미정</MenuItem>
-          </Select>
-        </FormControl>
+          <Grid size={6}>
+            <FormControl sx={{ width: '360px', mb: 3 }}>
+              <FormLabel>모임 방식</FormLabel>
+              <Select
+                value={editedMethod}
+                onChange={e => setEditedMethod(e.target.value)}
+                required
+              >
+                <MenuItem value="온라인">온라인</MenuItem>
+                <MenuItem value="오프라인">오프라인</MenuItem>
+                <MenuItem value="온/오프 병행">온/오프 병행</MenuItem>
+                <MenuItem value="미정">미정</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
         </Grid>
-        </Grid>
-
 
         <Button
           type="submit"
