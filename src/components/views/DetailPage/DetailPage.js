@@ -20,8 +20,10 @@ function DetailPage() {
   const [userIsWriter, setUserIsWriter] = useState(false)
 
   const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
   const [post, setPost] = useState({})
   const [datetime, setDateTime] = useState()
+  const [location, setLocation] = useState()
   const [pastDeadline, setPastDeadline] = useState(false)
   const [writer, setWriter] = useState('')
   const [generation, setGeneration] = useState(0)
@@ -43,9 +45,11 @@ function DetailPage() {
           .then(function (response) {
             setPost(response.data)
             setTitle(response.data.title)
+            setContent(response.data.content)
             setDateTime(response.data.datetime)
             setRegisteredNum(response.data.registeredNum)
             setMaximumNum(response.data.maximumNum)
+            setLocation(response.data.location)
           })
           .catch(function (error) {
             console.log(error)
@@ -55,6 +59,7 @@ function DetailPage() {
           .then(function (response) {
             setPost(response.data)
             setTitle(response.data.title)
+            setContent(response.data.content)
             setDateTime(response.data.deadline)
             setRegisteredNum(response.data.registeredNum)
             setMaximumNum(response.data.maximumNum)
@@ -108,9 +113,13 @@ function DetailPage() {
     fetchRegisteredNum() // 컴포넌트가 마운트될 때 호출
   }, [post._id])
 
-  const handleUpdateSuccess = (newTitle) => {
-    setTitle(newTitle); // 수정된 제목으로 상태 업데이트
-  };
+  const handleUpdateSuccess = (updatedData) => {
+    setTitle(updatedData.title)
+    setContent(updatedData.content)
+    setDateTime(updatedData.datetime)
+    setMaximumNum(updatedData.maximumNum)
+    setLocation(updatedData.location)
+  }
 
   return (
     <Container maxWidth="lg" sx={{ mt: 3 }}>
@@ -183,14 +192,15 @@ function DetailPage() {
 
       <ContentSection
         type={post.type}
-        location={post.location}
-        datetime={post.datetime}
+        location={location}
+        datetime={datetime}
         method={post.method}
         studyContestDateTime={datetime}
         fetchRegisteredNum={fetchRegisteredNum}
         registeredNum={registeredNum}
         maximumNum={maximumNum}
-        content={post.content}
+        content={content}
+        onUpdateSuccess={handleUpdateSuccess}
       />
 
       {!postClosed && post.type !== 'mogako' && (
