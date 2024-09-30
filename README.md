@@ -16,6 +16,12 @@ This is the client-side code for **Gather to U**, built using React.js. This pro
 - 마이 페이지 : 내가 쓴 글 보기, 수정, 삭제
 - 신청자 추가/삭제 알림 기능
 
+## 미리보기
+
+![alt text](<Screenshot 2024-09-30 at 5.36.28 PM.png>)
+![alt text](<Screenshot 2024-09-30 at 5.38.15 PM.png>)
+![alt text](<Screenshot 2024-09-30 at 5.38.24 PM.png>)
+
 ## Installation
 
 ### Steps
