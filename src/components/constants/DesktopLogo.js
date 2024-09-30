@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react'
 
-export default function Logo() {
+export default function DesktopLogo() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -31,5 +31,5 @@ export default function Logo() {
         />
       </defs>
     </svg>
-  );
+  )
 }
