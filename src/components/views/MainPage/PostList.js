@@ -62,8 +62,6 @@ function PostList(props) {
               location={post.location}
               registeredNum={post.registeredNum}
               maximumNum={post.maximumNum}
-              registeredNum={post.registeredNum}
-              maximumNum={post.maximumNum}
               datetime={post.type == 'mogako' ? post.datetime : post.deadline}
               method={post.type != 'mogako' ? post.method : ''}
             />

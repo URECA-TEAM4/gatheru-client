@@ -11,15 +11,16 @@ import {
   FormLabel,
   Select,
   MenuItem,
-  Box, 
   Typography,
+  Box,
 } from '@mui/material'
-import Grid from '@mui/material/Grid2'; // Grid2 import 추가
+import Grid from '@mui/material/Grid2'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Auth from '../../../hoc/auth'
-
 import dayjs from 'dayjs'
+import { secondary_color } from '../../constants/colors'
+
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -28,7 +29,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 function NewPostPage() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [deadline, setDeadline] = useState(dayjs(''))
+  const [deadline, setDeadline] = useState(dayjs())
   const [maxParticipants, setMaxParticipants] = useState(1)
   const [purpose, setPurpose] = useState('')
   const [meetingType, setMeetingType] = useState('')
@@ -36,9 +37,9 @@ function NewPostPage() {
   const navigate = useNavigate()
   const user = useSelector(state => state.user)
 
-  const handleDeadlineChange = (newValue) => {
-    setDeadline(newValue); // DateTimePicker에서 선택된 값을 상태에 저장
-  };
+  const handleDeadlineChange = newValue => {
+    setDeadline(newValue) // DateTimePicker에서 선택된 값을 상태에 저장
+  }
 
   const handleSubmit = async event => {
     event.preventDefault()
@@ -67,10 +68,7 @@ function NewPostPage() {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Box mb={2}>
-        <Typography variant="h4" gutterBottom sx={{ textAlign: 'left', marginBottom: '20px', fontWeight: 'bold', fontSize: '24px' }}>모집 글 작성 (스터디 / 공모 및 대회)</Typography>
-      </Box>
-      <form onSubmit={handleSubmit} style={styles.form}>
+      <form onSubmit={handleSubmit}>
         <TextField
           label="제목"
           variant="outlined"
@@ -83,9 +81,8 @@ function NewPostPage() {
 
         <TextField
           label="내용"
-          variant="outlined"
           multiline
-          rows={4}
+          minRows={5}
           fullWidth
           value={description}
           onChange={e => setDescription(e.target.value)}
@@ -93,39 +90,36 @@ function NewPostPage() {
           sx={{ mb: 3 }}
         />
 
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid item xs={6}>
-            {/* <TextField
-              label="모집 마감일"
-              type="date"
-              fullWidth
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
-              required
-            />  */}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['DateTimePicker']}>
-                <DateTimePicker
-                  label="모집 마감일"
-                  value={deadline}
-                  onChange={handleDeadlineChange}
-                />
-              </DemoContainer>
-            </LocalizationProvider>
+        <Grid container spacing={2}>
+          <Grid size={6}>
+            <Box sx={{ mb: 3 }}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DateTimePicker']}>
+                  <DateTimePicker
+                    label="모집 마감일"
+                    value={deadline}
+                    onChange={handleDeadlineChange}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                        error: false,
+                      },
+                    }}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+            </Box>
           </Grid>
-
-          <Grid xs={6}>
+          <Grid size={6}>
             <TextField
               label="모집 인원 수"
               type="number"
-              fullWidth
               inputProps={{ min: 1 }}
               value={maxParticipants}
               onChange={e => setMaxParticipants(e.target.value)}
               required
+              fullWidth
+              sx={{ mb: 3, mt: 1 }}
             />
           </Grid>
         </Grid>
@@ -139,18 +133,19 @@ function NewPostPage() {
           >
             <FormControlLabel
               value="study"
-              control={<Radio />}
+              control={<Radio required={true} />}
               label="스터디"
             />
             <FormControlLabel
               value="contest"
-              control={<Radio />}
+              control={<Radio required={true} />}
               label="공모 및 대회"
             />
           </RadioGroup>
         </FormControl>
+        <br />
 
-        <FormControl fullWidth sx={{ mb: 3 }}>
+        <FormControl sx={{ width: '200px', mb: 3 }}>
           <FormLabel>모임 방식</FormLabel>
           <Select
             value={meetingType}
@@ -163,21 +158,17 @@ function NewPostPage() {
             <MenuItem value="미정">미정</MenuItem>
           </Select>
         </FormControl>
+        <br />
 
         <Button
           type="submit"
           variant="contained"
-          fullWidth={false}
           sx={{
-            padding: '8px 20px',
-            fontsize: '14px',
-            backgroundColor: '#E80080',
-            color: 'white',
+            borderRadius: 2,
+            backgroundColor: secondary_color,
+            fontWeight: 700,
             display: 'block',
             margin: '20px auto',
-            '&:hover': {
-              backgroundColor: '#E80080',
-            },          
           }}
         >
           등록
@@ -185,14 +176,6 @@ function NewPostPage() {
       </form>
     </Container>
   )
-}
-
-const styles = {
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
 }
 
 export default Auth(NewPostPage, true)
