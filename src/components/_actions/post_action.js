@@ -22,6 +22,24 @@ export function addMogakoPost(dataToSubmit) {
   }
 }
 
+export function UpdateMogakoPost(dataToSubmit) {
+  const request = axios
+    .post('/api/mogakos/update', dataToSubmit)
+    .then(response => response.data)
+  return {
+    payload: request,
+  }
+}
+
+export function DeleteMogakoPost(dataToSubmit) {
+  const request = axios
+    .post('/api/mogakos/delete', dataToSubmit)
+    .then(response => response.data)
+  return {
+    payload: request,
+  }
+}
+
 export function addStudyContestPost(dataToSubmit) {
   const request = axios
     .post('/api/studyContests/add', dataToSubmit)

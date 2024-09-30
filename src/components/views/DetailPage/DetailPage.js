@@ -12,6 +12,7 @@ import JoinMogakoButton from './JoinMogakoButton'
 import JoinStudyContestButton from './JoinStudyContestButton'
 import JoinedUserListSection from './JoinedUserListSection'
 import CommentSection from './CommentSection'
+import PostUpdateDelete from './PostUpdateDelete'
 
 function DetailPage() {
   const { type, postId } = useParams()
@@ -140,15 +141,44 @@ function DetailPage() {
         )}
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          my: 1,
+        }}
+      >
         {' '}
-        <UserIcon />
-        <Typography fontSize={15} fontWeight="bold" sx={{ mx: 1 }}>
-          {writer}{' '}
-        </Typography>{' '}
-        <Typography fontSize={15}>
-          유레카 {generation}기 {group}
-        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+          }}
+        >
+          <UserIcon />
+          <Typography fontSize={15} fontWeight="bold" sx={{ mx: 1 }}>
+            {writer}{' '}
+          </Typography>{' '}
+          <Typography fontSize={15}>
+            유레카 {generation}기 {group}
+          </Typography>
+        </Box>
+        <Box>
+          {userIsWriter && (
+            <PostUpdateDelete
+              postId={postId}
+              type={post.type}
+              location={post.location}
+              datetime={post.datetime}
+              method={post.method}
+              studyContestDateTime={datetime}
+              fetchRegisteredNum={fetchRegisteredNum}
+              registeredNum={registeredNum}
+              maximumNum={maximumNum}
+              content={post.content}
+            />
+          )}
+        </Box>
       </Box>
 
       <ContentSection
