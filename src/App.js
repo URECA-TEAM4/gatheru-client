@@ -1,16 +1,16 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Navbar from './components/common/Navbar/Navbar'
-import MainPage from './components/views/MainPage/MainPage'
-import LoginPage from './components/views/LoginPage/LoginPage'
-import RegisterPage from './components/views/RegisterPage/RegisterPage'
-import CalendarPage from './components/views/CalendarPage/CalendarPage'
-import MyPage from './components/views/MyPage/MyPage'
-import { CssBaseline } from '@mui/material'
-import { ThemeProvider } from '@mui/material/styles'
-import theme from './components/styles/theme'
-import MapPage from './components/views/MapPage/MapPage'
-import DetailPage from './components/views/DetailPage/DetailPage'
-import NewpostTab from './components/common/Tabs/NewPost_Tab'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/common/Navbar/Navbar";
+import MainPage from "./components/views/MainPage/MainPage";
+import LoginPage from "./components/views/LoginPage/LoginPage";
+import RegisterPage from "./components/views/RegisterPage/RegisterPage";
+import CalendarPage from "./components/views/CalendarPage/CalendarPage";
+import MyPage from "./components/views/MyPage/MyPage";
+import { CssBaseline } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./components/styles/theme";
+import MapPage from "./components/views/MapPage/MapPage";
+import DetailPage from "./components/views/DetailPage/DetailPage";
+import NewpostTab from "./components/common/Tabs/NewPost_Tab";
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -29,7 +29,7 @@ function App() {
         </Routes>
       </Router>
     </ThemeProvider>
-  )
+  );
 }
 
 export default App;

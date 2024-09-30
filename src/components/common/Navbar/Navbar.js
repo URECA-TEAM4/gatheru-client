@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import styles from './Navbar.module.css'
-import DesktopLogo from '../../constants/DesktopLogo'
-import MobileLogo from '../../constants/MobileLogo'
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import styles from "./Navbar.module.css";
+import DesktopLogo from "../../constants/DesktopLogo";
+import MobileLogo from "../../constants/MobileLogo";
 import {
   Divider,
   MenuItem,
@@ -14,67 +14,67 @@ import {
   Toolbar,
   Box,
   AppBar,
-} from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import AccountCircle from '@mui/icons-material/AccountCircle'
-import axios from 'axios'
-import { useSelector } from 'react-redux'
-import Notification from './Notification'
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import Notification from "./Notification";
 
-const pages = ['모집글', '캘린더', '모각코 맵']
+const pages = ["모집글", "캘린더", "모각코 맵"];
 
 export default function Navbar() {
-  const navigate = useNavigate()
-  const [isAuth, setIsAuth] = useState(false)
-  const user = useSelector(state => state.user)
+  const navigate = useNavigate();
+  const [isAuth, setIsAuth] = useState(false);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     if (user.userData && user.userData.isAuth !== undefined) {
-      setIsAuth(user.userData.isAuth)
+      setIsAuth(user.userData.isAuth);
     }
-  }, [user.userData])
+  }, [user.userData]);
 
-  const [anchorElNav, setAnchorElNav] = useState(null)
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleOpenNavMenu = e => setAnchorElNav(e.currentTarget)
-  const handleMenu = e => setAnchorEl(e.currentTarget)
-  const handleCloseNavMenu = () => setAnchorElNav(null)
-  const handleClose = () => setAnchorEl(null)
-  const handleLogoClick = () => navigate('/')
+  const handleOpenNavMenu = (e) => setAnchorElNav(e.currentTarget);
+  const handleMenu = (e) => setAnchorEl(e.currentTarget);
+  const handleCloseNavMenu = () => setAnchorElNav(null);
+  const handleClose = () => setAnchorEl(null);
+  const handleLogoClick = () => navigate("/");
 
   const logoutClick = () => {
-    setAnchorEl(null)
-    axios.get('/api/users/logout').then(res => {
+    setAnchorEl(null);
+    axios.get("/api/users/logout").then((res) => {
       if (res.data.success) {
-        navigate('/login')
-        window.location.reload()
+        navigate("/login");
+        window.location.reload();
       } else {
-        console.log(res.data)
-        alert('로그아웃 실패')
+        console.log(res.data);
+        alert("로그아웃 실패");
       }
-    })
-  }
+    });
+  };
 
-  const handlePageClick = page => {
-    if (page === '모집글') {
-      navigate('/')
-    } else if (page === '캘린더') {
-      navigate('/calendar')
-    } else if (page === '모각코 맵') {
-      navigate('/map')
+  const handlePageClick = (page) => {
+    if (page === "모집글") {
+      navigate("/");
+    } else if (page === "캘린더") {
+      navigate("/calendar");
+    } else if (page === "모각코 맵") {
+      navigate("/map");
     }
-    handleCloseNavMenu()
-  }
+    handleCloseNavMenu();
+  };
 
   return (
     <AppBar
       position="static"
       sx={{
-        height: '80px',
-        background: 'rgba(234, 221, 255, 0.75)',
-        boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.25)',
-        justifyContent: 'center',
+        height: "80px",
+        background: "rgba(234, 221, 255, 0.75)",
+        boxShadow: "0px 2px 10px 0px rgba(0, 0, 0, 0.25)",
+        justifyContent: "center",
       }}
     >
       <Container maxWidth="lg">
@@ -90,7 +90,7 @@ export default function Navbar() {
           {isAuth ? (
             <>
               {/* mobile */}
-              <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+              <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
                 <IconButton
                   size="large"
                   aria-label="account of current user"
@@ -104,21 +104,21 @@ export default function Navbar() {
                   id="menu-appbar"
                   anchorEl={anchorElNav}
                   anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
+                    vertical: "bottom",
+                    horizontal: "left",
                   }}
                   keepMounted
                   transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
+                    vertical: "top",
+                    horizontal: "left",
                   }}
                   open={Boolean(anchorElNav)}
                   onClose={handleCloseNavMenu}
-                  sx={{ display: { xs: 'block', md: 'none' } }}
+                  sx={{ display: { xs: "block", md: "none" } }}
                 >
-                  {pages.map(page => (
+                  {pages.map((page) => (
                     <MenuItem key={page} onClick={() => handlePageClick(page)}>
-                      <Typography sx={{ textAlign: 'center' }}>
+                      <Typography sx={{ textAlign: "center" }}>
                         {page}
                       </Typography>
                     </MenuItem>
@@ -127,12 +127,12 @@ export default function Navbar() {
               </Box>
 
               {/* desktop */}
-              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+              <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                 {pages.map((page, index) => (
                   <React.Fragment key={page}>
                     <Button
                       onClick={() => handlePageClick(page)}
-                      sx={{ fontSize: '1.2rem' }}
+                      sx={{ fontSize: "1.2rem" }}
                     >
                       {page}
                     </Button>
@@ -141,7 +141,7 @@ export default function Navbar() {
                         orientation="vertical"
                         variant="middle"
                         flexItem
-                        sx={{ bgcolor: '#4f2f92', mx: '10px' }}
+                        sx={{ bgcolor: "#4f2f92", mx: "10px" }}
                       />
                     )}
                   </React.Fragment>
@@ -150,12 +150,12 @@ export default function Navbar() {
 
               {/* profile */}
               <Box sx={{ flexGrow: 0 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Typography
                     variant="subtitle1"
                     sx={{
-                      color: 'black',
-                      marginRight: '10px', // 이름과 프로필 사진 사이의 간격 조정
+                      color: "black",
+                      marginRight: "10px", // 이름과 프로필 사진 사이의 간격 조정
                     }}
                   >
                     {user.userData.name} 님
@@ -176,22 +176,22 @@ export default function Navbar() {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                     anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
+                      vertical: "bottom",
+                      horizontal: "right",
                     }}
                     transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
+                      vertical: "top",
+                      horizontal: "right",
                     }}
                   >
                     <MenuItem
                       onClick={() => {
-                        handleClose(); 
-                        navigate('/mypage'); 
-                        }}
-                      >
-                        내가 작성한 글
-                      </MenuItem>
+                        handleClose();
+                        navigate("/mypage");
+                      }}
+                    >
+                      내가 작성한 글
+                    </MenuItem>
                     <MenuItem onClick={logoutClick}>로그아웃</MenuItem>
                   </Menu>
 
@@ -205,5 +205,5 @@ export default function Navbar() {
         </Toolbar>
       </Container>
     </AppBar>
-  )
+  );
 }

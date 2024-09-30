@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import { Tabs, Tab, Box } from '@mui/material'
-import GatherToggleButton from '../ToggleButton/GatherToggleButton'
-import PostList from '../../views/MainPage/PostList'
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { Tabs, Tab, Box } from "@mui/material";
+import GatherToggleButton from "../ToggleButton/GatherToggleButton";
+import PostList from "../../views/MainPage/PostList";
 
 function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props
+  const { children, value, index, ...other } = props;
 
   return (
     <div
@@ -17,37 +17,37 @@ function CustomTabPanel(props) {
     >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
-  )
+  );
 }
 
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
-}
+};
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  }
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
 }
 
 export default function BasicTabs() {
-  const [value, setValue] = useState(0)
-  const [gatheringType, setGatheringType] = useState(() => ['mogako'])
+  const [value, setValue] = useState(0);
+  const [gatheringType, setGatheringType] = useState(() => ["mogako"]);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
 
-  const handleGatheringType = data => {
-    setGatheringType(data)
-  }
+  const handleGatheringType = (data) => {
+    setGatheringType(data);
+  };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -58,7 +58,7 @@ export default function BasicTabs() {
           <Tab label="모집 완료" {...a11yProps(2)} />
         </Tabs>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
         <GatherToggleButton sendDataToTab={handleGatheringType} />
       </Box>
       {/* 전체 */}
@@ -70,5 +70,5 @@ export default function BasicTabs() {
       {/* 모집 완료 */}
       <CustomTabPanel value={value} index={2}></CustomTabPanel>
     </Box>
-  )
+  );
 }

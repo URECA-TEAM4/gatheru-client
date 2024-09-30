@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import {
   Container,
   Button,
@@ -10,15 +10,14 @@ import {
   FormControl,
   Select,
   Stack,
-} from '@mui/material'
-import Auth from '../../../hoc/auth'
-import GatherToggleButton from '../../common/ToggleButton/GatherToggleButton'
-import PostList from './PostList'
-import { useNavigate } from 'react-router-dom';
-
+} from "@mui/material";
+import Auth from "../../../hoc/auth";
+import GatherToggleButton from "../../common/ToggleButton/GatherToggleButton";
+import PostList from "./PostList";
+import { useNavigate } from "react-router-dom";
 
 function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props
+  const { children, value, index, ...other } = props;
 
   return (
     <div
@@ -30,47 +29,47 @@ function CustomTabPanel(props) {
     >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
-  )
+  );
 }
 
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
-}
+};
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  }
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
 }
 
 function MainPage() {
-  const [value, setValue] = useState(0)
-  const [sorting, setSorting] = useState('최신순')
-  const [gatheringType, setGatheringType] = useState(() => ['mogako'])
+  const [value, setValue] = useState(0);
+  const [sorting, setSorting] = useState("최신순");
+  const [gatheringType, setGatheringType] = useState(() => ["mogako"]);
   const navigate = useNavigate();
-  const handleSortingChange = e => {
-    setSorting(e.target.value)
-  }
+  const handleSortingChange = (e) => {
+    setSorting(e.target.value);
+  };
 
   const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
 
-  const handleGatheringType = data => {
-    setGatheringType(data)
-  }
+  const handleGatheringType = (data) => {
+    setGatheringType(data);
+  };
   const handleNewPostClick = () => {
-    navigate('/newpost');
-  }
-  
+    navigate("/newpost");
+  };
+
   return (
     <div>
       <Container maxWidth="lg" sx={{ mt: 3 }}>
-        <Box sx={{ width: '100%' }}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ width: "100%" }}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
               value={value}
               onChange={handleChange}
@@ -81,12 +80,12 @@ function MainPage() {
               <Tab label="모집 완료" {...a11yProps(2)} />
             </Tabs>
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
             <GatherToggleButton sendDataToTab={handleGatheringType} />
             <Button
               sx={{
-                color: 'white',
-                backgroundColor: '#38406B',
+                color: "white",
+                backgroundColor: "#38406B",
                 borderRadius: 3,
               }}
               onClick={handleNewPostClick}
@@ -95,7 +94,7 @@ function MainPage() {
             </Button>
           </Box>
           <Stack direction="row" justifyContent="end" sx={{ mt: 1 }}>
-            {' '}
+            {" "}
             <FormControl size="small">
               <Select
                 id="sorting"
@@ -137,7 +136,7 @@ function MainPage() {
         </Box>
       </Container>
     </div>
-  )
+  );
 }
 
-export default Auth(MainPage, true)
+export default Auth(MainPage, true);
