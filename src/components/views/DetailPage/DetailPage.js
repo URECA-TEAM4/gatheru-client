@@ -31,6 +31,8 @@ function DetailPage() {
   const [registeredNum, setRegisteredNum] = useState(0)
   const [maximumNum, setMaximumNum] = useState(0)
   const [postClosed, setPostClosed] = useState(false)
+  const [purpose, setPurpose] = useState("")
+  const [method, setMethod] = useState("")
 
   useEffect(() => {
     if (user.userData && user.userData.isAuth !== undefined) {
@@ -63,6 +65,8 @@ function DetailPage() {
             setDateTime(response.data.deadline)
             setRegisteredNum(response.data.registeredNum)
             setMaximumNum(response.data.maximumNum)
+            setPurpose(response.data.type)
+            setMethod(response.data.method)
           })
           .catch(function (error) {
             console.log(error)
@@ -119,6 +123,8 @@ function DetailPage() {
     setDateTime(updatedData.datetime)
     setMaximumNum(updatedData.maximumNum)
     setLocation(updatedData.location)
+    setPurpose(updatedData.purpose)
+    setMethod(updatedData.method)
   }
 
   return (
@@ -191,10 +197,10 @@ function DetailPage() {
       </Box>
 
       <ContentSection
-        type={post.type}
+        type={purpose}
         location={location}
         datetime={datetime}
-        method={post.method}
+        method={method}
         studyContestDateTime={datetime}
         fetchRegisteredNum={fetchRegisteredNum}
         registeredNum={registeredNum}

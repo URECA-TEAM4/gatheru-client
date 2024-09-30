@@ -3,6 +3,13 @@ import {
   TextField,
   Modal,
   Button,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  Select,
+  MenuItem,
   Box,
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
@@ -19,26 +26,28 @@ import axios from 'axios'
 import { updatePost } from '../../_actions/post_action'
 import { useDispatch } from 'react-redux'
 
-function MogakModal({ open, handleClose, onUpdateSuccess }) {
+function StudyContestModal({ open, handleClose, onUpdateSuccess }) {
   const dispatch = useDispatch()
 
   const { type, postId } = useParams()
   const [editedTitle, setEditedTitle] = useState('')
   const [editedContent, setEditedContent] = useState('')
-  const [editedDatetime, setEditedDatetime] = useState(dayjs())
+  const [editedDeadline, setEditedDeadline] = useState(dayjs())
   const [editedMaximumNum, setEditedMaximumNum] = useState('')
-  const [editedLocation, setEditedLocation] = useState('')
+  const [editedType, setEditedType] = useState('')
+  const [editedMethod, setEditedMethod] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/mogakos/${postId}`)
+        const response = await axios.get(`/api/studyContests/${postId}`)
         // 가져온 데이터를 수정 가능한 상태로 설정
         setEditedTitle(response.data.title) 
         setEditedContent(response.data.content) 
-        setEditedDatetime(dayjs(response.data.datetime)); // 문자열을 Dayjs로 변환
+        setEditedDeadline(dayjs(response.data.deadline)); // 문자열을 Dayjs로 변환
         setEditedMaximumNum(response.data.maximumNum) 
-        setEditedLocation(response.data.location) 
+        setEditedType(response.data.type) 
+        setEditedMethod(response.data.method) 
       } catch (error) {
         console.log(error)
       }
@@ -53,9 +62,10 @@ function MogakModal({ open, handleClose, onUpdateSuccess }) {
       postType: type,
       title: editedTitle,
       content: editedContent,
-      datetime: editedDatetime.toISOString(), // 날짜를 ISO 형식으로 변환하여 서버에 전송
+      deadline: editedDeadline.toISOString(), // 날짜를 ISO 형식으로 변환하여 서버에 전송
       maximumNum: editedMaximumNum,
-      location: editedLocation
+      purpose: editedType,
+      method: editedMethod,
     }
     dispatch(updatePost(body)).then(res => {
       if (res.payload.success) {
@@ -63,9 +73,10 @@ function MogakModal({ open, handleClose, onUpdateSuccess }) {
         onUpdateSuccess({
             title: editedTitle,
             content: editedContent,
-            datetime: editedDatetime,
+            datetime: editedDeadline,
             maximumNum: editedMaximumNum,
-            location: editedLocation
+            type: editedType,
+            method: editedMethod
           })
         handleClose()
       } else {
@@ -122,8 +133,8 @@ function MogakModal({ open, handleClose, onUpdateSuccess }) {
                 <DemoContainer components={['DateTimePicker']}>
                   <DateTimePicker
                     label="모집 마감일"
-                    value={editedDatetime}
-                    onChange={newValue => setEditedDatetime(newValue)} // Dayjs 객체로 상태 업데이트
+                    value={editedDeadline}
+                    onChange={newValue => setEditedDeadline(newValue)} // Dayjs 객체로 상태 업데이트
                     slotProps={{
                       textField: {
                         required: true,
@@ -149,16 +160,46 @@ function MogakModal({ open, handleClose, onUpdateSuccess }) {
           </Grid>
         </Grid>
 
+        <Grid container spacing={2}>
+        <Grid size={6}>
+        <FormControl component="fieldset" sx={{ mb: 5 }}>
+          <FormLabel component="legend">모임 목적</FormLabel>
+          <RadioGroup
+            value={editedType}
+            onChange={e => setEditedType(e.target.value)}
+            row
+          >
+            <FormControlLabel
+              value="study"
+              control={<Radio required={true} />}
+              label="스터디"
+            />
+            <FormControlLabel
+              value="contest"
+              control={<Radio required={true} />}
+              label="공모 및 대회"
+            />
+          </RadioGroup>
+        </FormControl>
+        </Grid>
 
-        {/* 장소 및 지도  */}
-        <TextField
-          label="장소"
-          value={editedLocation}
-          onChange={e => setEditedLocation(e.target.value)} 
-          required
-          fullWidth
-          sx={{ mb: 2 }}
-        />
+        <Grid size={6}>
+        <FormControl sx={{ width: '360px', mb: 3 }}>
+          <FormLabel>모임 방식</FormLabel>
+          <Select
+            value={editedMethod}
+            onChange={e => setEditedMethod(e.target.value)}
+            required
+          >
+            <MenuItem value="온라인">온라인</MenuItem>
+            <MenuItem value="오프라인">오프라인</MenuItem>
+            <MenuItem value="온/오프 병행">온/오프 병행</MenuItem>
+            <MenuItem value="미정">미정</MenuItem>
+          </Select>
+        </FormControl>
+        </Grid>
+        </Grid>
+
 
         <Button
           type="submit"
@@ -179,4 +220,4 @@ function MogakModal({ open, handleClose, onUpdateSuccess }) {
   )
 }
 
-export default MogakModal
+export default StudyContestModal

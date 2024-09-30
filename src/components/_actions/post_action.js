@@ -22,7 +22,7 @@ export function addMogakoPost(dataToSubmit) {
   }
 }
 
-export function updateMogakoPost(dataToSubmit) {
+export function updatePost(dataToSubmit) {
   const request = axios
     .post('/api/posts/update', dataToSubmit)
     .then(response => response.data)

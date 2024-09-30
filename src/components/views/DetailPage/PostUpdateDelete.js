@@ -5,6 +5,7 @@ import { deletePost } from '../../_actions/post_action'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import MogakModal from './MogakModal'
+import StudyContestModal from './StudyContestModal'
 
 function PostUpdateDelete(props) {
   const dispatch = useDispatch()
@@ -37,7 +38,7 @@ function PostUpdateDelete(props) {
         sx={{
           borderRadius: 2,
           backgroundColor: 'white',
-          color: primary_color,   
+          color: primary_color,
           fontWeight: 700,
           marginRight: 0.5,
           border: `1px solid ${primary_color}`,
@@ -58,7 +59,19 @@ function PostUpdateDelete(props) {
         삭제
       </Button>
 
-      <MogakModal open={open} handleClose={handleClose} onUpdateSuccess={props.onUpdateSuccess} />
+      {props.type == 'mogako' ? (
+        <MogakModal
+          open={open}
+          handleClose={handleClose}
+          onUpdateSuccess={props.onUpdateSuccess}
+        />
+      ) : (
+        <StudyContestModal
+          open={open}
+          handleClose={handleClose}
+          onUpdateSuccess={props.onUpdateSuccess}
+        />
+      )}
     </>
   )
 }
