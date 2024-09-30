@@ -24,7 +24,7 @@ This is the client-side code for **Gather to U**, built using React.js. This pro
 
    ```bash
    git clone https://github.com/URECA-TEAM4/gatheru-client.git
-   cd client
+   cd gatheru-client
    ```
 
 2. Install dependencies:
