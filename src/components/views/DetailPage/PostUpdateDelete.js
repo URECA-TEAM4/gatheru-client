@@ -56,7 +56,7 @@ function PostUpdateDelete(props) {
         삭제
       </Button>
 
-      <MogakModal open={open} handleClose={handleClose} />
+      <MogakModal open={open} handleClose={handleClose} onUpdateSuccess={props.onUpdateSuccess} />
     </>
   )
 }

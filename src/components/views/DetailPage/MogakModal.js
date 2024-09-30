@@ -18,20 +18,16 @@ import axios from 'axios'
 import { updateMogakoPost } from '../../_actions/post_action';
 import { useDispatch } from 'react-redux';
 
-function MogakModal({ open, handleClose }) {
+function MogakModal({ open, handleClose, onUpdateSuccess }) {
     const dispatch = useDispatch();
 
     const { type, postId } = useParams()
-    const [post, setPost] = useState({})
     const [editedTitle, setEditedTitle] = useState('')
 
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = type === 'mogako'
-              ? await axios.get(`/api/mogakos/${postId}`)
-              : await axios.get(`/api/studyContests/${postId}`);
-            setPost(response.data);
+            const response = await axios.get(`/api/mogakos/${postId}`)
             setEditedTitle(response.data.title); // 가져온 데이터를 수정 가능한 상태로 설정
           } catch (error) {
             console.log(error);
@@ -49,6 +45,7 @@ function MogakModal({ open, handleClose }) {
         };
         dispatch(updateMogakoPost(body)).then(res => {
           if (res.payload.success) {
+            onUpdateSuccess(editedTitle); // 상위 컴포넌트로 업데이트된 제목 전달
             handleClose();
         } else {
             alert('글 수정에 실패했습니다.');

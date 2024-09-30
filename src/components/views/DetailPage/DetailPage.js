@@ -19,6 +19,7 @@ function DetailPage() {
   const user = useSelector(state => state.user)
   const [userIsWriter, setUserIsWriter] = useState(false)
 
+  const [title, setTitle] = useState("")
   const [post, setPost] = useState({})
   const [datetime, setDateTime] = useState()
   const [pastDeadline, setPastDeadline] = useState(false)
@@ -41,6 +42,7 @@ function DetailPage() {
           .get(`/api/mogakos/${postId}`)
           .then(function (response) {
             setPost(response.data)
+            setTitle(response.data.title)
             setDateTime(response.data.datetime)
             setRegisteredNum(response.data.registeredNum)
             setMaximumNum(response.data.maximumNum)
@@ -52,6 +54,7 @@ function DetailPage() {
           .get(`/api/studyContests/${postId}`)
           .then(function (response) {
             setPost(response.data)
+            setTitle(response.data.title)
             setDateTime(response.data.deadline)
             setRegisteredNum(response.data.registeredNum)
             setMaximumNum(response.data.maximumNum)
@@ -105,6 +108,10 @@ function DetailPage() {
     fetchRegisteredNum() // 컴포넌트가 마운트될 때 호출
   }, [post._id])
 
+  const handleUpdateSuccess = (newTitle) => {
+    setTitle(newTitle); // 수정된 제목으로 상태 업데이트
+  };
+
   return (
     <Container maxWidth="lg" sx={{ mt: 3 }}>
       <DeadlineBadge postClosed={postClosed} />
@@ -118,7 +125,7 @@ function DetailPage() {
         }}
       >
         <Typography gutterBottom variant="h4" component="div" sx={{ my: 1 }}>
-          {post.title}
+          {title}
         </Typography>
 
         {!postClosed && post.type == 'mogako' && (
@@ -168,14 +175,7 @@ function DetailPage() {
             <PostUpdateDelete
               postId={postId}
               type={post.type}
-              title={post.title}
-              location={post.location}
-              datetime={post.datetime}
-              method={post.method}
-              studyContestDateTime={datetime}
-              fetchRegisteredNum={fetchRegisteredNum}
-              maximumNum={maximumNum}
-              content={post.content}
+              onUpdateSuccess={handleUpdateSuccess}
             />
           )}
         </Box>
