@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button } from '@mui/material'
-import { secondary_color } from '../../constants/colors'
-import { updateMogakoPost, deletePost } from '../../_actions/post_action'
+import { primary_color } from '../../constants/colors'
+import { deletePost } from '../../_actions/post_action'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import MogakModal from './MogakModal'
@@ -36,9 +36,11 @@ function PostUpdateDelete(props) {
         variant="contained"
         sx={{
           borderRadius: 2,
-          backgroundColor: secondary_color,
+          backgroundColor: 'white',
+          color: primary_color,   
           fontWeight: 700,
           marginRight: 0.5,
+          border: `1px solid ${primary_color}`,
         }}
       >
         수정
@@ -49,7 +51,7 @@ function PostUpdateDelete(props) {
         sx={{
           borderRadius: 2,
           backgroundColor: 'white',
-          color: secondary_color,
+          color: primary_color,
           fontWeight: 700,
         }}
       >
