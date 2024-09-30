@@ -11,8 +11,8 @@ This is the client-side code for **Gather to U**, built using React.js. This pro
 정보 분산과 가독성의 문제를 해결하고 누구나 쉽고 빠르게 인원을 구할 수 있습니다. 다양한 활동을 더욱 쉽게 열거나 참여할 수 있을 뿐만 아니라 모든 유레카 캠퍼스가 이 서비스를 통해 더욱 활발한 개발 커뮤니티 문화에 기여할 수 있습니다.
 
 ## ⚒️ 기술 스택
+<img width="996" alt="스크린샷 2024-09-30 오후 8 47 41" src="https://github.com/user-attachments/assets/10685aed-d081-446a-b006-084f9eac8f12">
 
-![alt text](<스크린샷 2024-09-30 오후 8.47.41.png>)
 
 ## 🌱 주요 기능
 
@@ -30,12 +30,12 @@ This is the client-side code for **Gather to U**, built using React.js. This pro
 
 ## 💻 실행 화면
 
-![alt text](<Screenshot 2024-09-30 at 5.36.28 PM.png>)
-![alt text](<스크린샷 2024-09-30 오후 8.52.37.png>)
-![alt text](<스크린샷 2024-09-30 오후 8.54.02.png>)
-![alt text](<Screenshot 2024-09-30 at 5.38.15 PM.png>)
-![alt text](<스크린샷 2024-09-30 오후 8.23.48.png>)
-![alt text](<스크린샷 2024-09-30 오후 8.13.39.png>)
+![Screenshot 2024-09-30 at 5 36 28 PM](https://github.com/user-attachments/assets/40a490fc-29a8-4f78-9aff-52958c9a302a)
+<img width="1200" alt="스크린샷 2024-09-30 오후 8 52 37" src="https://github.com/user-attachments/assets/dc6ab65f-7e9c-4428-ac8b-164eae776823">
+<img width="1432" alt="스크린샷 2024-09-30 오후 8 54 02" src="https://github.com/user-attachments/assets/beaefa6f-909a-43ef-9232-6a3a14c33c75">
+![Screenshot 2024-09-30 at 5 38 15 PM](https://github.com/user-attachments/assets/2aa9ed0e-8797-49f4-9e2e-28d6e75bfcfe)
+<img width="1427" alt="스크린샷 2024-09-30 오후 8 23 48" src="https://github.com/user-attachments/assets/12b93760-c0ea-41aa-afee-d5abb271ab5d">
+<img width="1438" alt="스크린샷 2024-09-30 오후 8 13 39" src="https://github.com/user-attachments/assets/17b3d8f7-4f1b-4ae5-8d82-41eb0145f34a">
 
 ## ⚙️ Installation
 
