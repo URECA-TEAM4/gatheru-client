@@ -12,14 +12,18 @@ import JoinMogakoButton from './JoinMogakoButton'
 import JoinStudyContestButton from './JoinStudyContestButton'
 import JoinedUserListSection from './JoinedUserListSection'
 import CommentSection from './CommentSection'
+import PostUpdateDelete from './PostUpdateDelete'
 
 function DetailPage() {
   const { type, postId } = useParams()
   const user = useSelector(state => state.user)
   const [userIsWriter, setUserIsWriter] = useState(false)
 
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
   const [post, setPost] = useState({})
   const [datetime, setDateTime] = useState()
+  const [location, setLocation] = useState()
   const [pastDeadline, setPastDeadline] = useState(false)
   const [writer, setWriter] = useState('')
   const [generation, setGeneration] = useState(0)
@@ -27,6 +31,8 @@ function DetailPage() {
   const [registeredNum, setRegisteredNum] = useState(0)
   const [maximumNum, setMaximumNum] = useState(0)
   const [postClosed, setPostClosed] = useState(false)
+  const [purpose, setPurpose] = useState('')
+  const [method, setMethod] = useState('')
 
   useEffect(() => {
     if (user.userData && user.userData.isAuth !== undefined) {
@@ -40,9 +46,12 @@ function DetailPage() {
           .get(`/api/mogakos/${postId}`)
           .then(function (response) {
             setPost(response.data)
+            setTitle(response.data.title)
+            setContent(response.data.content)
             setDateTime(response.data.datetime)
             setRegisteredNum(response.data.registeredNum)
             setMaximumNum(response.data.maximumNum)
+            setLocation(response.data.location)
           })
           .catch(function (error) {
             console.log(error)
@@ -51,9 +60,13 @@ function DetailPage() {
           .get(`/api/studyContests/${postId}`)
           .then(function (response) {
             setPost(response.data)
+            setTitle(response.data.title)
+            setContent(response.data.content)
             setDateTime(response.data.deadline)
             setRegisteredNum(response.data.registeredNum)
             setMaximumNum(response.data.maximumNum)
+            setPurpose(response.data.type)
+            setMethod(response.data.method)
           })
           .catch(function (error) {
             console.log(error)
@@ -104,6 +117,16 @@ function DetailPage() {
     fetchRegisteredNum() // 컴포넌트가 마운트될 때 호출
   }, [post._id])
 
+  const handleUpdateSuccess = updatedData => {
+    setTitle(updatedData.title)
+    setContent(updatedData.content)
+    setDateTime(updatedData.datetime)
+    setMaximumNum(updatedData.maximumNum)
+    setLocation(updatedData.location)
+    setPurpose(updatedData.purpose)
+    setMethod(updatedData.method)
+  }
+
   return (
     <Container maxWidth="lg" sx={{ mt: 3 }}>
       <DeadlineBadge postClosed={postClosed} />
@@ -117,7 +140,7 @@ function DetailPage() {
         }}
       >
         <Typography gutterBottom variant="h4" component="div" sx={{ my: 1 }}>
-          {post.title}
+          {title}
         </Typography>
 
         {!postClosed && post.type == 'mogako' && (
@@ -140,27 +163,50 @@ function DetailPage() {
         )}
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          my: 1,
+        }}
+      >
         {' '}
-        <UserIcon />
-        <Typography fontSize={15} fontWeight="bold" sx={{ mx: 1 }}>
-          {writer}{' '}
-        </Typography>{' '}
-        <Typography fontSize={15}>
-          유레카 {generation}기 {group}
-        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+          }}
+        >
+          <UserIcon />
+          <Typography fontSize={15} fontWeight="bold" sx={{ mx: 1 }}>
+            {writer}{' '}
+          </Typography>{' '}
+          <Typography fontSize={15}>
+            유레카 {generation}기 {group}
+          </Typography>
+        </Box>
+        <Box sx={{ mt: '-15px' }}>
+          {userIsWriter && (
+            <PostUpdateDelete
+              postId={postId}
+              type={post.type}
+              onUpdateSuccess={handleUpdateSuccess}
+            />
+          )}
+        </Box>
       </Box>
 
       <ContentSection
-        type={post.type}
-        location={post.location}
-        datetime={post.datetime}
-        method={post.method}
+        type={purpose}
+        location={location}
+        datetime={datetime}
+        method={method}
         studyContestDateTime={datetime}
         fetchRegisteredNum={fetchRegisteredNum}
         registeredNum={registeredNum}
         maximumNum={maximumNum}
-        content={post.content}
+        content={content}
+        onUpdateSuccess={handleUpdateSuccess}
       />
 
       {!postClosed && post.type !== 'mogako' && (

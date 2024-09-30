@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { JOIN_MOGAKO_USER, UNJOIN_MOGAKO_USER, JOIN_STUDY_USER, UNJOIN_STUDY_USER } from './types'
+import { JOIN_MOGAKO_USER, UNJOIN_MOGAKO_USER, JOIN_STUDY_USER, UNJOIN_STUDY_USER, DELETE, UPDATE } from './types'
 
 export function addMogakoPost(dataToSubmit) {
   const request = axios
@@ -18,6 +18,26 @@ export function addMogakoPost(dataToSubmit) {
       }
     })
   return {
+    payload: request,
+  }
+}
+
+export function updatePost(dataToSubmit) {
+  const request = axios
+    .post('/api/posts/update', dataToSubmit)
+    .then(response => response.data)
+  return {
+    type: UPDATE,
+    payload: request,
+  }
+}
+
+export function deletePost(dataToSubmit) {
+  const request = axios
+    .post('/api/posts/delete', dataToSubmit)
+    .then(response => response.data)
+  return {
+    type: DELETE,
     payload: request,
   }
 }
