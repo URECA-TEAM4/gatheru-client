@@ -1,0 +1,14 @@
+
+.button {
+    border: none;
+    color: white;
+    display: 'inline-block';
+    padding: 15px 32px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.primary {background-color: #008CBA;}
+.secondary {background-color: #e7e7e7; color: black;}
+.success {background-color: #4CAF50;}
+.danger {background-color: #f44336;}
