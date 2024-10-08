@@ -2,7 +2,7 @@ import React from "react";
 import Input from  "./Input"
 
 export default {
-  title: "Form/Input",  // story 이름
+  title: "form/Input",  // story 이름
   component: Input,
 };
 
