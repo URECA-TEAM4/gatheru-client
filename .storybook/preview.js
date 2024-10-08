@@ -1,8 +1,7 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 /** @type { import('@storybook/react').Preview } */
-const theme = createTheme(); // 기본 테마 생성
-
+const theme = createTheme()
 const preview = {
   parameters: {
     controls: {
@@ -13,9 +12,9 @@ const preview = {
     },
   },
   decorators: [
-    (Story) => (
+    (story) => (
       <ThemeProvider theme={theme}>
-        <Story />
+        {story()}
       </ThemeProvider>
     ),
   ],
