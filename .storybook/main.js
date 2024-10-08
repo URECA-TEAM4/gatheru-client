@@ -8,6 +8,7 @@ const config = {
     "@storybook/addon-essentials",
     "@chromatic-com/storybook",
     "@storybook/addon-interactions",
+    "@storybook/addon-viewport",
   ],
   core: {
     builder: '@storybook/builder-vite',

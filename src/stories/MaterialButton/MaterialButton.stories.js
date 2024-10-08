@@ -15,6 +15,8 @@ export default {
     borderColor: { control: 'color' },    
     color: { control: 'color' },             
     endIcon: { control: 'boolean' },  
+    
+    onClick: { action: "clicked"}
   }
 };
 
