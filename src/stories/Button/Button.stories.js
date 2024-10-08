@@ -11,34 +11,29 @@ export const Secondary = () => <Button variant='secondary'>Secondary</Button>
 export const Success = () => <Button variant='success'>Success</Button>
 export const Danger = () => <Button variant='danger'>Danger</Button>
 
-// const Template = (
-//   args
-// ) => <Button {...args} />;
-// export const Primary = Template.bind({});
-// Primary.args = {
-//   size: "small",
-//   label: "primary",
-//   variant: "primary",
-// };
 
-// export const Secondary = Template.bind({});
-// Secondary.args = {
-//   size: "small",
-//   label: "secondary",
-//   variant: 'secondary'
-// };
+// V6 이상부터 적용된 args 방식
+const Template = (
+  args
+) => <Button {...args} />;
 
-// export const Success = Template.bind({});
-// Success.args = {
-//   size: "small",
-//   label: "success",
-//   variant: 'success'
-// };
+export const PrimaryA = Template.bind({});
+PrimaryA.args = {
+  size: "small",
+  children: "primary args",
+  variant: "primary",
+};
 
-// export const Danger = Template.bind({});
-// Danger.args = {
-//   size: "small",
-//   label: "danger",
-//   variant: "danger"
-// };
+// 간단하게 개체를 재사용할 수 있다.
+export const LongPrimaryA = Template.bind({});
+LongPrimaryA.args = {
+  ...PrimaryA.args,
+  children: "Long primary args",
+};
 
+export const SecondaryA = Template.bind({});
+SecondaryA.args = {
+  size: "small",
+  children: "secondary",
+  variant: 'secondary'
+};
