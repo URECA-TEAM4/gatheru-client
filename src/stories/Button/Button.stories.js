@@ -2,7 +2,7 @@ import React from "react";
 import Button from "./Button";
 
 export default {
-  title: "Button",  // story 이름
+  title: "Form/Button",  // story 이름
   component: Button,
 };
 

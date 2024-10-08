@@ -69,6 +69,7 @@ function NewPostPage() {
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <form onSubmit={handleSubmit}>
         <TextField
+        
           label="제목"
           variant="outlined"
           fullWidth
