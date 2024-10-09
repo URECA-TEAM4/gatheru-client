@@ -40,12 +40,20 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --watchAll=false --coverage",
     "eject": "react-scripts eject",
     "lint": "eslint --fix .",
     "format": "prettier --write .",
     "lint-format": "npm run lint && npm run format",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+    "<rootDir>/src/components/**/*.{js,jsx}",
+    "!**/node_modules/**",
+    "!**/*.stories.{js,jsx}"
+    ]
   },
   "eslintConfig": {
     "extends": [
