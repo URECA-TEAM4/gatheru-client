@@ -39,7 +39,13 @@ function CommentList(props) {
                   textAlign: "right",
                 }}
               >
-                {new Date(comment.createdAt).toLocaleString()}
+                {new Date(comment.createdAt).toLocaleString([], {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </Typography>
             </Box>
             <Replies comment={comment} postId={props.postId} />
