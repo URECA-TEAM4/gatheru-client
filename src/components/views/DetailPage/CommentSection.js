@@ -8,7 +8,6 @@ import {
   secondary_color,
 } from "../../constants/colors";
 import axios from "axios";
-// import Replies from "./Replies";
 import CommentList from "./CommentList";
 
 function CommentSection(props) {
@@ -16,6 +15,7 @@ function CommentSection(props) {
   const [commentValue, setCommentValue] = useState("");
   const [postComments, setPostComments] = useState([]);
   const user = useSelector((state) => state.user);
+  const [state, setState] = useState(false);
 
   useEffect(() => {
     if (user.userData && user.userData.isAuth !== undefined) {
@@ -31,7 +31,7 @@ function CommentSection(props) {
         setPostComments(res.data.filter((comment) => !comment.responseTo))
       )
       .catch((err) => console.log(err));
-  }, []);
+  }, [state]);
 
   const onSubmit = (e) => {
     const commentData = {
@@ -44,11 +44,13 @@ function CommentSection(props) {
     axios
       .post("/api/comments/save", commentData)
       .then((response) => {
-        if (response.status === 200) window.location.reload();
+        if (response.status === 200) setState(!state);
       })
       .catch(function (error) {
         console.log(error);
       });
+
+    setCommentValue("");
   };
 
   return (

@@ -16,6 +16,7 @@ function Replies(props) {
   const [replyComments, setReplyComments] = useState([]);
   const user = useSelector((state) => state.user);
   const [openReply, setOpenReply] = useState(false);
+  const [state, setState] = useState(false);
 
   const onClickReplyOpen = () => {
     setOpenReply(!openReply);
@@ -34,7 +35,7 @@ function Replies(props) {
         setReplyComments(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [state]);
 
   const onSubmit = (e) => {
     const variables = {
@@ -49,10 +50,13 @@ function Replies(props) {
       .post("/api/comments/save", variables)
       .then((response) => {
         console.log(response.data);
+        setState(!state);
       })
       .catch(function (error) {
         console.log(error);
       });
+
+    setCommentValue("");
   };
 
   return (
